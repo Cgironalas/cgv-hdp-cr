@@ -1,0 +1,84 @@
+const char* group_glsl ="\
+#version 150\n\
+\n\
+uniform bool use_group_color;\n\
+uniform bool use_group_transformation;\n\
+uniform vec4 group_colors[250];\n\
+uniform vec3 group_translations[250];\n\
+uniform vec4 group_rotations[250];\n\
+\n\
+vec4 group_color(in vec4 color, int group_index)\n\
+{\n\
+\tif (use_group_color) {\n\
+\t\treturn group_colors[group_index];\n\
+\t}\n\
+\telse {\n\
+\t\treturn color;\n\
+\t}\n\
+}\n\
+\n\
+vec3 group_transformed_position(in vec3 position, int group_index)\n\
+{\n\
+\tif (use_group_transformation) {\n\
+\t\tvec4 q = group_rotations[group_index];\n\
+\t\tvec3 p = position.xyz;\n\
+\t\tvec3 image = cross(q.xyz, p);\n\
+\t\treturn dot(p, q.xyz)*q.xyz + q.w*(q.w*p + 2.0 * image) + cross(q.xyz, image) + group_translations[group_index];\n\
+\t}\n\
+\telse {\n\
+\t\treturn position;\n\
+\t}\n\
+}\n\
+\n\
+vec3 group_transformed_normal(in vec3 nml, int group_index)\n\
+{\n\
+\t\tif (use_group_transformation) {\n\
+\t\tvec4 q = group_rotations[group_index];\n\
+\t\tvec3 nml_image = cross(q.xyz, nml);\n\
+\t\treturn dot(nml, q.xyz)*q.xyz + q.w*(q.w*nml + 2.0 * nml_image) + cross(q.xyz, nml_image);\n\
+\t}\n\
+\telse {\n\
+\t\treturn nml;\n\
+\t}\n\
+}\n\
+\n\
+void group_transform_normal_matrix(inout mat3 NM, int group_index)\n\
+{\n\
+\t\tif (use_group_transformation) {\n\
+\t\tvec4 q = group_rotations[group_index];\n\
+\t\tvec3 x = vec3(1.0, 0.0, 0.0);\n\
+\t\tvec3 tmp = cross(q.xyz, x);\n\
+\t\tx = NM * (dot(x, q.xyz)*q.xyz + q.w*(q.w*x + 2.0 * tmp) + cross(q.xyz, tmp));\n\
+\t\tvec3 y = vec3(0.0, 1.0, 0.0);\n\
+\t\ttmp = cross(q.xyz, y);\n\
+\t\ty = NM * (dot(y, q.xyz)*q.xyz + q.w*(q.w*y + 2.0 * tmp) + cross(q.xyz, tmp));\n\
+\t\tvec3 z = vec3(0.0, 0.0, 1.0);\n\
+\t\ttmp = cross(q.xyz, z);\n\
+\t\tz = NM * (dot(z, q.xyz)*q.xyz + q.w*(q.w*z + 2.0 * tmp) + cross(q.xyz, tmp));\n\
+\t\tNM[0] = x;\n\
+\t\tNM[1] = y;\n\
+\t\tNM[2] = z;\n\
+\t}\n\
+}\n\
+\n\
+void group_transform_position_matrix(inout mat4 PM, int group_index)\n\
+{\n\
+\t\tif (use_group_transformation) {\n\
+\t\tvec4 q = group_rotations[group_index];\n\
+\t\tmat3 PM3 = mat3(PM);\n\
+\t\tvec3 x = vec3(1.0, 0.0, 0.0);\n\
+\t\tvec3 tmp = cross(q.xyz, x);\n\
+\t\tx = PM3 * (dot(x, q.xyz)*q.xyz + q.w*(q.w*x + 2.0 * tmp) + cross(q.xyz, tmp));\n\
+\t\tvec3 y = vec3(0.0, 1.0, 0.0);\n\
+\t\ttmp = cross(q.xyz, y);\n\
+\t\ty = PM3 * (dot(y, q.xyz)*q.xyz + q.w*(q.w*y + 2.0 * tmp) + cross(q.xyz, tmp));\n\
+\t\tvec3 z = vec3(0.0, 0.0, 1.0);\n\
+\t\ttmp = cross(q.xyz, z);\n\
+\t\tz = PM3 * (dot(z, q.xyz)*q.xyz + q.w*(q.w*z + 2.0 * tmp) + cross(q.xyz, tmp));\n\
+\t\tvec4 t = PM * vec4(group_translations[group_index], 1.0);\n\
+\t\tPM[0].xyz = x;\n\
+\t\tPM[1].xyz = y;\n\
+\t\tPM[2].xyz = z;\n\
+\t\tPM[3]     = t;\n\
+\t}\n\
+}";

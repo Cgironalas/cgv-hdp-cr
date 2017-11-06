@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="headers">
+    </Filter>
+    <Filter Include="make">
+    </Filter>
+    <Filter Include="sources">
+    </Filter>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\corner_connectivity.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\delaunay_mesh.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\delaunay_mesh_with_hierarchy.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\epsilon.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\ext_corner_connectivity.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\instantiation.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\lib_begin.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\mesh_geometry.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\mesh_geometry_reference.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\point_2d.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\triangle_mesh.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\delaunay.pj">
+       <Filter>make</Filter>
+    </make_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\corner_connectivity.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\ext_corner_connectivity.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\instantiation.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

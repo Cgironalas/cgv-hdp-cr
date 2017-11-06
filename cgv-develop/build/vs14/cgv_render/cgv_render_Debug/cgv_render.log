@@ -1,0 +1,15 @@
+﻿  apply make_rule
+  view.cxx
+  vertex_buffer.cxx
+  textured_material.cxx
+  texture.cxx
+  shader_program.cxx
+  shader_code.cxx
+  render_buffer.cxx
+  performance_monitor.cxx
+  frame_buffer.cxx
+  drawable.cxx
+  context.cxx
+  attribute_array_binding.cxx
+  Generating Code...
+  cgv_render.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cgv_render_sd14.lib

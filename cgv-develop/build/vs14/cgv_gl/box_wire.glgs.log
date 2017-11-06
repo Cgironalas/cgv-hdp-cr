@@ -1,0 +1,53 @@
+const char* box_wire_glgs ="\
+#version 150 compatibility\n\
+#extension GL_EXT_geometry_shader4 : enable\n\
+\n\
+layout(points) in;\n\
+layout(line_strip, max_vertices = 24) out;\n\
+\n\
+in mat4 PM[];\n\
+in vec4 color_gs[];\n\
+\n\
+out vec4 color;\n\
+\n\
+int surface_side_handling(in vec3 position, inout vec3 normal, inout vec4 color);\n\
+\n\
+void emit_vertex(in vec4 p)\n\
+{\n\
+\tgl_Position = gl_ProjectionMatrix * p;\n\
+\tEmitVertex();\n\
+}\n\
+\n\
+void main()\n\
+{\n\
+\tcolor = color_gs[0];\n\
+\tvec4 C0 = PM[0] * vec4(-0.5, -0.5, -0.5, 1.0);\n\
+\tvec4 C1 = PM[0] * vec4(0.5, -0.5, -0.5, 1.0);\n\
+\tvec4 C2 = PM[0] * vec4(-0.5, 0.5, -0.5, 1.0);\n\
+\tvec4 C3 = PM[0] * vec4(0.5, 0.5, -0.5, 1.0);\n\
+\tvec4 C4 = PM[0] * vec4(-0.5, -0.5, 0.5, 1.0);\n\
+\tvec4 C5 = PM[0] * vec4(0.5, -0.5, 0.5, 1.0);\n\
+\tvec4 C6 = PM[0] * vec4(-0.5, 0.5, 0.5, 1.0);\n\
+\tvec4 C7 = PM[0] * vec4(0.5, 0.5, 0.5, 1.0);\n\
+\temit_vertex(C0);\n\
+\temit_vertex(C4);\n\
+\temit_vertex(C6);\n\
+\temit_vertex(C2);\n\
+\temit_vertex(C0);\n\
+\temit_vertex(C1);\n\
+\temit_vertex(C5);\n\
+\temit_vertex(C7);\n\
+\temit_vertex(C3);\n\
+\temit_vertex(C1);\n\
+\tEndPrimitive();\n\
+\temit_vertex(C4);\n\
+\temit_vertex(C5);\n\
+\tEndPrimitive();\n\
+\temit_vertex(C6);\n\
+\temit_vertex(C7);\n\
+\tEndPrimitive();\n\
+\temit_vertex(C2);\n\
+\temit_vertex(C3);\n\
+\tEndPrimitive();\n\
+}\n\
+";

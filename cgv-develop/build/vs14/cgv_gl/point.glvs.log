@@ -1,0 +1,38 @@
+const char* point_glvs ="\
+#version 150\n\
+\n\
+uniform bool use_group_point_size;\n\
+uniform float group_point_sizes[250];\n\
+uniform bool use_color_index;\n\
+uniform vec3 palette[16];\n\
+\n\
+in float point_size;\n\
+in vec4 position;\n\
+in vec3 normal;\n\
+in vec4 color;\n\
+in uint color_index;\n\
+\n\
+in int group_index;\n\
+\n\
+out vec3 normal_gs;\n\
+out vec4 color_gs;\n\
+\n\
+vec4 group_color(in vec4 color, int group_index);\n\
+vec3 group_transformed_position(in vec3 position, int group_index);\n\
+vec3 group_transformed_normal(in vec3 nml, int group_index);\n\
+\n\
+void main()\n\
+{\n\
+\tif (use_group_point_size) {\n\
+\t\tgl_PointSize = group_point_sizes[group_index];\n\
+\t}\n\
+\telse {\n\
+\t\tgl_PointSize = point_size;\n\
+\t}\n\
+\tif (use_color_index)\n\
+\t\tcolor_gs = group_color(vec4(palette[color_index],1), group_index);\n\
+\telse\n\
+\t\tcolor_gs = group_color(color, group_index);\n\
+\tnormal_gs = group_transformed_normal(normal, group_index);\n\
+\tgl_Position = vec4(group_transformed_position(position.xyz, group_index), 1.0);\n\
+}";

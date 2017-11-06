@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="headers">
+    </Filter>
+    <Filter Include="make">
+    </Filter>
+    <Filter Include="sources">
+    </Filter>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\application.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\base_provider.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\base_provider_generator.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\button.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\control.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\dialog.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\event.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\event_handler.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\file_dialog.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\gui_creator.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\gui_driver.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\gui_group.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\key_control.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\key_event.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\layout.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\layout_inline.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\layout_spacings.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\layout_table.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\lib_begin.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\menu_provider.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\mouse_event.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\provider.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\resizable.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\shortcut.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\text_editor.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\trigger.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\view.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\window.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\cgv_gui.pj">
+       <Filter>make</Filter>
+    </make_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\application.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\base_provider.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\base_provider_generator.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\button.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\config_file.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\control.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\dialog.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\event.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\event_handler.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\file_dialog.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\gui_creator.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\gui_driver.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\gui_group.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\key_control.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\key_event.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\layout.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\layout_inline.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\layout_spacings.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\layout_table.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\menu_provider.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\mouse_event.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\provider.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\resizable.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\shortcut.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\text_editor.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\trigger.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\window.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

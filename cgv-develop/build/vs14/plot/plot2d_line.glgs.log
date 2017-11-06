@@ -1,0 +1,34 @@
+const char* plot2d_line_glgs ="\
+#version 150 compatibility\n\
+#extension GL_EXT_geometry_shader4 : enable\n\
+\n\
+uniform vec3 line_color;\n\
+uniform vec3 stick_color;\n\
+\n\
+uniform bool show_lines;\n\
+uniform bool show_sticks;\n\
+\n\
+in vec4 base_pos[];\n\
+\n\
+out vec3  color;\n\
+\n\
+void main()\n\
+{\n\
+\tif (show_lines) {\n\
+\t\tcolor = line_color;\n\
+\t\tgl_Position = gl_PositionIn[0]; \n\
+\t\tEmitVertex();\n\
+\t\tgl_Position = gl_PositionIn[1]; \n\
+\t\tEmitVertex();\n\
+\t\tEndPrimitive();\n\
+\t}\n\
+\n\
+\tif (show_sticks) {\n\
+\t\tcolor = stick_color;\n\
+\t\tgl_Position = base_pos[0]; \n\
+\t\tEmitVertex();\n\
+\t\tgl_Position = gl_PositionIn[0]; \n\
+\t\tEmitVertex();\n\
+\t\tEndPrimitive();\n\
+\t}\n\
+}";

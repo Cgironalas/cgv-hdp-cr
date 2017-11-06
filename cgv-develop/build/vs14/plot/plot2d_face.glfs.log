@@ -1,0 +1,22 @@
+const char* plot2d_face_glfs ="\
+#version 150 compatibility\n\
+\n\
+uniform int face_illumination;\n\
+\n\
+uniform vec3 face_color;\n\
+\n\
+in vec3 eye_position;\n\
+in vec3 normal;\n\
+\n\
+vec4 doLighting(vec3 position, vec3 normal, vec4 diffuseMaterial);\n\
+\n\
+void main()\n\
+{\n\
+\t\tvec4 diff = vec4(face_color,1.0);\n\
+\tif (face_illumination == 0) {\n\
+\t\tgl_FragColor = diff;\n\
+\t}\n\
+\telse {\n\
+\t\tgl_FragColor = doLighting(eye_position, normal, diff);\n\
+\t}\n\
+}";

@@ -1,0 +1,4 @@
+﻿  apply ppp_headers
+  apply make_rule
+  cgv_reflect.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\bin\cgv_reflect_d14.dll
+  cgv_reflect.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\cgv_reflect\cgv_reflect_Debug Dll\cgv_reflect_d14.pdb (Full PDB)

@@ -1,0 +1,18 @@
+const char* textured_material_glvs ="\
+#version 150 compatibility\n\
+\n\
+out vec3 N;\n\
+out vec3 s;\n\
+out vec2 tc;\n\
+\n\
+void main()\n\
+{\n\
+\t\tgl_Position = ftransform();\n\
+\t\tvec4 h_s    = gl_ModelViewMatrix * gl_Vertex;\n\
+\tgl_ClipVertex = h_s;\n\
+\ts           = h_s.xyz / h_s.w;\n\
+\t\tvec4 h_tc   = gl_TextureMatrix[0]*gl_MultiTexCoord0;\n\
+\ttc          = h_tc.xy / h_tc.w;\n\
+\t\tN      = normalize(gl_NormalMatrix * gl_Normal);\n\
+}\n\
+";

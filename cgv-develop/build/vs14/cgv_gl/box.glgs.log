@@ -1,0 +1,60 @@
+const char* box_glgs ="\
+#version 150 compatibility\n\
+#extension GL_EXT_geometry_shader4 : enable\n\
+\n\
+layout(points) in;\n\
+layout(triangle_strip, max_vertices = 24) out;\n\
+\n\
+in mat3 NM[];\n\
+in mat4 PM[];\n\
+in vec4 color_gs[];\n\
+\n\
+out vec3 normal;\n\
+out vec4 color;\n\
+out vec3 position;\n\
+flat out int side;\n\
+\n\
+int surface_side_handling(in vec3 position, inout vec3 normal, inout vec4 color);\n\
+\n\
+void emit_face(in vec3 normal_in, in vec4 c0, in vec4 c1, in vec4 c2, in vec4 c3)\n\
+{\n\
+\tcolor = color_gs[0];\n\
+\t\tnormal = normal_in;\n\
+\tposition = c0.xyz;\n\
+\n\
+\t\tside = surface_side_handling(position, normal, color);\n\
+\tif (side == -1)\n\
+\t\treturn;\n\
+\n\
+\t\tgl_Position = gl_ProjectionMatrix * c0;\n\
+\tEmitVertex();\n\
+\tposition = c1.xyz;\n\
+\tgl_Position = gl_ProjectionMatrix * c1;\n\
+\tEmitVertex();\n\
+\tposition = c2.xyz;\n\
+\tgl_Position = gl_ProjectionMatrix * c2;\n\
+\tEmitVertex();\n\
+\tposition = c3.xyz;\n\
+\tgl_Position = gl_ProjectionMatrix * c3;\n\
+\tEmitVertex();\n\
+\tEndPrimitive();\n\
+}\n\
+\n\
+void main()\n\
+{\n\
+\tvec4 C0 = PM[0] * vec4(-0.5, -0.5, -0.5, 1.0);\n\
+\tvec4 C1 = PM[0] * vec4(0.5, -0.5, -0.5, 1.0);\n\
+\tvec4 C2 = PM[0] * vec4(-0.5, 0.5, -0.5, 1.0);\n\
+\tvec4 C3 = PM[0] * vec4(0.5, 0.5, -0.5, 1.0);\n\
+\tvec4 C4 = PM[0] * vec4(-0.5, -0.5, 0.5, 1.0);\n\
+\tvec4 C5 = PM[0] * vec4(0.5, -0.5, 0.5, 1.0);\n\
+\tvec4 C6 = PM[0] * vec4(-0.5, 0.5, 0.5, 1.0);\n\
+\tvec4 C7 = PM[0] * vec4(0.5, 0.5, 0.5, 1.0);\n\
+\temit_face(NM[0] * vec3(-1.0, 0.0, 0.0), C0, C4, C2, C6);\n\
+\temit_face(NM[0] * vec3(1.0, 0.0, 0.0), C5, C1, C7, C3);\n\
+\temit_face(NM[0] * vec3(0.0, -1.0, 0.0), C0, C1, C4, C5);\n\
+\temit_face(NM[0] * vec3(0.0, 1.0, 0.0), C3, C2, C7, C6);\n\
+\temit_face(NM[0] * vec3(0.0, 0.0, -1.0), C0, C2, C1, C3);\n\
+\temit_face(NM[0] * vec3(0.0, 0.0, 1.0), C6, C4, C7, C5);\n\
+}\n\
+";

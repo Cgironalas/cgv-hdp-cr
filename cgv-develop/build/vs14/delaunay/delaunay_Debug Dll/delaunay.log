@@ -1,0 +1,9 @@
+﻿  apply make_rule
+  instantiation.cxx
+  ext_corner_connectivity.cxx
+  corner_connectivity.cxx
+  Generating Code...
+corner_connectivity.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+     Creating library D:\Users\CGiron\Documents\Project\cgv-develop\lib\delaunay_d14.lib and object D:\Users\CGiron\Documents\Project\cgv-develop\lib\delaunay_d14.exp
+  delaunay.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\bin\delaunay_d14.dll
+  delaunay.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\delaunay\delaunay_Debug Dll\delaunay_d14.pdb (Full PDB)

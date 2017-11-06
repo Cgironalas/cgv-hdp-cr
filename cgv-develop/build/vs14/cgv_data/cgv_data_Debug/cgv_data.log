@@ -1,0 +1,11 @@
+﻿  apply make_rule
+  packing_info.cxx
+  io_reflection_handler.cxx
+  image_view.cxx
+  data_view.cxx
+  data_format.cxx
+  component_format.cxx
+  binary_io_reflection_handlers.cxx
+  ascii_io_reflection_handlers.cxx
+  Generating Code...
+  cgv_data.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cgv_data_sd14.lib

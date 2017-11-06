@@ -1,0 +1,46 @@
+const char* box_glvs ="\
+#version 150 compatibility\n\
+\n\
+uniform bool position_is_center;\n\
+\n\
+in vec4 position;\n\
+in vec3 extent;\n\
+in vec4 color;\n\
+in int group_index;\n\
+\n\
+out mat3 NM;\n\
+out mat4 PM;\n\
+out vec4 color_gs;\n\
+\n\
+vec4 group_color(in vec4 color, int group_index);\n\
+void group_transform_normal_matrix(inout mat3 NM, int group_index);\n\
+void group_transform_position_matrix(inout mat4 PM, int group_index);\n\
+\n\
+void main()\n\
+{\n\
+\t\tNM = gl_NormalMatrix;\n\
+\tgroup_transform_normal_matrix(NM, group_index);\n\
+\t\n\
+\t\tmat4 BM = mat4(0.0);\n\
+\tif (position_is_center) {\n\
+\t\tBM[0][0] = extent[0];\n\
+\t\tBM[1][1] = extent[1];\n\
+\t\tBM[2][2] = extent[2];\n\
+\t\tBM[3] = position;\n\
+\t}\n\
+\telse {\n\
+\t\tvec3 E = extent - position.xyz;\n\
+\t\tvec3 C = 0.5*(position.xyz + extent);\n\
+\t\tBM[0][0] = E[0];\n\
+\t\tBM[1][1] = E[1];\n\
+\t\tBM[2][2] = E[2];\n\
+\t\tBM[3] = vec4(C, 1.0);\n\
+\t}\n\
+\n\
+\tPM = gl_ModelViewMatrix;\n\
+\tgroup_transform_position_matrix(PM, group_index);\n\
+\tPM = PM * BM;\n\
+\n\
+\tcolor_gs = group_color(color, group_index);\n\
+\tgl_Position = position;\n\
+}";

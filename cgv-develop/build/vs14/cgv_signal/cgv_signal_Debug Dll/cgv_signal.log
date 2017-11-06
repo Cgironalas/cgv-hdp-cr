@@ -1,0 +1,7 @@
+﻿  apply ppp_headers
+  apply ppp_headers
+  apply ppp_headers
+  apply ppp_headers
+  apply make_rule
+  cgv_signal.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\bin\cgv_signal_d14.dll
+  cgv_signal.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\cgv_signal\cgv_signal_Debug Dll\cgv_signal_d14.pdb (Full PDB)

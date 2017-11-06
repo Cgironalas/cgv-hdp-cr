@@ -1,0 +1,10 @@
+const char* plot2d_point_glfs ="\
+#version 150 compatibility\n\
+\n\
+uniform vec3 point_color;\n\
+\n\
+void main()\n\
+{\n\
+\tgl_FragColor.rgb = point_color;\n\
+\tgl_FragColor.a = 1.0;\n\
+}";

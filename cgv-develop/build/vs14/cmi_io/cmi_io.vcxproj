@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug Dll|Win32">
+      <Configuration>Debug Dll</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Dll|Win32">
+      <Configuration>Release Dll</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{34A69DE0-FC2F-11DD-87AF-0800200C9A66}</ProjectGuid>
+    <RootNamespace>cmi_io</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="cmi_io.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\cmi_io\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectName)_s14</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\cmi_io\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)_sd14</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\cmi_io\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">$(ProjectName)_14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\cmi_io\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">$(ProjectName)_d14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\jpeg;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/plugins/cmi_io;CGV_FORCE_STATIC;NDEBUG;_WINDOWS;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\jpeg;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/plugins/cmi_io;CGV_FORCE_STATIC;_DEBUG;CGV_FORCE_STATIC;_WINDOWS;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\jpeg;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/plugins/cmi_io;NDEBUG;_WINDOWS;_USRDLL;CGV_MEDIA_IMAGE_IO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>cgv_media_14.lib;cgv_utils_14.lib;cgv_type_14.lib;cgv_data_14.lib;cgv_reflect_14.lib;cgv_base_14.lib;cgv_signal_14.lib;png_14.lib;zlib_14.lib;tiff_14.lib;jpeg_14.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\jpeg;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/plugins/cmi_io;_DEBUG;_WINDOWS;_USRDLL;CGV_MEDIA_IMAGE_IO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>cgv_media_d14.lib;cgv_utils_d14.lib;cgv_type_d14.lib;cgv_data_d14.lib;cgv_reflect_d14.lib;cgv_base_d14.lib;cgv_signal_d14.lib;png_d14.lib;zlib_d14.lib;tiff_d14.lib;jpeg_d14.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmi_io\jpg_reader.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmi_io\png_reader.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmi_io\png_writer.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmi_io\tiff_reader.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmi_io\tiff_writer.cxx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmi_io\jpg_reader.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmi_io\lib_begin.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmi_io\png_reader.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmi_io\png_writer.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmi_io\tiff_reader.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmi_io\tiff_writer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmi_io\cmi_io.pj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">true</ExcludedFromBuild>
+    </make_rule>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cgv_media\cgv_media.vcxproj">
+      <Project>{06437363-3B8B-4005-8744-79F2698666F1}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\cgv_base\cgv_base.vcxproj">
+      <Project>{25D15D19-2543-4A26-B02E-9029EEDA103D}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\cgv_data\cgv_data.vcxproj">
+      <Project>{33EB7BF2-8115-4C56-AA46-F7DDAF82965E}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\cgv_type\cgv_type.vcxproj">
+      <Project>{D5EA7384-9AAF-420A-9AFD-38BB5E341BD0}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\png\png.vcxproj">
+      <Project>{B4ACE650-FC31-11DD-87AF-0800200C9A66}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\tiff\tiff.vcxproj">
+      <Project>{04047BF0-FC32-11DD-87AF-0800200C9A66}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\jpeg\jpeg.vcxproj">
+      <Project>{1CD43810-FC31-11DD-87AF-0800200C9A66}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="cmi_io.targets" />
+  </ImportGroup>
+</Project>

@@ -1,0 +1,11 @@
+﻿  apply make_rule
+  avi_video_writer.cxx
+  avi_video_reader.cxx
+  Generating Code...
+Vfw32.lib(AVICAP32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+Vfw32.lib(AVICAP32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+Vfw32.lib(AVIFIL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+Vfw32.lib(AVIFIL32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+Vfw32.lib(MSVFW32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+Vfw32.lib(MSVFW32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+  cmv_avi.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cmv_avi_sd14.lib

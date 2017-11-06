@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">
+    <LocalDebuggerCommand>D:\Users\CGiron\Documents\Project\cgv-develop\bin\cgv_viewer_d14.exe</LocalDebuggerCommand>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">
+    <LocalDebuggerCommandArguments> plugin:cg_fltk_d14.dll plugin:crg_stereo_view_d14.dll plugin:crg_antialias_d14.dll plugin:crg_depth_of_field_d14.dll plugin:crg_light_d14.dll plugin:cg_ext_d14.dll plugin:cg_icons_d14.dll plugin:cg_meta_d14.dll plugin:cmi_io_d14.dll plugin:cmv_avi_d14.dll plugin:crg_grid_d14.dll plugin:co_web_d14.dll plugin:examples_d14.dll gui:&quot;D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples/examples.gui&quot; config:&quot;D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples/config.def&quot; &quot;type(shader_config):shader_path='D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples;D:\Users\CGiron\Documents\Project\cgv-develop/libs/cgv_gl/glsl'&quot;</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">
+    <LocalDebuggerCommand>D:\Users\CGiron\Documents\Project\cgv-develop\bin\cgv_viewer_14.exe</LocalDebuggerCommand>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">
+    <LocalDebuggerCommandArguments> plugin:cg_fltk_14.dll plugin:crg_stereo_view_14.dll plugin:crg_antialias_14.dll plugin:crg_depth_of_field_14.dll plugin:crg_light_14.dll plugin:cg_ext_14.dll plugin:cg_icons_14.dll plugin:cg_meta_14.dll plugin:cmi_io_14.dll plugin:cmv_avi_14.dll plugin:crg_grid_14.dll plugin:co_web_14.dll plugin:examples_14.dll gui:&quot;D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples/examples.gui&quot; config:&quot;D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples/config.def&quot; &quot;type(shader_config):shader_path='D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples;D:\Users\CGiron\Documents\Project\cgv-develop/libs/cgv_gl/glsl'&quot;</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LocalDebuggerCommandArguments> gui:&quot;D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples/examples.gui&quot; config:&quot;D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples/config.def&quot; &quot;type(shader_config):shader_path='D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples;D:\Users\CGiron\Documents\Project\cgv-develop/libs/cgv_gl/glsl'&quot;</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LocalDebuggerCommandArguments> gui:&quot;D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples/examples.gui&quot; config:&quot;D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples/config.def&quot; &quot;type(shader_config):shader_path='D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples;D:\Users\CGiron\Documents\Project\cgv-develop/libs/cgv_gl/glsl'&quot;</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Exe|Win32'">
+    <LocalDebuggerCommandArguments> gui:&quot;D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples/examples.gui&quot; config:&quot;D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples/config.def&quot; &quot;type(shader_config):shader_path='D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples;D:\Users\CGiron\Documents\Project\cgv-develop/libs/cgv_gl/glsl'&quot;</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Exe|Win32'">
+    <LocalDebuggerCommandArguments> gui:&quot;D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples/examples.gui&quot; config:&quot;D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples/config.def&quot; &quot;type(shader_config):shader_path='D:\Users\CGiron\Documents\Project\cgv-develop/plugins/examples;D:\Users\CGiron\Documents\Project\cgv-develop/libs/cgv_gl/glsl'&quot;</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,10 @@
+﻿  apply make_rule
+  set_reflection_handler.cxx
+  reflect_enum.cxx
+  reflection_traits.cxx
+  reflection_handler.cxx
+  get_reflection_handler.cxx
+  find_reflection_handler.cxx
+  debug_reflection_handler.cxx
+  Generating Code...
+  cgv_reflect.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cgv_reflect_sd14.lib

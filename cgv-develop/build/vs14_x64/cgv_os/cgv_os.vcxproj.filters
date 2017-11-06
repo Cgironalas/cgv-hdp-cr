@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="headers">
+    </Filter>
+    <Filter Include="make">
+    </Filter>
+    <Filter Include="sources">
+    </Filter>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\clipboard.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\common_std_thread.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\display.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\http_request.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\lib_begin.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\mutex.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\mutex_pthread.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\mutex_std_thread.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\priority.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\socket.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\thread.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\thread_pthread.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\thread_std_thread.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\web_server.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\cgv_os.pj">
+       <Filter>make</Filter>
+    </make_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\clipboard.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\display.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\mutex.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\priority.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\pthread_lib.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\socket.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\thread.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\web_server.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

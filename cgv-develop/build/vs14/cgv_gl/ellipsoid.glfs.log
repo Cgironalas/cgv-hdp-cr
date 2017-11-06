@@ -1,0 +1,33 @@
+const char* ellipsoid_glfs ="\
+varying vec3 q_tilde;\n\
+varying vec3 inv_T_square_v;\n\
+varying vec3 inv_T_square_e_c;\n\
+varying vec4 e_clip;\n\
+varying vec4 V_clip;\n\
+varying vec3 h0;\n\
+varying vec3 l0;\n\
+varying vec3 h1;\n\
+varying vec3 l1;\n\
+varying vec4 a;\n\
+\n\
+void main()\n\
+{\n\
+\tfloat q_tilde_squared_length = dot(q_tilde.xy,q_tilde.xy);\n\
+\tif (q_tilde_squared_length > 1.0)\n\
+\t\tdiscard;\n\
+\tfloat lambda = 1.0/(1.0+q_tilde.z*sqrt(1.0-q_tilde_squared_length));\n\
+\tvec3 n = normalize(inv_T_square_e_c + lambda * inv_T_square_v);\n\
+\n\
+\tgl_FragColor = a;\n\
+\tfloat ldotn = dot(n,l0);\n\
+\tif (ldotn > 0.0) {\n\
+\t\tgl_FragColor += \n\
+\t\t\tldotn*gl_FrontLightProduct[0].diffuse+\n\
+\t\t\tpow(max(dot(n,normalize(h0)), 0.0), gl_FrontMaterial.shininess)*\n\
+\t\t   gl_FrontLightProduct[0].specular;\n\
+\t}\n\
+\n\
+\tvec4 p = e_clip+lambda*(V_clip - e_clip);\n\
+\tgl_FragDepth = 0.5*p.z/p.w+0.5;\n\
+\t\n\
+}";

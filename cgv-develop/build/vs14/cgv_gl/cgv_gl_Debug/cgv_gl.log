@@ -1,0 +1,64 @@
+﻿  apply ppp_headers
+  apply make_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  surface_renderer.cxx
+  renderer.cxx
+  point_renderer.cxx
+  normal_renderer.cxx
+  line_renderer.cxx
+  group_renderer.cxx
+  box_wire_renderer.cxx
+  box_renderer.cxx
+  gl_view.cxx
+  gl_transparent_renderer.cxx
+  gl_tools.cxx
+  gl_texture_tools.cxx
+  gl_performance_monitor.cxx
+  gl_mesh_drawable_base.cxx
+  gl_implicit_surface_drawable_base.cxx
+  gl_image_drawable_base.cxx
+  gl_depth_peeler.cxx
+  gl_cursor.cxx
+  gl_context_win32.cxx
+  gl_context_unix.cxx
+  Generating Code...
+  Compiling...
+  gl_context.cxx
+  gl.cxx
+  Generating Code...
+opengl32.lib(OPENGL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+opengl32.lib(OPENGL32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+glu32.lib(GLU32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+glu32.lib(GLU32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+gdi32.lib(GDI32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+gdi32.lib(GDI32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+  cgv_gl.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cgv_gl_sd14.lib

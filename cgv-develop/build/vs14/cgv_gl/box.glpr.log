@@ -1,0 +1,7 @@
+const char* box_glpr ="\
+files:box\n\
+vertex_file:group.glsl\n\
+geometry_file:group.glsl\n\
+geometry_file:side.glsl\n\
+fragment_file:lighting.glsl\n\
+";

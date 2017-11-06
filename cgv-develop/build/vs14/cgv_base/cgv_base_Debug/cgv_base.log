@@ -1,0 +1,14 @@
+﻿  apply make_rule
+  traverser.cxx
+  register.cxx
+  node.cxx
+  named.cxx
+  import.cxx
+  group.cxx
+  console.cxx
+  base_generator.cxx
+  base.cxx
+  attach_slot.cxx
+  action.cxx
+  Generating Code...
+  cgv_base.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cgv_base_sd14.lib

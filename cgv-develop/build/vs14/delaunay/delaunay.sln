@@ -1,0 +1,27 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2018
+
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "delaunay", "delaunay.vcxproj", "{334B280C-CEFC-461E-BB1E-BE50FC399C7E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Dll|Win32 = Debug Dll|Win32
+		Release Dll|Win32 = Release Dll|Win32
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{334B280C-CEFC-461E-BB1E-BE50FC399C7E}.Debug Dll|Win32.ActiveCfg = Debug Dll|Win32
+		{334B280C-CEFC-461E-BB1E-BE50FC399C7E}.Debug Dll|Win32.Build.0 = Debug Dll|Win32
+		{334B280C-CEFC-461E-BB1E-BE50FC399C7E}.Release Dll|Win32.ActiveCfg = Release Dll|Win32
+		{334B280C-CEFC-461E-BB1E-BE50FC399C7E}.Release Dll|Win32.Build.0 = Release Dll|Win32
+		{334B280C-CEFC-461E-BB1E-BE50FC399C7E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{334B280C-CEFC-461E-BB1E-BE50FC399C7E}.Debug|Win32.Build.0 = Debug|Win32
+		{334B280C-CEFC-461E-BB1E-BE50FC399C7E}.Release|Win32.ActiveCfg = Release|Win32
+		{334B280C-CEFC-461E-BB1E-BE50FC399C7E}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,21 @@
+﻿  apply ppp_headers
+  apply ppp_headers
+  apply ppp_headers
+  apply ppp_headers
+  apply ppp_headers
+  apply ppp_headers
+  apply ppp_headers
+  apply ppp_headers
+  apply ppp_headers
+  apply ppp_headers
+  apply make_rule
+  apply make_rule
+  apply make_rule
+  apply make_rule
+  apply make_rule
+  apply make_rule
+  apply make_rule
+  apply make_rule
+  apply make_rule
+  apply make_rule
+  shader_test.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\bin\shader_test.exe

@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="headers">
+    </Filter>
+    <Filter Include="make">
+    </Filter>
+    <Filter Include="sources">
+    </Filter>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\crc32.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\deflate.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\inffast.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\inffixed.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\inflate.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\inftrees.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\trees.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\zconf.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\zlib.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\zutil.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\zlib.pj">
+       <Filter>make</Filter>
+    </make_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\adler32.c">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\compress.c">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\crc32.c">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\deflate.c">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\gzio.c">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\infback.c">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\inffast.c">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\inflate.c">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\inftrees.c">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\trees.c">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\uncompr.c">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib\zutil.c">
+       <Filter>sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

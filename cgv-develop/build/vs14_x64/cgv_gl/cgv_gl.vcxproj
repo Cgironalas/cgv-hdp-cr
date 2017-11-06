@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug Dll|x64">
+      <Configuration>Debug Dll</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Dll|x64">
+      <Configuration>Release Dll</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5EFDDD95-15F8-4A18-B96B-79652EA6553E}</ProjectGuid>
+    <RootNamespace>cgv_gl</RootNamespace>
+    <Keyword>x64Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="cgv_gl.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_gl\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectName)64_s14</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_gl\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName)64_sd14</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_gl\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">$(ProjectName)64_14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_gl\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">$(ProjectName)64_d14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew;D:\Users\CGiron\Documents\Project\cgv-develop\libs;D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_gl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/libs/cgv_gl;CGV_FORCE_STATIC;NDEBUG;_WINDOWS;_LIB;GLEW_STATIC;REGISTER_SHADER_FILES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DebugInformationFormat></DebugInformationFormat>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>user32.lib;opengl32.lib;glu32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew;D:\Users\CGiron\Documents\Project\cgv-develop\libs;D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_gl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/libs/cgv_gl;CGV_FORCE_STATIC;_DEBUG;CGV_FORCE_STATIC;_WINDOWS;_LIB;GLEW_STATIC;REGISTER_SHADER_FILES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>user32.lib;opengl32.lib;glu32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew;D:\Users\CGiron\Documents\Project\cgv-develop\libs;D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_gl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/libs/cgv_gl;NDEBUG;_WINDOWS;_USRDLL;CGV_RENDER_GL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat></DebugInformationFormat>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;user32.lib;gdi32.lib;cgv_utils64_14.lib;cgv_type64_14.lib;cgv_data64_14.lib;cgv_reflect64_14.lib;cgv_base64_14.lib;cgv_signal64_14.lib;cgv_math64_14.lib;cgv_media64_14.lib;cgv_render64_14.lib;ppp_lib64_14.lib;cgv_reflect_types64_14.lib;cgv_gui64_14.lib;glew64_14.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew;D:\Users\CGiron\Documents\Project\cgv-develop\libs;D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_gl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/libs/cgv_gl;_DEBUG;_WINDOWS;_USRDLL;CGV_RENDER_GL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;user32.lib;gdi32.lib;cgv_utils64_d14.lib;cgv_type64_d14.lib;cgv_data64_d14.lib;cgv_reflect64_d14.lib;cgv_base64_d14.lib;cgv_signal64_d14.lib;cgv_math64_d14.lib;cgv_media64_d14.lib;cgv_render64_d14.lib;ppp_lib64_d14.lib;cgv_reflect_types64_d14.lib;cgv_gui64_d14.lib;glew64_d14.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_context.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_context_unix.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_context_win32.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_cursor.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_depth_peeler.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_image_drawable_base.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_implicit_surface_drawable_base.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_mesh_drawable_base.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_performance_monitor.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_texture_tools.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_tools.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_transparent_renderer.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_view.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\box_renderer.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\box_wire_renderer.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\group_renderer.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\line_renderer.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\normal_renderer.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\point_renderer.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\renderer.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\surface_renderer.cxx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_context.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_context_switch.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_cursor.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_depth_peeler.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_image_drawable_base.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_implicit_surface_drawable_base.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_mesh_drawable_base.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_performance_monitor.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_tools.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_transparent_renderer.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_view.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\lib_begin.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\wgl.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\box_renderer.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\box_wire_renderer.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\group_renderer.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\line_renderer.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\normal_renderer.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\point_renderer.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\renderer.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\surface_renderer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\cgv_gl.pj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">true</ExcludedFromBuild>
+
+    </make_rule>
+  </ItemGroup>
+  <ItemGroup>
+    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_context_switch.ph" />
+  </ItemGroup>
+  <ItemGroup>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box.glfs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box.glgs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box.glpr" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box.glvs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box_wire.glfs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box_wire.glgs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box_wire.glpr" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box_wire.glvs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\bump_map.glfs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\ellipsoid.glfs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\ellipsoid.glvs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\group.glsl" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\lighting.glsl" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\normal.glfs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\normal.glgs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\normal.glpr" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\normal.glvs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\point.glfs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\point.glgs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\point.glpr" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\point.glvs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\side.glsl" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\sphere.glfs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\sphere.glpr" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\sphere.glvs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\sphere.pglfs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\sphere.pglvs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\textured_material.glfs" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\textured_material.glpr" />
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\textured_material.glvs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cgv_utils\cgv_utils.vcxproj">
+      <Project>{7F328ACD-12F1-44F6-8B32-8A16BCD44574}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\cgv_type\cgv_type.vcxproj">
+      <Project>{D5EA7384-9AAF-420A-9AFD-38BB5E341BD0}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\cgv_data\cgv_data.vcxproj">
+      <Project>{33EB7BF2-8115-4C56-AA46-F7DDAF82965E}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\cgv_base\cgv_base.vcxproj">
+      <Project>{25D15D19-2543-4A26-B02E-9029EEDA103D}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\cgv_signal\cgv_signal.vcxproj">
+      <Project>{AD3F46B7-ADFC-4204-872B-AFC04ADE28EC}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\cgv_math\cgv_math.vcxproj">
+      <Project>{8FACC951-6CBE-4911-A3A2-CDED3D7F6B5D}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\cgv_media\cgv_media.vcxproj">
+      <Project>{06437363-3B8B-4005-8744-79F2698666F1}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\cgv_render\cgv_render.vcxproj">
+      <Project>{69D7B3B7-66E4-4D0D-A874-0F6AADC721CD}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\cgv_reflect_types\cgv_reflect_types.vcxproj">
+      <Project>{298E3418-DEA7-4B02-A993-FB942B9095D8}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\glew\glew.vcxproj">
+      <Project>{DAE9F54B-3777-4FB7-9231-73451E00E197}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\shader_test\shader_test.vcxproj">
+      <Project>{D120F524-7A7E-4B3F-8D71-08FF29349578}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="cgv_gl.targets" />
+  </ImportGroup>
+</Project>

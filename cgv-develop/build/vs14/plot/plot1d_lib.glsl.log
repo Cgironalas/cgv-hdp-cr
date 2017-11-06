@@ -1,0 +1,29 @@
+const char* plot1d_lib_glsl ="\
+#version 150 compatibility\n\
+\n\
+uniform float plot_scale;\n\
+uniform vec3 x_axis;\n\
+uniform vec3 y_axis;\n\
+uniform bool x_axis_log_scale;\n\
+uniform bool y_axis_log_scale;\n\
+uniform vec2 extent;\n\
+uniform vec2 domain_min_pnt;\n\
+uniform vec2 domain_max_pnt;\n\
+uniform vec3 center_location;\n\
+\n\
+vec4 map_plot_to_world(in vec2 pnt)\n\
+{\n\
+\tvec2 delta = extent*(pnt - 0.5*(domain_min_pnt + domain_max_pnt) )/(domain_max_pnt - domain_min_pnt);\n\
+\tvec3 p     = center_location + delta.x * x_axis + delta.y * y_axis;\n\
+\treturn vec4(p,1.0);\n\
+}\n\
+\n\
+vec4 map_plot_to_eye(in vec2 pnt)\n\
+{\n\
+\treturn gl_ModelViewMatrix * map_plot_to_world(pnt);\n\
+}\n\
+\n\
+vec4 map_plot_to_screen(in vec2 pnt)\n\
+{\n\
+\treturn gl_ModelViewProjectionMatrix * map_plot_to_world(pnt);\n\
+}";

@@ -1,0 +1,18 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2018
+
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "res_prep", "res_prep.vcxproj", "{F514B4C6-C19A-4137-8C8E-CE0B6D956B39}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F514B4C6-C19A-4137-8C8E-CE0B6D956B39}.Release|x64.ActiveCfg = Release|x64
+		{F514B4C6-C19A-4137-8C8E-CE0B6D956B39}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

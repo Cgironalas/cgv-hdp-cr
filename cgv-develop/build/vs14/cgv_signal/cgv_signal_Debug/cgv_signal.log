@@ -1,0 +1,3 @@
+﻿  apply make_rule
+  abst_signal.cxx
+  cgv_signal.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cgv_signal_sd14.lib

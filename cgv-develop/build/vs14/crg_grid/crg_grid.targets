@@ -1,0 +1,523 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <AvailableItemName
+      Include="resources_rule">
+      <Targets>_resources_rule</Targets>
+    </AvailableItemName>
+    <AvailableItemName
+      Include="text_rule">
+      <Targets>_text_rule</Targets>
+    </AvailableItemName>
+    <AvailableItemName
+      Include="ppp_headers">
+      <Targets>_ppp_headers</Targets>
+    </AvailableItemName>
+    <AvailableItemName
+      Include="make_rule">
+      <Targets>_make_rule</Targets>
+    </AvailableItemName>
+    <AvailableItemName
+      Include="doxygen_rule">
+      <Targets>_doxygen_rule</Targets>
+    </AvailableItemName>
+    <AvailableItemName
+      Include="latex_rule">
+      <Targets>_latex_rule</Targets>
+    </AvailableItemName>
+    <AvailableItemName
+      Include="shader_rule">
+      <Targets>_shader_rule</Targets>
+    </AvailableItemName>
+  </ItemGroup>
+  <UsingTask
+    TaskName="resources_rule"
+    TaskFactory="XamlTaskFactory"
+    AssemblyName="Microsoft.Build.Tasks.v4.0">
+    <Task>$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml</Task>
+  </UsingTask>
+  <UsingTask
+    TaskName="text_rule"
+    TaskFactory="XamlTaskFactory"
+    AssemblyName="Microsoft.Build.Tasks.v4.0">
+    <Task>$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml</Task>
+  </UsingTask>
+  <UsingTask
+    TaskName="ppp_headers"
+    TaskFactory="XamlTaskFactory"
+    AssemblyName="Microsoft.Build.Tasks.v4.0">
+    <Task>$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml</Task>
+  </UsingTask>
+  <UsingTask
+    TaskName="make_rule"
+    TaskFactory="XamlTaskFactory"
+    AssemblyName="Microsoft.Build.Tasks.v4.0">
+    <Task>$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml</Task>
+  </UsingTask>
+  <UsingTask
+    TaskName="doxygen_rule"
+    TaskFactory="XamlTaskFactory"
+    AssemblyName="Microsoft.Build.Tasks.v4.0">
+    <Task>$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml</Task>
+  </UsingTask>
+  <UsingTask
+    TaskName="latex_rule"
+    TaskFactory="XamlTaskFactory"
+    AssemblyName="Microsoft.Build.Tasks.v4.0">
+    <Task>$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml</Task>
+  </UsingTask>
+  <UsingTask
+    TaskName="shader_rule"
+    TaskFactory="XamlTaskFactory"
+    AssemblyName="Microsoft.Build.Tasks.v4.0">
+    <Task>$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml</Task>
+  </UsingTask>
+  <Target
+    Name="_resources_rule"
+    BeforeTargets="$(resources_ruleBeforeTargets)"
+    AfterTargets="$(resources_ruleAfterTargets)"
+    Condition="'@(resources_rule)' != ''"
+    DependsOnTargets="$(resources_ruleDependsOn);Computeresources_ruleOutput"
+    Outputs="%(resources_rule.Outputs)"
+    Inputs="%(resources_rule.Identity);%(resources_rule.AdditionalDependencies);$(MSBuildProjectFile)">
+    <ItemGroup
+      Condition="'@(SelectedFiles)' != ''">
+      <resources_rule
+        Remove="@(resources_rule)"
+        Condition="'%(Identity)' != '@(SelectedFiles)'" />
+    </ItemGroup>
+    <ItemGroup>
+      <resources_rule_tlog
+        Include="%(resources_rule.Outputs)"
+        Condition="'%(resources_rule.Outputs)' != '' and '%(resources_rule.ExcludedFromBuild)' != 'true'">
+        <Source>@(resources_rule, '|')</Source>
+      </resources_rule_tlog>
+    </ItemGroup>
+    <Message
+      Importance="High"
+      Text="%(resources_rule.ExecutionDescription)" />
+    <WriteLinesToFile
+      Condition="'@(resources_rule_tlog)' != '' and '%(resources_rule_tlog.ExcludedFromBuild)' != 'true'"
+      File="$(IntDir)$(ProjectName).write.1.tlog"
+      Lines="^%(resources_rule_tlog.Source);@(resources_rule_tlog-&gt;'%(Fullpath)')" />
+    <resources_rule
+      Condition="'@(resources_rule)' != '' and '%(resources_rule.ExcludedFromBuild)' != 'true'"
+      CommandLineTemplate="%(resources_rule.CommandLineTemplate)"
+      AdditionalOptions="%(resources_rule.AdditionalOptions)"
+      Inputs="%(resources_rule.Identity)" />
+  </Target>
+  <PropertyGroup>
+    <ComputeLinkInputsTargets>
+            $(ComputeLinkInputsTargets);
+            Computeresources_ruleOutput;
+          </ComputeLinkInputsTargets>
+    <ComputeLibInputsTargets>
+            $(ComputeLibInputsTargets);
+            Computeresources_ruleOutput;
+          </ComputeLibInputsTargets>
+  </PropertyGroup>
+  <Target
+    Name="Computeresources_ruleOutput"
+    Condition="'@(resources_rule)' != ''">
+    <ItemGroup>
+      <resources_ruleDirsToMake
+        Condition="'@(resources_rule)' != '' and '%(resources_rule.ExcludedFromBuild)' != 'true'"
+        Include="%(resources_rule.Outputs)" />
+      <Link
+        Include="%(resources_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <Lib
+        Include="%(resources_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <ImpLib
+        Include="%(resources_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+    </ItemGroup>
+    <MakeDir
+      Directories="@(resources_ruleDirsToMake-&gt;'%(RootDir)%(Directory)')" />
+  </Target>
+  <Target
+    Name="_text_rule"
+    BeforeTargets="$(text_ruleBeforeTargets)"
+    AfterTargets="$(text_ruleAfterTargets)"
+    Condition="'@(text_rule)' != ''"
+    DependsOnTargets="$(text_ruleDependsOn);Computetext_ruleOutput"
+    Outputs="%(text_rule.Outputs)"
+    Inputs="%(text_rule.Identity);%(text_rule.AdditionalDependencies);$(MSBuildProjectFile)">
+    <ItemGroup
+      Condition="'@(SelectedFiles)' != ''">
+      <text_rule
+        Remove="@(text_rule)"
+        Condition="'%(Identity)' != '@(SelectedFiles)'" />
+    </ItemGroup>
+    <ItemGroup>
+      <text_rule_tlog
+        Include="%(text_rule.Outputs)"
+        Condition="'%(text_rule.Outputs)' != '' and '%(text_rule.ExcludedFromBuild)' != 'true'">
+        <Source>@(text_rule, '|')</Source>
+      </text_rule_tlog>
+    </ItemGroup>
+    <Message
+      Importance="High"
+      Text="%(text_rule.ExecutionDescription)" />
+    <WriteLinesToFile
+      Condition="'@(text_rule_tlog)' != '' and '%(text_rule_tlog.ExcludedFromBuild)' != 'true'"
+      File="$(IntDir)$(ProjectName).write.1.tlog"
+      Lines="^%(text_rule_tlog.Source);@(text_rule_tlog-&gt;'%(Fullpath)')" />
+    <text_rule
+      Condition="'@(text_rule)' != '' and '%(text_rule.ExcludedFromBuild)' != 'true'"
+      CommandLineTemplate="%(text_rule.CommandLineTemplate)"
+      AdditionalOptions="%(text_rule.AdditionalOptions)"
+      Inputs="%(text_rule.Identity)" />
+  </Target>
+  <PropertyGroup>
+    <ComputeLinkInputsTargets>
+            $(ComputeLinkInputsTargets);
+            Computetext_ruleOutput;
+          </ComputeLinkInputsTargets>
+    <ComputeLibInputsTargets>
+            $(ComputeLibInputsTargets);
+            Computetext_ruleOutput;
+          </ComputeLibInputsTargets>
+  </PropertyGroup>
+  <Target
+    Name="Computetext_ruleOutput"
+    Condition="'@(text_rule)' != ''">
+    <ItemGroup>
+      <text_ruleDirsToMake
+        Condition="'@(text_rule)' != '' and '%(text_rule.ExcludedFromBuild)' != 'true'"
+        Include="%(text_rule.Outputs)" />
+      <Link
+        Include="%(text_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <Lib
+        Include="%(text_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <ImpLib
+        Include="%(text_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+    </ItemGroup>
+    <MakeDir
+      Directories="@(text_ruleDirsToMake-&gt;'%(RootDir)%(Directory)')" />
+  </Target>
+  <Target
+    Name="_ppp_headers"
+    BeforeTargets="$(ppp_headersBeforeTargets)"
+    AfterTargets="$(ppp_headersAfterTargets)"
+    Condition="'@(ppp_headers)' != ''"
+    DependsOnTargets="$(ppp_headersDependsOn);Computeppp_headersOutput"
+    Outputs="%(ppp_headers.Outputs)"
+    Inputs="%(ppp_headers.Identity);%(ppp_headers.AdditionalDependencies);$(MSBuildProjectFile)">
+    <ItemGroup
+      Condition="'@(SelectedFiles)' != ''">
+      <ppp_headers
+        Remove="@(ppp_headers)"
+        Condition="'%(Identity)' != '@(SelectedFiles)'" />
+    </ItemGroup>
+    <ItemGroup>
+      <ppp_headers_tlog
+        Include="%(ppp_headers.Outputs)"
+        Condition="'%(ppp_headers.Outputs)' != '' and '%(ppp_headers.ExcludedFromBuild)' != 'true'">
+        <Source>@(ppp_headers, '|')</Source>
+      </ppp_headers_tlog>
+    </ItemGroup>
+    <Message
+      Importance="High"
+      Text="%(ppp_headers.ExecutionDescription)" />
+    <WriteLinesToFile
+      Condition="'@(ppp_headers_tlog)' != '' and '%(ppp_headers_tlog.ExcludedFromBuild)' != 'true'"
+      File="$(IntDir)$(ProjectName).write.1.tlog"
+      Lines="^%(ppp_headers_tlog.Source);@(ppp_headers_tlog-&gt;'%(Fullpath)')" />
+    <ppp_headers
+      Condition="'@(ppp_headers)' != '' and '%(ppp_headers.ExcludedFromBuild)' != 'true'"
+      CommandLineTemplate="%(ppp_headers.CommandLineTemplate)"
+      AdditionalOptions="%(ppp_headers.AdditionalOptions)"
+      Inputs="%(ppp_headers.Identity)" />
+  </Target>
+  <PropertyGroup>
+    <ComputeLinkInputsTargets>
+            $(ComputeLinkInputsTargets);
+            Computeppp_headersOutput;
+          </ComputeLinkInputsTargets>
+    <ComputeLibInputsTargets>
+            $(ComputeLibInputsTargets);
+            Computeppp_headersOutput;
+          </ComputeLibInputsTargets>
+  </PropertyGroup>
+  <Target
+    Name="Computeppp_headersOutput"
+    Condition="'@(ppp_headers)' != ''">
+    <ItemGroup>
+      <ppp_headersDirsToMake
+        Condition="'@(ppp_headers)' != '' and '%(ppp_headers.ExcludedFromBuild)' != 'true'"
+        Include="%(ppp_headers.Outputs)" />
+      <Link
+        Include="%(ppp_headersDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <Lib
+        Include="%(ppp_headersDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <ImpLib
+        Include="%(ppp_headersDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+    </ItemGroup>
+    <MakeDir
+      Directories="@(ppp_headersDirsToMake-&gt;'%(RootDir)%(Directory)')" />
+  </Target>
+  <Target
+    Name="_make_rule"
+    BeforeTargets="$(make_ruleBeforeTargets)"
+    AfterTargets="$(make_ruleAfterTargets)"
+    Condition="'@(make_rule)' != ''"
+    DependsOnTargets="$(make_ruleDependsOn);Computemake_ruleOutput"
+    Outputs="%(make_rule.Outputs)"
+    Inputs="%(make_rule.Identity);%(make_rule.AdditionalDependencies);$(MSBuildProjectFile)">
+    <ItemGroup
+      Condition="'@(SelectedFiles)' != ''">
+      <make_rule
+        Remove="@(make_rule)"
+        Condition="'%(Identity)' != '@(SelectedFiles)'" />
+    </ItemGroup>
+    <ItemGroup>
+      <make_rule_tlog
+        Include="%(make_rule.Outputs)"
+        Condition="'%(make_rule.Outputs)' != '' and '%(make_rule.ExcludedFromBuild)' != 'true'">
+        <Source>@(make_rule, '|')</Source>
+      </make_rule_tlog>
+    </ItemGroup>
+    <Message
+      Importance="High"
+      Text="%(make_rule.ExecutionDescription)" />
+    <WriteLinesToFile
+      Condition="'@(make_rule_tlog)' != '' and '%(make_rule_tlog.ExcludedFromBuild)' != 'true'"
+      File="$(IntDir)$(ProjectName).write.1.tlog"
+      Lines="^%(make_rule_tlog.Source);@(make_rule_tlog-&gt;'%(Fullpath)')" />
+    <make_rule
+      Condition="'@(make_rule)' != '' and '%(make_rule.ExcludedFromBuild)' != 'true'"
+      CommandLineTemplate="%(make_rule.CommandLineTemplate)"
+      AdditionalOptions="%(make_rule.AdditionalOptions)"
+      Inputs="%(make_rule.Identity)" />
+  </Target>
+  <PropertyGroup>
+    <ComputeLinkInputsTargets>
+            $(ComputeLinkInputsTargets);
+            Computemake_ruleOutput;
+          </ComputeLinkInputsTargets>
+    <ComputeLibInputsTargets>
+            $(ComputeLibInputsTargets);
+            Computemake_ruleOutput;
+          </ComputeLibInputsTargets>
+  </PropertyGroup>
+  <Target
+    Name="Computemake_ruleOutput"
+    Condition="'@(make_rule)' != ''">
+    <ItemGroup>
+      <make_ruleDirsToMake
+        Condition="'@(make_rule)' != '' and '%(make_rule.ExcludedFromBuild)' != 'true'"
+        Include="%(make_rule.Outputs)" />
+      <Link
+        Include="%(make_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <Lib
+        Include="%(make_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <ImpLib
+        Include="%(make_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+    </ItemGroup>
+    <MakeDir
+      Directories="@(make_ruleDirsToMake-&gt;'%(RootDir)%(Directory)')" />
+  </Target>
+  <Target
+    Name="_doxygen_rule"
+    BeforeTargets="$(doxygen_ruleBeforeTargets)"
+    AfterTargets="$(doxygen_ruleAfterTargets)"
+    Condition="'@(doxygen_rule)' != ''"
+    DependsOnTargets="$(doxygen_ruleDependsOn);Computedoxygen_ruleOutput"
+    Outputs="%(doxygen_rule.Outputs)"
+    Inputs="%(doxygen_rule.Identity);%(doxygen_rule.AdditionalDependencies);$(MSBuildProjectFile)">
+    <ItemGroup
+      Condition="'@(SelectedFiles)' != ''">
+      <doxygen_rule
+        Remove="@(doxygen_rule)"
+        Condition="'%(Identity)' != '@(SelectedFiles)'" />
+    </ItemGroup>
+    <ItemGroup>
+      <doxygen_rule_tlog
+        Include="%(doxygen_rule.Outputs)"
+        Condition="'%(doxygen_rule.Outputs)' != '' and '%(doxygen_rule.ExcludedFromBuild)' != 'true'">
+        <Source>@(doxygen_rule, '|')</Source>
+      </doxygen_rule_tlog>
+    </ItemGroup>
+    <Message
+      Importance="High"
+      Text="%(doxygen_rule.ExecutionDescription)" />
+    <WriteLinesToFile
+      Condition="'@(doxygen_rule_tlog)' != '' and '%(doxygen_rule_tlog.ExcludedFromBuild)' != 'true'"
+      File="$(IntDir)$(ProjectName).write.1.tlog"
+      Lines="^%(doxygen_rule_tlog.Source);@(doxygen_rule_tlog-&gt;'%(Fullpath)')" />
+    <doxygen_rule
+      Condition="'@(doxygen_rule)' != '' and '%(doxygen_rule.ExcludedFromBuild)' != 'true'"
+      CommandLineTemplate="%(doxygen_rule.CommandLineTemplate)"
+      AdditionalOptions="%(doxygen_rule.AdditionalOptions)"
+      Inputs="%(doxygen_rule.Identity)" />
+  </Target>
+  <PropertyGroup>
+    <ComputeLinkInputsTargets>
+            $(ComputeLinkInputsTargets);
+            Computedoxygen_ruleOutput;
+          </ComputeLinkInputsTargets>
+    <ComputeLibInputsTargets>
+            $(ComputeLibInputsTargets);
+            Computedoxygen_ruleOutput;
+          </ComputeLibInputsTargets>
+  </PropertyGroup>
+  <Target
+    Name="Computedoxygen_ruleOutput"
+    Condition="'@(doxygen_rule)' != ''">
+    <ItemGroup>
+      <doxygen_ruleDirsToMake
+        Condition="'@(doxygen_rule)' != '' and '%(doxygen_rule.ExcludedFromBuild)' != 'true'"
+        Include="%(doxygen_rule.Outputs)" />
+      <Link
+        Include="%(doxygen_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <Lib
+        Include="%(doxygen_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <ImpLib
+        Include="%(doxygen_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+    </ItemGroup>
+    <MakeDir
+      Directories="@(doxygen_ruleDirsToMake-&gt;'%(RootDir)%(Directory)')" />
+  </Target>
+  <Target
+    Name="_latex_rule"
+    BeforeTargets="$(latex_ruleBeforeTargets)"
+    AfterTargets="$(latex_ruleAfterTargets)"
+    Condition="'@(latex_rule)' != ''"
+    DependsOnTargets="$(latex_ruleDependsOn);Computelatex_ruleOutput"
+    Outputs="%(latex_rule.Outputs)"
+    Inputs="%(latex_rule.Identity);%(latex_rule.AdditionalDependencies);$(MSBuildProjectFile)">
+    <ItemGroup
+      Condition="'@(SelectedFiles)' != ''">
+      <latex_rule
+        Remove="@(latex_rule)"
+        Condition="'%(Identity)' != '@(SelectedFiles)'" />
+    </ItemGroup>
+    <ItemGroup>
+      <latex_rule_tlog
+        Include="%(latex_rule.Outputs)"
+        Condition="'%(latex_rule.Outputs)' != '' and '%(latex_rule.ExcludedFromBuild)' != 'true'">
+        <Source>@(latex_rule, '|')</Source>
+      </latex_rule_tlog>
+    </ItemGroup>
+    <Message
+      Importance="High"
+      Text="%(latex_rule.ExecutionDescription)" />
+    <WriteLinesToFile
+      Condition="'@(latex_rule_tlog)' != '' and '%(latex_rule_tlog.ExcludedFromBuild)' != 'true'"
+      File="$(IntDir)$(ProjectName).write.1.tlog"
+      Lines="^%(latex_rule_tlog.Source);@(latex_rule_tlog-&gt;'%(Fullpath)')" />
+    <latex_rule
+      Condition="'@(latex_rule)' != '' and '%(latex_rule.ExcludedFromBuild)' != 'true'"
+      CommandLineTemplate="%(latex_rule.CommandLineTemplate)"
+      AdditionalOptions="%(latex_rule.AdditionalOptions)"
+      Inputs="%(latex_rule.Identity)" />
+  </Target>
+  <PropertyGroup>
+    <ComputeLinkInputsTargets>
+            $(ComputeLinkInputsTargets);
+            Computelatex_ruleOutput;
+          </ComputeLinkInputsTargets>
+    <ComputeLibInputsTargets>
+            $(ComputeLibInputsTargets);
+            Computelatex_ruleOutput;
+          </ComputeLibInputsTargets>
+  </PropertyGroup>
+  <Target
+    Name="Computelatex_ruleOutput"
+    Condition="'@(latex_rule)' != ''">
+    <ItemGroup>
+      <latex_ruleDirsToMake
+        Condition="'@(latex_rule)' != '' and '%(latex_rule.ExcludedFromBuild)' != 'true'"
+        Include="%(latex_rule.Outputs)" />
+      <Link
+        Include="%(latex_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <Lib
+        Include="%(latex_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <ImpLib
+        Include="%(latex_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+    </ItemGroup>
+    <MakeDir
+      Directories="@(latex_ruleDirsToMake-&gt;'%(RootDir)%(Directory)')" />
+  </Target>
+  <Target
+    Name="_shader_rule"
+    BeforeTargets="$(shader_ruleBeforeTargets)"
+    AfterTargets="$(shader_ruleAfterTargets)"
+    Condition="'@(shader_rule)' != ''"
+    DependsOnTargets="$(shader_ruleDependsOn);Computeshader_ruleOutput"
+    Outputs="%(shader_rule.Outputs)"
+    Inputs="%(shader_rule.Identity);%(shader_rule.AdditionalDependencies);$(MSBuildProjectFile)">
+    <ItemGroup
+      Condition="'@(SelectedFiles)' != ''">
+      <shader_rule
+        Remove="@(shader_rule)"
+        Condition="'%(Identity)' != '@(SelectedFiles)'" />
+    </ItemGroup>
+    <ItemGroup>
+      <shader_rule_tlog
+        Include="%(shader_rule.Outputs)"
+        Condition="'%(shader_rule.Outputs)' != '' and '%(shader_rule.ExcludedFromBuild)' != 'true'">
+        <Source>@(shader_rule, '|')</Source>
+      </shader_rule_tlog>
+    </ItemGroup>
+    <Message
+      Importance="High"
+      Text="%(shader_rule.ExecutionDescription)" />
+    <WriteLinesToFile
+      Condition="'@(shader_rule_tlog)' != '' and '%(shader_rule_tlog.ExcludedFromBuild)' != 'true'"
+      File="$(IntDir)$(ProjectName).write.1.tlog"
+      Lines="^%(shader_rule_tlog.Source);@(shader_rule_tlog-&gt;'%(Fullpath)')" />
+    <shader_rule
+      Condition="'@(shader_rule)' != '' and '%(shader_rule.ExcludedFromBuild)' != 'true'"
+      CommandLineTemplate="%(shader_rule.CommandLineTemplate)"
+      AdditionalOptions="%(shader_rule.AdditionalOptions)"
+      Inputs="%(shader_rule.Identity)" />
+  </Target>
+  <PropertyGroup>
+    <ComputeLinkInputsTargets>
+            $(ComputeLinkInputsTargets);
+            Computeshader_ruleOutput;
+          </ComputeLinkInputsTargets>
+    <ComputeLibInputsTargets>
+            $(ComputeLibInputsTargets);
+            Computeshader_ruleOutput;
+          </ComputeLibInputsTargets>
+  </PropertyGroup>
+  <Target
+    Name="Computeshader_ruleOutput"
+    Condition="'@(shader_rule)' != ''">
+    <ItemGroup>
+      <shader_ruleDirsToMake
+        Condition="'@(shader_rule)' != '' and '%(shader_rule.ExcludedFromBuild)' != 'true'"
+        Include="%(shader_rule.Outputs)" />
+      <Link
+        Include="%(shader_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <Lib
+        Include="%(shader_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <ImpLib
+        Include="%(shader_ruleDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+    </ItemGroup>
+    <MakeDir
+      Directories="@(shader_ruleDirsToMake-&gt;'%(RootDir)%(Directory)')" />
+  </Target>
+</Project>

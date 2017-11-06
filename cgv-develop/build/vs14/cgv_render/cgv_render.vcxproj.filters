@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="headers">
+    </Filter>
+    <Filter Include="make">
+    </Filter>
+    <Filter Include="sources">
+    </Filter>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\attribute_array_binding.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\context.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\drawable.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\element_traits.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\frame_buffer.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\lib_begin.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\performance_monitor.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\render_buffer.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\shader_code.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\shader_program.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\texture.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\textured_material.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\vertex_buffer.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\view.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\cgv_render.pj">
+       <Filter>make</Filter>
+    </make_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\attribute_array_binding.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\context.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\drawable.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\frame_buffer.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\performance_monitor.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\render_buffer.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\shader_code.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\shader_program.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\texture.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\textured_material.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\vertex_buffer.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\view.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

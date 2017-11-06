@@ -1,0 +1,9 @@
+﻿  apply make_rule
+  depth_of_field.cxx
+opengl32.lib(OPENGL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+opengl32.lib(OPENGL32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+glu32.lib(GLU32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+glu32.lib(GLU32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+gdi32.lib(GDI32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+gdi32.lib(GDI32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+  crg_depth_of_field.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\crg_depth_of_field_sd14.lib

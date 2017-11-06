@@ -1,0 +1,10 @@
+const char* plot1d_empty_glvs ="\
+#version 150 compatibility\n\
+\n\
+out vec4 colors;\n\
+\n\
+void main()\n\
+{\n\
+\t\tgl_Position = gl_Vertex;\n\
+\tcolors = gl_Color;\n\
+}";

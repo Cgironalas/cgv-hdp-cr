@@ -1,0 +1,9 @@
+﻿  apply make_rule
+  variables.cxx
+  ppp_variant.cxx
+  ph_processor.cxx
+  operators.cxx
+  expression_processor.cxx
+  command_token.cxx
+  Generating Code...
+  ppp_lib.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\ppp_lib_sd14.lib

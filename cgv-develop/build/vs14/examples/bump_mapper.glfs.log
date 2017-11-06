@@ -1,0 +1,33 @@
+const char* bump_mapper_glfs ="\
+#version 150 compatibility\n\
+\n\
+uniform sampler2D bump_map;\n\
+uniform bool use_phong;\n\
+uniform bool use_bump_map;\n\
+uniform bool use_diffuse_map;\n\
+\n\
+in vec3 N;\n\
+in vec3 s;\n\
+in vec2 tc;\n\
+\n\
+vec3 bump_map_normal(vec3 s, vec2 tc, vec3 N);\n\
+\n\
+vec4 doLighting(vec3 position, vec3 normal, vec4 diffuseMaterial);\n\
+\n\
+vec4 doPhongLighting(vec3 position, vec3 normal, vec4 diffuseMaterial);\n\
+\n\
+void main()\n\
+{\n\
+\t\tvec3 n;\n\
+\tvec4 diff = gl_FrontMaterial.diffuse;\n\
+\tif (use_diffuse_map)\n\
+\t\tdiff *= texture2D(bump_map,tc);\n\
+\tif (use_bump_map)\n\
+\t\tn = bump_map_normal(s,tc,N);\n\
+\telse\n\
+\t\tn = normalize(N);\n\
+\tif (use_phong)\n\
+\t\tgl_FragColor = doPhongLighting(s, normalize(n),diff);\n\
+\telse\n\
+\t\tgl_FragColor = doLighting(s, normalize(n),diff);\n\
+}";

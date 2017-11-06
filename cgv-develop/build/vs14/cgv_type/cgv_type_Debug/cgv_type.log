@@ -1,0 +1,6 @@
+﻿  apply make_rule
+  variant.cxx
+  type_name.cxx
+  type_id.cxx
+  Generating Code...
+  cgv_type.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cgv_type_sd14.lib

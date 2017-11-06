@@ -1,0 +1,4 @@
+﻿  apply ppp_headers
+  apply make_rule
+  cgv_utils.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\bin\cgv_utils_d14.dll
+  cgv_utils.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\cgv_utils\cgv_utils_Debug Dll\cgv_utils_d14.pdb (Full PDB)

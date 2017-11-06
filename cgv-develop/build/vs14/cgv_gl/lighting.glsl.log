@@ -1,0 +1,273 @@
+const char* lighting_glsl ="\
+#version 150 compatibility\n\
+\n\
+uniform bool local_viewer;\n\
+uniform int lights_enabled[gl_MaxLights]; \n\
+\n\
+void computeDirectionalLight(in gl_LightSourceParameters lightSource,\n\
+\t    \t\t\t\t\t in gl_LightProducts lightProduct,\n\
+     \t\t\t\t\t\t in vec3 normal,\n\
+     \t\t\t\t\t\t inout vec4 ambient,\n\
+     \t\t\t\t\t\t inout vec4 diffuse,\n\
+     \t\t\t\t\t\t inout vec4 specular) \n\
+{\n\
+\tfloat diffuseFactor = max(dot(normal, normalize(vec3(lightSource.position))), 0.0);\n\
+\tfloat specularFactor = 0.0;\n\
+\n\
+\tif (diffuseFactor > 0.0)\n\
+\t{\n\
+\t\tspecularFactor = max(dot(normal, vec3(lightSource.halfVector)), 0.0);\n\
+\t\tspecularFactor = pow(specularFactor, gl_FrontMaterial.shininess);\n\
+\t}\n\
+\n\
+\tambient += lightProduct.ambient;\n\
+\tdiffuse += lightSource.diffuse * diffuseFactor;\n\
+\tspecular += lightProduct.specular * specularFactor;\n\
+}\n\
+\n\
+\n\
+void computeDirectionalLightPhong(in gl_LightSourceParameters lightSource,\n\
+\t    \t\t\t\t\t in gl_LightProducts lightProduct,\n\
+     \t\t\t\t\t\t in vec3 viewVector,\n\
+\t\t\t\t\t\t\t in vec3 normal,\n\
+\t\t\t\t\t\t\t inout vec4 ambient,\n\
+     \t\t\t\t\t\t inout vec4 diffuse,\n\
+     \t\t\t\t\t\t inout vec4 specular)\n\
+{\n\
+\tvec3 lightVector = normalize(vec3(lightSource.position));\n\
+\tfloat diffuseFactor = max(dot(normal, lightVector), 0.0);\n\
+\tfloat specularFactor = 0.0;\n\
+\n\
+\tif (diffuseFactor > 0.0)\n\
+\t{\n\
+\t\tvec3 reflectVector = 2.0*dot(normal,lightVector)*normal - lightVector;\n\
+\t\tspecularFactor = max(dot(reflectVector, viewVector), 0.0);\n\
+\t\tspecularFactor = pow(specularFactor, gl_FrontMaterial.shininess);\n\
+\t}\n\
+\n\
+\tambient += lightProduct.ambient;\n\
+\tdiffuse += lightSource.diffuse * diffuseFactor;\n\
+\tspecular += lightProduct.specular * specularFactor;\n\
+}\n\
+\n\
+\n\
+void computePointLight(in gl_LightSourceParameters lightSource,\n\
+   \t\t\t\t\t   in gl_LightProducts lightProduct,\n\
+   \t\t\t\t\t   in vec3 viewVector,\n\
+   \t\t\t\t\t   in vec3 position,\n\
+   \t\t\t\t\t   in vec3 normal,\n\
+   \t\t\t\t\t   inout vec4 ambient,\n\
+   \t\t\t\t\t   inout vec4 diffuse,\n\
+   \t\t\t\t\t   inout vec4 specular)\n\
+{\n\
+\tvec3 lightVec = lightSource.position.xyz / lightSource.position.w - position; \tfloat distance = length(lightVec); \tlightVec = normalize(lightVec);\n\
+\n\
+\t\tfloat attenuation = 1.0 / (lightSource.constantAttenuation +\n\
+\t\t\t\t\t\t\t   lightSource.linearAttenuation * distance +\n\
+\t\t\t\t\t\t\t   lightSource.quadraticAttenuation * distance * distance);\n\
+\n\
+\tfloat diffuseFactor = max(dot(normal, lightVec), 0.0);\n\
+\tfloat specularFactor = 0.0;\n\
+\n\
+\tif (diffuseFactor > 0.0)\n\
+\t{\n\
+\t\tvec3 halfVector = normalize(lightVec + viewVector);\n\
+\t\tspecularFactor = max(dot(normal, halfVector), 0.0);\n\
+\t\tspecularFactor = pow(specularFactor, gl_FrontMaterial.shininess);\n\
+\t}\n\
+\n\
+\tambient += lightProduct.ambient * attenuation;\n\
+\tdiffuse += lightSource.diffuse * diffuseFactor * attenuation;\n\
+\tspecular += lightProduct.specular * specularFactor * attenuation;\n\
+}\n\
+\n\
+\n\
+void computePointLightPhong(in gl_LightSourceParameters lightSource,\n\
+   \t\t\t\t\t   in gl_LightProducts lightProduct,\n\
+   \t\t\t\t\t   in vec3 viewVector,\n\
+   \t\t\t\t\t   in vec3 position,\n\
+   \t\t\t\t\t   in vec3 normal,\n\
+   \t\t\t\t\t   inout vec4 ambient,\n\
+   \t\t\t\t\t   inout vec4 diffuse,\n\
+   \t\t\t\t\t   inout vec4 specular)\n\
+{\n\
+\tvec3 lightVec = lightSource.position.xyz / lightSource.position.w - position; \tfloat distance = length(lightVec); \tlightVec = normalize(lightVec);\n\
+\n\
+\t\tfloat attenuation = 1.0 / (lightSource.constantAttenuation +\n\
+\t\t\t\t\t\t\t   lightSource.linearAttenuation * distance +\n\
+\t\t\t\t\t\t\t   lightSource.quadraticAttenuation * distance * distance);\n\
+\n\
+\tfloat diffuseFactor = max(dot(normal, lightVec), 0.0);\n\
+\tfloat specularFactor = 0.0;\n\
+\n\
+\tif (diffuseFactor > 0.0)\n\
+\t{\n\
+\t\tvec3 reflectVector = 2.0*dot(normal,lightVec)*normal - lightVec;\n\
+\t\tspecularFactor = max(dot(reflectVector, viewVector), 0.0);\n\
+\t\tspecularFactor = pow(specularFactor, gl_FrontMaterial.shininess);\n\
+\t}\n\
+\n\
+\tambient += lightProduct.ambient * attenuation;\n\
+\tdiffuse += lightSource.diffuse * diffuseFactor * attenuation;\n\
+\tspecular += lightProduct.specular * specularFactor * attenuation;\n\
+}\n\
+\n\
+\n\
+void computeSpotLight(in gl_LightSourceParameters lightSource,\n\
+   \t\t\t\t\t  in gl_LightProducts lightProduct,\n\
+   \t\t\t\t\t  in vec3 viewVector,\n\
+   \t\t\t\t\t  in vec3 position,\n\
+   \t\t\t\t\t  in vec3 normal,\n\
+   \t\t\t\t\t  inout vec4 ambient,\n\
+   \t\t\t\t\t  inout vec4 diffuse,\n\
+   \t\t\t\t\t  inout vec4 specular)\n\
+{\n\
+\tvec3 lightVec = lightSource.position.xyz / lightSource.position.w - position; \tfloat distance = length(lightVec); \tlightVec = normalize(lightVec);\n\
+\n\
+\t\tfloat spotDot = dot(-lightVec, normalize(lightSource.spotDirection));\n\
+\tif (spotDot >= lightSource.spotCosCutoff)\n\
+\t{ \t\t\t\tfloat attenuation = 1.0 / (lightSource.constantAttenuation +\n\
+\t\t\t\t\t\t\t   lightSource.linearAttenuation * distance +\n\
+\t\t\t\t\t\t\t   lightSource.quadraticAttenuation * distance * distance);\n\
+\t\t\t\tif (lightSource.spotExponent != 0.0)\n\
+\t\t\tattenuation *= pow(spotDot, lightSource.spotExponent);\n\
+\n\
+\t\tfloat diffuseFactor = max(0.0, dot(normal, lightVec));\n\
+\t\tfloat specularFactor = 0.0;\n\
+\n\
+\t\tif (diffuseFactor > 0.0)\n\
+\t\t{\n\
+\t\t\tvec3 halfVector = normalize(lightVec + viewVector);\n\
+\t\t\tspecularFactor = max(0.0, dot(normal, halfVector));\n\
+\t\t\tspecularFactor = pow(specularFactor, gl_FrontMaterial.shininess);\n\
+\t\t}\n\
+\n\
+\t\tambient += lightProduct.ambient * attenuation;\n\
+\t\tdiffuse += lightSource.diffuse * diffuseFactor * attenuation;\n\
+\t\tspecular += lightProduct.specular * specularFactor * attenuation;\n\
+\t}\n\
+}\n\
+\n\
+\n\
+void computeSpotLightPhong(in gl_LightSourceParameters lightSource,\n\
+   \t\t\t\t\t  in gl_LightProducts lightProduct,\n\
+   \t\t\t\t\t  in vec3 viewVector,\n\
+   \t\t\t\t\t  in vec3 position,\n\
+   \t\t\t\t\t  in vec3 normal,\n\
+   \t\t\t\t\t  inout vec4 ambient,\n\
+   \t\t\t\t\t  inout vec4 diffuse,\n\
+   \t\t\t\t\t  inout vec4 specular)\n\
+{\n\
+\tvec3 lightVec = lightSource.position.xyz / lightSource.position.w - position; \tfloat distance = length(lightVec); \tlightVec = normalize(lightVec);\n\
+\n\
+\t\tfloat spotDot = dot(-lightVec, normalize(lightSource.spotDirection));\n\
+\tif (spotDot >= lightSource.spotCosCutoff)\n\
+\t{ \t\t\t\tfloat attenuation = 1.0 / (lightSource.constantAttenuation +\n\
+\t\t\t\t\t\t\t   lightSource.linearAttenuation * distance +\n\
+\t\t\t\t\t\t\t   lightSource.quadraticAttenuation * distance * distance);\n\
+\t\t\t\tif (lightSource.spotExponent != 0.0)\n\
+\t\t\tattenuation *= pow(spotDot, lightSource.spotExponent);\n\
+\n\
+\t\tfloat diffuseFactor = max(0.0, dot(normal, lightVec));\n\
+\t\tfloat specularFactor = 0.0;\n\
+\n\
+\t\tif (diffuseFactor > 0.0)\n\
+\t\t{\n\
+\t\t\tvec3 reflectVector = 2.0*dot(normal,lightVec)*normal - lightVec;\n\
+\t\t\tspecularFactor = max(dot(reflectVector, viewVector), 0.0);\n\
+\t\t\tspecularFactor = pow(specularFactor, gl_FrontMaterial.shininess);\n\
+\t\t}\n\
+\n\
+\t\tambient += lightProduct.ambient * attenuation;\n\
+\t\tdiffuse += lightSource.diffuse * diffuseFactor * attenuation;\n\
+\t\tspecular += lightProduct.specular * specularFactor * attenuation;\n\
+\t}\n\
+}\n\
+\n\
+\n\
+vec4 doTwoSidedLighting(vec3 position, vec3 normal, vec4 diffuseMaterial, int side)\n\
+{\n\
+\t\tnormal = normalize(normal); \t\n\
+\t\tvec3 viewVector = vec3(0.0, 0.0, 1.0); \tif (local_viewer)\n\
+\t\tviewVector = -normalize(position); \n\
+\tvec4 ambient = vec4(0.0); \tvec4 diffuse = vec4(0.0); \tvec4 specular = vec4(0.0); \n\
+\tfor (int i = 0; i < gl_MaxLights; i++)\n\
+\t{\n\
+\t\t\t\tif (lights_enabled[i] == 1)\n\
+\t\t{\n\
+            if (gl_LightSource[i].position.w == 0.0)\n\
+\t\t\t\tcomputeDirectionalLight(gl_LightSource[i], side == 1 ? gl_FrontLightProduct[i] : gl_BackLightProduct[i], normal, ambient, diffuse, specular);\n\
+            else if (gl_LightSource[i].spotCutoff == 180.0)\n\
+\t\t\t\tcomputePointLight(gl_LightSource[i], side == 1 ? gl_FrontLightProduct[i] : gl_BackLightProduct[i], viewVector, position, normal, ambient, diffuse, specular);\n\
+            else\n\
+\t\t\t\tcomputeSpotLight(gl_LightSource[i], side == 1 ? gl_FrontLightProduct[i] : gl_BackLightProduct[i], viewVector, position, normal, ambient, diffuse, specular);\n\
+        }\n\
+\t}\n\
+\t\t\t\t\treturn (side == 1 ? gl_FrontLightModelProduct.sceneColor : gl_BackLightModelProduct.sceneColor) + ambient + diffuseMaterial * diffuse + specular;\n\
+}\n\
+\n\
+\n\
+vec4 doLightingAmb(vec3 position, vec3 normal, vec4 ambientMaterial, vec4 diffuseMaterial)\n\
+{\n\
+\t\tnormal = normalize(normal); \t\n\
+\t\tvec3 viewVector = vec3(0.0, 0.0, 1.0); \tif (local_viewer)\n\
+\t\tviewVector = -normalize(position); \n\
+\tvec4 ambient = vec4(0.0); \tvec4 diffuse = vec4(0.0); \tvec4 specular = vec4(0.0); \n\
+\tfor (int i = 0; i < gl_MaxLights; i++)\n\
+\t{\n\
+\t\t\t\tif (lights_enabled[i] == 1)\n\
+\t\t{\n\
+            if (gl_LightSource[i].position.w == 0.0)\n\
+                computeDirectionalLight(gl_LightSource[i], gl_FrontLightProduct[i], normal, ambient, diffuse, specular);\n\
+            else if (gl_LightSource[i].spotCutoff == 180.0)\n\
+                computePointLight(gl_LightSource[i], gl_FrontLightProduct[i], viewVector, position, normal, ambient, diffuse, specular);\n\
+            else\n\
+                computeSpotLight(gl_LightSource[i], gl_FrontLightProduct[i], viewVector, position, normal, ambient, diffuse, specular);\n\
+        }\n\
+\t}\n\
+\n\
+\t\t\t\t\treturn gl_FrontLightModelProduct.sceneColor + ambientMaterial * ambient + diffuseMaterial * diffuse + specular;\n\
+}\n\
+\n\
+vec4 doLighting(vec3 position, vec3 normal, vec4 diffuseMaterial)\n\
+{\n\
+\t\tnormal = normalize(normal); \t\n\
+\t\tvec3 viewVector = vec3(0.0, 0.0, 1.0); \tif (local_viewer)\n\
+\t\tviewVector = -normalize(position); \n\
+\tvec4 ambient = vec4(0.0); \tvec4 diffuse = vec4(0.0); \tvec4 specular = vec4(0.0); \n\
+\tfor (int i = 0; i < gl_MaxLights; i++)\n\
+\t{\n\
+\t\t\t\tif (lights_enabled[i] == 1)\n\
+\t\t{\n\
+\t\t\tif (gl_LightSource[i].position.w == 0.0)\n\
+\t\t\t\tcomputeDirectionalLight(gl_LightSource[i], gl_FrontLightProduct[i], normal, ambient, diffuse, specular);\n\
+\t\t\telse if (gl_LightSource[i].spotCutoff == 180.0)\n\
+\t\t\t\tcomputePointLight(gl_LightSource[i], gl_FrontLightProduct[i], viewVector, position, normal, ambient, diffuse, specular);\n\
+\t\t\telse\n\
+\t\t\t\tcomputeSpotLight(gl_LightSource[i], gl_FrontLightProduct[i], viewVector, position, normal, ambient, diffuse, specular);\n\
+\t\t}\n\
+\t}\n\
+\t\t\t\t\treturn gl_FrontLightModelProduct.sceneColor + ambient + diffuseMaterial * diffuse + specular;\n\
+}\n\
+\n\
+vec4 doPhongLighting(vec3 position, vec3 normal, vec4 diffuseMaterial)\n\
+{\n\
+\t\tnormal = normalize(normal); \t\n\
+\t\tvec3 viewVector = vec3(0.0, 0.0, 1.0); \tif (local_viewer)\n\
+\t\tviewVector = -normalize(position); \n\
+\tvec4 ambient = vec4(0.0); \tvec4 diffuse = vec4(0.0); \tvec4 specular = vec4(0.0); \n\
+\tfor (int i = 0; i < gl_MaxLights; i++)\n\
+\t{\n\
+\t\t\t\tif (lights_enabled[i] == 1)\n\
+\t\t{\n\
+            if (gl_LightSource[i].position.w == 0.0)\n\
+                computeDirectionalLightPhong(gl_LightSource[i], gl_FrontLightProduct[i], viewVector, normal, ambient, diffuse, specular);\n\
+            else if (gl_LightSource[i].spotCutoff == 180.0)\n\
+                computePointLightPhong(gl_LightSource[i], gl_FrontLightProduct[i], viewVector, position, normal, ambient, diffuse, specular);\n\
+            else\n\
+                computeSpotLightPhong(gl_LightSource[i], gl_FrontLightProduct[i], viewVector, position, normal, ambient, diffuse, specular);\n\
+        }\n\
+\t}\n\
+\n\
+\t\t\t\t\treturn gl_FrontLightModelProduct.sceneColor + ambient + diffuseMaterial * diffuse + specular;\n\
+}";

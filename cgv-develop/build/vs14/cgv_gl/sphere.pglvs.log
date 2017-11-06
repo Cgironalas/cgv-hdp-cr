@@ -1,0 +1,82 @@
+const char* sphere_pglvs ="\
+\n\
+varying vec3 q_tilde;\n\
+varying vec3 inv_T_square_v;\n\
+varying vec3 inv_T_square_e_c;\n\
+varying vec4 ev_clip;\n\
+\n\
+varying vec3 h0;\n\
+varying vec3 l0;\n\
+\n\
+varying vec3 h1;\n\
+varying vec3 l1;\n\
+\n\
+varying vec3 h2;\n\
+varying vec3 l2;\n\
+\n\
+varying vec3 h3;\n\
+varying vec3 l3;\n\
+\n\
+varying vec4 a;\n\
+varying vec4 d;\n\
+varying vec4 s;\n\
+\n\
+void main()\n\
+{\n\
+\t\tfloat R = gl_Vertex.w;\n\
+\tfloat inv_R = 1.0/R;\n\
+\n\
+\t\tvec3 e = gl_ModelViewMatrixInverse[3].xyz;\n\
+\tvec3 e_tilde = inv_R*(e - gl_Vertex.xyz);\n\
+\n\
+\t\tfloat inv_e_square = 1.0/dot(e_tilde,e_tilde);\n\
+\n\
+\t\tvec3 m_tilde = inv_e_square*e_tilde;\n\
+\n\
+\t\tfloat r = sqrt(1.0-inv_e_square);\n\
+\n\
+\t\tvec3 x_tilde = r*normalize(cross(gl_ModelViewMatrixInverse[1].xyz,e_tilde));\n\
+\n\
+\t\tvec3 y_tilde = r*normalize(cross(e_tilde,x_tilde));\n\
+\n\
+\t\tvec3 V_tilde = m_tilde+gl_MultiTexCoord2.x*x_tilde+gl_MultiTexCoord2.y*y_tilde;\n\
+\tvec3 v_tilde = V_tilde - e_tilde;\n\
+\n\
+\tvec4 V;\n\
+\tV.xyz = R*V_tilde+gl_Vertex.xyz;\n\
+\tV.w = 1.0;\n\
+ \n\
+\tq_tilde.xy = gl_MultiTexCoord2.xy;\n\
+\tq_tilde.z = sqrt(inv_e_square);\n\
+\n\
+\t\tvec3 v = (gl_ModelViewMatrix*V).xyz;\n\
+\n\
+\t\tinv_T_square_e_c = gl_NormalMatrix*(e_tilde);\n\
+\tinv_T_square_v   = gl_NormalMatrix*(v_tilde);\n\
+\n\
+\tv = -normalize(v);\n\
+\n\
+\tgl_Position\t   = gl_ModelViewProjectionMatrix * V;\n\
+\tev_clip.xy     = (gl_ModelViewProjectionMatrix * gl_ModelViewMatrixInverse[3]).zw;\n\
+\tev_clip.zw     = gl_Position.zw - ev_clip.xy;\n\
+\ta = vec4(0.0,0.0,0.0,0.0);\n\
+\t\n\
+\t\ta    += gl_LightSource[0].ambient*gl_Color;\n\
+\t\tl0 = normalize(gl_LightSource[0].position.xyz);\n\
+\t\th0 = normalize(v+l0);\n\
+\t\n\
+\t\ta    += gl_LightSource[1].ambient*gl_Color;\n\
+\t\tl1 = normalize(gl_LightSource[1].position.xyz);\n\
+\t\th1 = normalize(v+l1);\n\
+\t\n\
+\t\ta    += gl_LightSource[2].ambient*gl_Color;\n\
+\t\tl2 = normalize(gl_LightSource[2].position.xyz);\n\
+\t\th2 = normalize(v+l2);\n\
+\t\n\
+\t\ta    += gl_LightSource[3].ambient*gl_Color;\n\
+\t\tl3 = normalize(gl_LightSource[3].position.xyz);\n\
+\t\th3 = normalize(v+l3);\n\
+\t\n\
+\td = gl_Color;\n\
+\ts = gl_FrontMaterial.specular;\n\
+}";

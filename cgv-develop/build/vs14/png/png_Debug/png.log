@@ -1,0 +1,58 @@
+﻿  apply make_rule
+  pngwutil.c
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngwutil.c(191): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngwutil.c(1228): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngwutil.c(1617): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngwutil.c(1619): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+  pngwtran.c
+  pngwrite.c
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngwrite.c(431): warning C4996: 'gmtime': This function or variable may be unsafe. Consider using gmtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\time.h(495): note: see declaration of 'gmtime'
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngwrite.c(527): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngwrite.c(532): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngwrite.c(599): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngwrite.c(604): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+  pngwio.c
+  pngvcrd.c
+  pngtrans.c
+  pngset.c
+  pngrutil.c
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngrutil.c(331): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngrutil.c(335): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngrutil.c(339): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngrutil.c(374): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+  pngrtran.c
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngrtran.c(1277): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+  pngrio.c
+  pngread.c
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngread.c(122): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngread.c(127): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngread.c(204): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\pngread.c(209): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+  pngpread.c
+  pngmem.c
+  pngget.c
+  pnggccrd.c
+  pngerror.c
+  png.c
+d:\users\cgiron\documents\project\cgv-develop\3rd\png\png.c(681): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+  Generating Code...
+  png.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\png_sd14.lib

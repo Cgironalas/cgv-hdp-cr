@@ -1,0 +1,12 @@
+const char* plot2d_line_glvs ="\
+#version 150 compatibility\n\
+\n\
+uniform float plot_scale;\n\
+\n\
+out vec4 base_pos;\n\
+\n\
+void main()\n\
+{\n\
+\t\tgl_Position = gl_ModelViewProjectionMatrix * vec4(gl_Vertex.x,gl_Vertex.y,plot_scale*gl_Vertex.z,gl_Vertex.w);\n\
+\tbase_pos = gl_ModelViewProjectionMatrix * vec4(gl_Vertex.x,gl_Vertex.y,0,gl_Vertex.w);\n\
+}";

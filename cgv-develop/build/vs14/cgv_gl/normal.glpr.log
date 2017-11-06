@@ -1,0 +1,4 @@
+const char* normal_glpr ="\
+files:normal\n\
+vertex_file:group.glsl\n\
+geometry_shader_info:points;line_strip;2";

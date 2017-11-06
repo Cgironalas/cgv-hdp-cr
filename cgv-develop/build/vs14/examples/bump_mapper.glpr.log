@@ -1,0 +1,4 @@
+const char* bump_mapper_glpr ="\
+files:bump_mapper\n\
+fragment_file:lighting.glsl\n\
+fragment_file:bump_map.glfs";

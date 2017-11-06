@@ -1,0 +1,4 @@
+const char* textured_material_glpr ="\
+files:textured_material\n\
+fragment_file:lighting.glsl\n\
+fragment_file:bump_map.glfs";

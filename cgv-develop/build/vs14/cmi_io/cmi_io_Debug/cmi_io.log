@@ -1,0 +1,8 @@
+﻿  apply make_rule
+  tiff_writer.cxx
+  tiff_reader.cxx
+  png_writer.cxx
+  png_reader.cxx
+  jpg_reader.cxx
+  Generating Code...
+  cmi_io.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cmi_io_sd14.lib

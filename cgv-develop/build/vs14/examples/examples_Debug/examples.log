@@ -1,0 +1,67 @@
+﻿  apply resources_rule
+  apply resources_rule
+  apply resources_rule
+  apply resources_rule
+  apply make_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  webserver_test.cxx
+  video_drawable.cxx
+  video_creator.cxx
+  textured_shape.cxx
+  testimg.jpg.cxx
+  simple_cube.cxx
+  shape.cxx
+  shader_test.cxx
+  renderer_tests.cxx
+  random_sampler.cxx
+  picker.cxx
+  n_rook_estimator.cxx
+  mouse_tracker.cxx
+  infinite_grid.cxx
+  image_drawable.cxx
+  gui_test.cxx
+  gpu_test.cxx
+  gl_delaunay_mesh_draw.cxx
+  depth_peeler_test.cxx
+d:\users\cgiron\documents\project\cgv-develop\plugins\examples\depth_peeler_test.cxx(79): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
+d:\users\cgiron\documents\project\cgv-develop\plugins\examples\depth_peeler_test.cxx(79): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+d:\users\cgiron\documents\project\cgv-develop\plugins\examples\depth_peeler_test.cxx(80): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
+d:\users\cgiron\documents\project\cgv-develop\plugins\examples\depth_peeler_test.cxx(80): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+  cube_demo.cxx
+  Generating Code...
+  Compiling...
+  cartuja.png.cxx
+  bump_mapper.cxx
+  buffer_test.cxx
+  browser_test.cxx
+  base_provider_test.cxx
+  alhambra.png.cxx
+  Generating Code...
+ws2_32.lib(WS2_32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+ws2_32.lib(WS2_32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+opengl32.lib(OPENGL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+opengl32.lib(OPENGL32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+glu32.lib(GLU32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+glu32.lib(GLU32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+gdi32.lib(GDI32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+gdi32.lib(GDI32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+msimg32.lib(MSIMG32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+msimg32.lib(MSIMG32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+Comdlg32.lib(COMDLG32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+Comdlg32.lib(COMDLG32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+Vfw32.lib(AVICAP32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+Vfw32.lib(AVICAP32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+Vfw32.lib(AVIFIL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+Vfw32.lib(AVIFIL32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+Vfw32.lib(MSVFW32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+Vfw32.lib(MSVFW32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+  examples.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\examples_sd14.lib

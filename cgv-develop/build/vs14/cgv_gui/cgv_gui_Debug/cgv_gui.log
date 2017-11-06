@@ -1,0 +1,32 @@
+﻿  apply make_rule
+  window.cxx
+  trigger.cxx
+  text_editor.cxx
+  shortcut.cxx
+  resizable.cxx
+  provider.cxx
+  mouse_event.cxx
+  menu_provider.cxx
+  layout_table.cxx
+  layout_spacings.cxx
+  layout_inline.cxx
+  layout.cxx
+  key_event.cxx
+  key_control.cxx
+  gui_group.cxx
+  gui_driver.cxx
+  gui_creator.cxx
+  file_dialog.cxx
+  event_handler.cxx
+  event.cxx
+  Generating Code...
+  Compiling...
+  dialog.cxx
+  control.cxx
+  config_file.cxx
+  button.cxx
+  base_provider_generator.cxx
+  base_provider.cxx
+  application.cxx
+  Generating Code...
+  cgv_gui.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cgv_gui_sd14.lib

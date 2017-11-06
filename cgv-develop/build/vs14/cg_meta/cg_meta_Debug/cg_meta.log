@@ -1,0 +1,3 @@
+﻿  apply make_rule
+  object_browser.cxx
+  cg_meta.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cg_meta_sd14.lib

@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="glsl">
+    </Filter>
+    <Filter Include="glsl\shader">
+    </Filter>
+    <Filter Include="headers">
+    </Filter>
+    <Filter Include="make">
+    </Filter>
+    <Filter Include="sources">
+    </Filter>
+  </ItemGroup>
+
+  <ItemGroup>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot1d.glfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot1d.glpr">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot1d.glvs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot1d_bar.glgs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot1d_bar.glpr">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot1d_bar_outline.glgs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot1d_bar_outline.glpr">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot1d_empty.glvs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot1d_lib.glsl">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot1d_stick.glgs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot1d_stick.glpr">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot2d_face.glfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot2d_face.glgs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot2d_face.glpr">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot2d_face.glvs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot2d_line.glfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot2d_line.glgs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot2d_line.glpr">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot2d_line.glvs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot2d_point.glfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot2d_point.glpr">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\glsl\plot2d_point.glvs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\lib_begin.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\plot1d.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\plot2d.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\plot_base.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\plot.pj">
+       <Filter>make</Filter>
+    </make_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\plot1d.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\plot2d.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\plot\plot_base.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

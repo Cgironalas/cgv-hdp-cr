@@ -1,0 +1,5 @@
+const char* plot1d_glpr ="\
+vertex_file:plot1d.glvs\n\
+fragment_file:plot1d.glfs\n\
+vertex_file:plot1d_lib.glsl\n\
+";

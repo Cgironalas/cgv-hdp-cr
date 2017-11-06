@@ -1,0 +1,65 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2018
+
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "library", "library", "{5A46AE2A-975D-4570-BE19-A5B7B8C13E24}"
+EndProject
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgv_data", "cgv_data.vcxproj", "{33EB7BF2-8115-4C56-AA46-F7DDAF82965E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgv_utils", "..\cgv_utils\cgv_utils.vcxproj", "{7F328ACD-12F1-44F6-8B32-8A16BCD44574}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgv_type", "..\cgv_type\cgv_type.vcxproj", "{D5EA7384-9AAF-420A-9AFD-38BB5E341BD0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgv_reflect", "..\cgv_reflect\cgv_reflect.vcxproj", "{F8050E4A-8AD6-43ED-A8DA-2EA7DF365030}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Dll|x64 = Debug Dll|x64
+		Release Dll|x64 = Release Dll|x64
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{33EB7BF2-8115-4C56-AA46-F7DDAF82965E}.Debug Dll|x64.ActiveCfg = Debug Dll|x64
+		{33EB7BF2-8115-4C56-AA46-F7DDAF82965E}.Debug Dll|x64.Build.0 = Debug Dll|x64
+		{33EB7BF2-8115-4C56-AA46-F7DDAF82965E}.Release Dll|x64.ActiveCfg = Release Dll|x64
+		{33EB7BF2-8115-4C56-AA46-F7DDAF82965E}.Release Dll|x64.Build.0 = Release Dll|x64
+		{33EB7BF2-8115-4C56-AA46-F7DDAF82965E}.Debug|x64.ActiveCfg = Debug|x64
+		{33EB7BF2-8115-4C56-AA46-F7DDAF82965E}.Debug|x64.Build.0 = Debug|x64
+		{33EB7BF2-8115-4C56-AA46-F7DDAF82965E}.Release|x64.ActiveCfg = Release|x64
+		{33EB7BF2-8115-4C56-AA46-F7DDAF82965E}.Release|x64.Build.0 = Release|x64
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Debug Dll|x64.ActiveCfg = Debug Dll|x64
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Debug Dll|x64.Build.0 = Debug Dll|x64
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Release Dll|x64.ActiveCfg = Release Dll|x64
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Release Dll|x64.Build.0 = Release Dll|x64
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Debug|x64.ActiveCfg = Debug|x64
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Debug|x64.Build.0 = Debug|x64
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Release|x64.ActiveCfg = Release|x64
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Release|x64.Build.0 = Release|x64
+		{D5EA7384-9AAF-420A-9AFD-38BB5E341BD0}.Debug Dll|x64.ActiveCfg = Debug Dll|x64
+		{D5EA7384-9AAF-420A-9AFD-38BB5E341BD0}.Debug Dll|x64.Build.0 = Debug Dll|x64
+		{D5EA7384-9AAF-420A-9AFD-38BB5E341BD0}.Release Dll|x64.ActiveCfg = Release Dll|x64
+		{D5EA7384-9AAF-420A-9AFD-38BB5E341BD0}.Release Dll|x64.Build.0 = Release Dll|x64
+		{D5EA7384-9AAF-420A-9AFD-38BB5E341BD0}.Debug|x64.ActiveCfg = Debug|x64
+		{D5EA7384-9AAF-420A-9AFD-38BB5E341BD0}.Debug|x64.Build.0 = Debug|x64
+		{D5EA7384-9AAF-420A-9AFD-38BB5E341BD0}.Release|x64.ActiveCfg = Release|x64
+		{D5EA7384-9AAF-420A-9AFD-38BB5E341BD0}.Release|x64.Build.0 = Release|x64
+		{F8050E4A-8AD6-43ED-A8DA-2EA7DF365030}.Debug Dll|x64.ActiveCfg = Debug Dll|x64
+		{F8050E4A-8AD6-43ED-A8DA-2EA7DF365030}.Debug Dll|x64.Build.0 = Debug Dll|x64
+		{F8050E4A-8AD6-43ED-A8DA-2EA7DF365030}.Release Dll|x64.ActiveCfg = Release Dll|x64
+		{F8050E4A-8AD6-43ED-A8DA-2EA7DF365030}.Release Dll|x64.Build.0 = Release Dll|x64
+		{F8050E4A-8AD6-43ED-A8DA-2EA7DF365030}.Debug|x64.ActiveCfg = Debug|x64
+		{F8050E4A-8AD6-43ED-A8DA-2EA7DF365030}.Debug|x64.Build.0 = Debug|x64
+		{F8050E4A-8AD6-43ED-A8DA-2EA7DF365030}.Release|x64.ActiveCfg = Release|x64
+		{F8050E4A-8AD6-43ED-A8DA-2EA7DF365030}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+
+	GlobalSection(NestedProjects) = preSolution
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574} = {5A46AE2A-975D-4570-BE19-A5B7B8C13E24}
+		{D5EA7384-9AAF-420A-9AFD-38BB5E341BD0} = {5A46AE2A-975D-4570-BE19-A5B7B8C13E24}
+		{F8050E4A-8AD6-43ED-A8DA-2EA7DF365030} = {5A46AE2A-975D-4570-BE19-A5B7B8C13E24}
+	EndGlobalSection
+EndGlobal

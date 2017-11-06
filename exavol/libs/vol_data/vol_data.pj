@@ -1,0 +1,6 @@
+@=
+projectType="library";
+projectName="vol_data";
+projectGUID="F875286A-0C21-4D17-9414-FB2E0B40FA4B";
+addProjectDeps=["cgv_utils", "cgv_type", "cgv_reflect", "cgv_data", "cgv_media"];
+addSharedDefines=["VOL_DATA_EXPORTS"];

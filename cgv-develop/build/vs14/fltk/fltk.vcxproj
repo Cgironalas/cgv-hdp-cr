@@ -1,0 +1,474 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug Dll|Win32">
+      <Configuration>Debug Dll</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Dll|Win32">
+      <Configuration>Release Dll</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FF214260-FD00-11DD-87AF-0800200C9A66}</ProjectGuid>
+    <RootNamespace>fltk</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="fltk.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\fltk\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectName)_s14</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\fltk\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)_sd14</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\fltk\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">$(ProjectName)_14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\fltk\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">$(ProjectName)_d14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\visualc;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\compat;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\jpeg;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/3rd/fltk;CGV_FORCE_STATIC;NDEBUG;_WINDOWS;_LIB;USE_GLEW;_WIN32;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;GLEW_STATIC</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;user32.lib;gdi32.lib;ws2_32.lib;msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\visualc;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\compat;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\jpeg;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/3rd/fltk;CGV_FORCE_STATIC;_DEBUG;CGV_FORCE_STATIC;_WINDOWS;_LIB;USE_GLEW;_WIN32;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;GLEW_STATIC</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;user32.lib;gdi32.lib;ws2_32.lib;msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\visualc;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\compat;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\jpeg;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/3rd/fltk;NDEBUG;_WINDOWS;_USRDLL;USE_GLEW;_WIN32;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;FL_SHARED;FL_LIBRARY;FL_GL_LIBRARY;FL_GLUT_LIBRARY;FL_IMAGES_LIBRARY</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;user32.lib;gdi32.lib;ws2_32.lib;msimg32.lib;jpeg_14.lib;png_14.lib;zlib_14.lib;glew_14.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\visualc;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\compat;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\jpeg;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/3rd/fltk;_DEBUG;_WINDOWS;_USRDLL;USE_GLEW;_WIN32;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;FL_SHARED;FL_LIBRARY;FL_GL_LIBRARY;FL_GLUT_LIBRARY;FL_IMAGES_LIBRARY</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;user32.lib;gdi32.lib;ws2_32.lib;msimg32.lib;jpeg_d14.lib;png_d14.lib;zlib_d14.lib;glew_d14.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\OpenGL\Fl_Gl_Choice.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\OpenGL\Fl_Gl_Overlay.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\OpenGL\Fl_Gl_Window.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\OpenGL\gl_draw.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\OpenGL\gl_start.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\images\FileIcon2.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\images\Fl_Guess_Image.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\images\fl_jpeg.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\images\fl_png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\images\HelpDialog.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\images\images_core.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\images\pnmImage.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\images\xpmFileImage.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\addarc.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\addcurve.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\add_idle.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Adjuster.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\AlignGroup.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\AnsiWidget.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\args.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\BarGroup.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\bmpImage.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Browser.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Browser_load.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Button.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\CheckButton.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Choice.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\clip.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Clock.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Color.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\color_chooser.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\ComboBox.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\compose.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Cursor.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\CycleButton.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\default_glyph.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Dial.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\DiamondBox.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\dnd.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\drawtext.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\EngravedLabel.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\error.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\event_key_state.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\FileBrowser.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\FileChooser.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\FileChooser2.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\FileIcon.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\FileInput.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\filename_absolute.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\filename_ext.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\filename_isdir.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\filename_list.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\filename_match.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\filename_name.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\file_chooser.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\fillrect.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\FloatInput.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\fltk_theme.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Fl_Menu_Item.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Font.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\gifImage.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Group.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\GSave.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\HelpView.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\HighlightButton.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Image.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Input.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\InputBrowser.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\InvisibleWidget.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Item.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\key_name.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\LightButton.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\list_fonts.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\load_plugin.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\lock.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Menu.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\MenuBar.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\MenuWindow.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Menu_add.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Menu_global.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Menu_popup.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\message.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\MultiImage.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\NumericInput.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\numericsort.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Output.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\OvalBox.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\overlay_rect.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\own_colormap.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\PackedGroup.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\path.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\PlasticBox.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\PopupMenu.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Preferences.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\ProgressBar.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\RadioButton.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\readimage.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\RepeatButton.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\ReturnButton.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\RoundBox.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\RoundedBox.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\run.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\scandir.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Scrollbar.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\ScrollGroup.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\scrollrect.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\setcolor.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\setdisplay.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\setvisual.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\ShadowBox.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\ShapedWindow.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\SharedImage.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\ShortcutAssignment.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\show_colormap.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Slider.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\StatusBarGroup.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\string.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\StringList.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Style.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\StyleSet.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Symbol.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\SystemMenuBar.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\TabGroup.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\TabGroup2.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\TextBuffer.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\TextDisplay.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\TextEditor.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\ThumbWheel.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\TiledGroup.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\TiledImage.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Tooltip.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\UpBox.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\utf.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Valuator.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\ValueInput.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\ValueOutput.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\ValueSlider.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\vsnprintf.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Widget.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\WidgetAssociation.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Widget_draw.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Window.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Window_fullscreen.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Window_hotspot.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\Window_iconize.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\WizardGroup.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\xbmImage.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\xpmImage.cxx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\OpenGL\GlChoice.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\compat\FL\gl.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\compat\FL\math.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\compat\FL\menubar.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Adjuster.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\AlignGroup.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\AnsiWidget.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\ask.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\BarGroup.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Box.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Browser.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Button.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\CheckButton.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Choice.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Clock.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Color.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\ColorChooser.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\ComboBox.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Cursor.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\CycleButton.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\damage.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Dial.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\dirent.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Divider.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\DoubleBufferWindow.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\draw.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\error.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\events.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\FileBrowser.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\FileChooser.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\FileIcon.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\FileInput.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\filename.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\file_chooser.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\FillDial.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\FillSlider.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Flags.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\FloatInput.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\fltk_cairo.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\FL_API.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\FL_VERSION.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Font.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\forms.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\gl.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\gl2opengl.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\glut.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\GlWindow.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Group.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\HelpDialog.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\HelpView.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\HighlightButton.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Image.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Input.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\InputBrowser.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\IntInput.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\InvisibleBox.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Item.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\ItemGroup.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\LabelType.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\layout.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\LightButton.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\LineDial.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\load_plugin.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\math.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Menu.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\MenuBar.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\MenuBuild.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\MenuWindow.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Monitor.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\MultiBrowser.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\MultiImage.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\MultiLineInput.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\MultiLineOutput.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\NumericInput.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\osx.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Output.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\PackedGroup.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\PixelType.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\pnmImage.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\PopupMenu.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Preferences.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\ProgressBar.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\RadioButton.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\RadioItem.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\RadioLightButton.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Rectangle.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\RepeatButton.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\ReturnButton.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\rgbImage.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\run.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Scrollbar.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\ScrollGroup.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\SecretInput.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\ShapedWindow.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\SharedImage.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\show_colormap.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Slider.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\StatusBarGroup.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\string.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\StringList.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Style.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\StyleSet.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Symbol.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\SystemMenuBar.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\TabGroup.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\TextBuffer.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\TextDisplay.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\TextEditor.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Threads.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\ThumbWheel.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\TiledGroup.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\TiledImage.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\ToggleButton.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\ToggleItem.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Tooltip.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\utf.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Valuator.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\ValueInput.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\ValueOutput.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\ValueSlider.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\visual.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Widget.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\WidgetAssociation.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\win32.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\Window.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\WizardGroup.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\WordwrapInput.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\WordwrapOutput.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\x.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\x11.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\xbmImage.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include\fltk\xpmImage.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\ARRAY.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\colormap.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\fastarrow.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\mediumarrow.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\src\slowarrow.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\visualc\config.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\fltk.pj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">true</ExcludedFromBuild>
+    </make_rule>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\jpeg\jpeg.vcxproj">
+      <Project>{1CD43810-FC31-11DD-87AF-0800200C9A66}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\png\png.vcxproj">
+      <Project>{B4ACE650-FC31-11DD-87AF-0800200C9A66}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\glew\glew.vcxproj">
+      <Project>{DAE9F54B-3777-4FB7-9231-73451E00E197}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="fltk.targets" />
+  </ImportGroup>
+</Project>

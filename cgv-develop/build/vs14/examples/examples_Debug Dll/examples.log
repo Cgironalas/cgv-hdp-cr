@@ -1,0 +1,38 @@
+﻿  apply resources_rule
+  apply make_rule
+  webserver_test.cxx
+  video_drawable.cxx
+  video_creator.cxx
+  textured_shape.cxx
+  testimg.jpg.cxx
+  simple_cube.cxx
+  shape.cxx
+  shader_test.cxx
+  renderer_tests.cxx
+  random_sampler.cxx
+  picker.cxx
+  n_rook_estimator.cxx
+  mouse_tracker.cxx
+  infinite_grid.cxx
+  image_drawable.cxx
+  gui_test.cxx
+  gpu_test.cxx
+  gl_delaunay_mesh_draw.cxx
+  depth_peeler_test.cxx
+d:\users\cgiron\documents\project\cgv-develop\plugins\examples\depth_peeler_test.cxx(79): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
+d:\users\cgiron\documents\project\cgv-develop\plugins\examples\depth_peeler_test.cxx(79): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+d:\users\cgiron\documents\project\cgv-develop\plugins\examples\depth_peeler_test.cxx(80): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
+d:\users\cgiron\documents\project\cgv-develop\plugins\examples\depth_peeler_test.cxx(80): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+  cube_demo.cxx
+  Generating Code...
+  Compiling...
+  cartuja.png.cxx
+  bump_mapper.cxx
+  buffer_test.cxx
+  browser_test.cxx
+  base_provider_test.cxx
+  alhambra.png.cxx
+  Generating Code...
+alhambra.png.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  examples.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\bin\examples_d14.dll
+  examples.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\examples\examples_Debug Dll\examples_d14.pdb (Full PDB)

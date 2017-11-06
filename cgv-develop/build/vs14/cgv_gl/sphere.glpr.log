@@ -1,0 +1,3 @@
+const char* sphere_glpr ="\
+vertex_file:sphere.glvs\n\
+fragment_file:sphere.glfs";

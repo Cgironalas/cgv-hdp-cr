@@ -1,0 +1,10 @@
+const char* plot2d_line_glfs ="\
+#version 150 compatibility\n\
+\n\
+in vec3 color;\n\
+\n\
+void main()\n\
+{\n\
+\tgl_FragColor.rgb = color;\n\
+\tgl_FragColor.a = 1.0;\n\
+}";

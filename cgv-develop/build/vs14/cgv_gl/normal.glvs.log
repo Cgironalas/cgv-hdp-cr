@@ -1,0 +1,21 @@
+const char* normal_glvs ="\
+#version 150 compatibility\n\
+\n\
+in vec4 position;\n\
+in vec3 normal;\n\
+in vec4 color;\n\
+in int group_index;\n\
+\n\
+out vec3 normal_gs;\n\
+out vec4 color_gs;\n\
+\n\
+vec4 group_color(in vec4 color, int group_index);\n\
+vec3 group_transformed_position(in vec3 position, int group_index);\n\
+vec3 group_transformed_normal(in vec3 nml, int group_index);\n\
+\n\
+void main()\n\
+{\n\
+\tcolor_gs = group_color(color, group_index);\n\
+\tnormal_gs = group_transformed_normal(normal, group_index);\n\
+\tgl_Position = vec4(group_transformed_position(position.xyz, group_index), 1.0);\n\
+}";

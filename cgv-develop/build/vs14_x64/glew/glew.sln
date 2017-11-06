@@ -1,0 +1,27 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2018
+
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glew", "glew.vcxproj", "{DAE9F54B-3777-4FB7-9231-73451E00E197}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Dll|x64 = Debug Dll|x64
+		Release Dll|x64 = Release Dll|x64
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DAE9F54B-3777-4FB7-9231-73451E00E197}.Debug Dll|x64.ActiveCfg = Debug Dll|x64
+		{DAE9F54B-3777-4FB7-9231-73451E00E197}.Debug Dll|x64.Build.0 = Debug Dll|x64
+		{DAE9F54B-3777-4FB7-9231-73451E00E197}.Release Dll|x64.ActiveCfg = Release Dll|x64
+		{DAE9F54B-3777-4FB7-9231-73451E00E197}.Release Dll|x64.Build.0 = Release Dll|x64
+		{DAE9F54B-3777-4FB7-9231-73451E00E197}.Debug|x64.ActiveCfg = Debug|x64
+		{DAE9F54B-3777-4FB7-9231-73451E00E197}.Debug|x64.Build.0 = Debug|x64
+		{DAE9F54B-3777-4FB7-9231-73451E00E197}.Release|x64.ActiveCfg = Release|x64
+		{DAE9F54B-3777-4FB7-9231-73451E00E197}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

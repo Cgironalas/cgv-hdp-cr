@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="font">
+    </Filter>
+    <Filter Include="font\headers">
+    </Filter>
+    <Filter Include="font\sources">
+    </Filter>
+    <Filter Include="headers">
+    </Filter>
+    <Filter Include="illum">
+    </Filter>
+    <Filter Include="illum\headers">
+    </Filter>
+    <Filter Include="illum\sources">
+    </Filter>
+    <Filter Include="image">
+    </Filter>
+    <Filter Include="image\headers">
+    </Filter>
+    <Filter Include="image\sources">
+    </Filter>
+    <Filter Include="make">
+    </Filter>
+    <Filter Include="mesh">
+    </Filter>
+    <Filter Include="mesh\headers">
+    </Filter>
+    <Filter Include="mesh\sources">
+    </Filter>
+    <Filter Include="sources">
+    </Filter>
+    <Filter Include="text">
+    </Filter>
+    <Filter Include="text\headers">
+    </Filter>
+    <Filter Include="video">
+    </Filter>
+    <Filter Include="video\headers">
+    </Filter>
+    <Filter Include="video\sources">
+    </Filter>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\font\font.h">
+       <Filter>font\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\font\font_server.h">
+       <Filter>font\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\font\lib_begin.h">
+       <Filter>font\headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\font\font.cxx">
+       <Filter>font\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\font\font_server.cxx">
+       <Filter>font\sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\axis_aligned_box.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\color.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\color_model.hh">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\color_scale.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\lib_begin.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\plane.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\ray.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\riff.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\sphere.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\illum\lib_begin.h">
+       <Filter>illum\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\illum\light_source.hh">
+       <Filter>illum\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\illum\obj_material.hh">
+       <Filter>illum\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\illum\phong_material.hh">
+       <Filter>illum\headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\illum\light_source.cxx">
+       <Filter>illum\sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\image\bmp_reader.h">
+       <Filter>image\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\image\bmp_writer.h">
+       <Filter>image\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\image\image_reader.h">
+       <Filter>image\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\image\image_writer.h">
+       <Filter>image\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\image\lib_begin.h">
+       <Filter>image\headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\image\bmp_reader.cxx">
+       <Filter>image\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\image\bmp_writer.cxx">
+       <Filter>image\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\image\image_reader.cxx">
+       <Filter>image\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\image\image_writer.cxx">
+       <Filter>image\sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\cgv_media.pj">
+       <Filter>make</Filter>
+    </make_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\mesh\dual_contouring.h">
+       <Filter>mesh\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\mesh\marching_cubes.h">
+       <Filter>mesh\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\mesh\obj_loader.h">
+       <Filter>mesh\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\mesh\obj_reader.h">
+       <Filter>mesh\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\mesh\streaming_mesh.h">
+       <Filter>mesh\headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\mesh\marching_cubes.cxx">
+       <Filter>mesh\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\mesh\obj_loader.cxx">
+       <Filter>mesh\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\mesh\obj_reader.cxx">
+       <Filter>mesh\sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\color_scale.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\riff.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\text\advanced_scan.h">
+       <Filter>text\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\text\callback_stream.h">
+       <Filter>text\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\text\convert.h">
+       <Filter>text\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\text\convert_string.h">
+       <Filter>text\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\text\scan.h">
+       <Filter>text\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\text\token.h">
+       <Filter>text\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\text\tokenizer.h">
+       <Filter>text\headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\video\lib_begin.h">
+       <Filter>video\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\video\video_reader.h">
+       <Filter>video\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\video\video_writer.h">
+       <Filter>video\headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\video\video_reader.cxx">
+       <Filter>video\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\video\video_writer.cxx">
+       <Filter>video\sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,17 @@
+const char* gpu_test_glvs ="\
+varying vec3 N; \n\
+varying vec4 l; \n\
+varying vec4 h; \n\
+\n\
+vec4 my_color_transform(in vec4 c);\n\
+\n\
+void main()\n\
+{\n\
+\tgl_Position = ftransform();\n\
+\tgl_FrontColor = my_color_transform(gl_Color); \n\
+\tgl_FrontColor = gl_Color; \n\
+\tN = gl_NormalMatrix * gl_Normal;\n\
+\tl = gl_LightSource[0].position;\n\
+\th = gl_LightSource[0].halfVector;\n\
+\tgl_TexCoord[0] = gl_MultiTexCoord0;\n\
+}";

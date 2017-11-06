@@ -1,0 +1,12 @@
+const char* tex_slicer_glvs ="\
+#version 150 compatibility\n\
+\n\
+out vec3 tex_coords;\n\
+\n\
+void main()\n\
+{\n\
+\ttex_coords = gl_MultiTexCoord0.xyz;\n\
+\tgl_Position = ftransform();\n\
+\tgl_ClipVertex = gl_ModelViewMatrix * gl_Vertex;\n\
+}\n\
+";

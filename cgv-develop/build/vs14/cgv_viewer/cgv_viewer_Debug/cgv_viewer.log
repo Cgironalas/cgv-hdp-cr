@@ -1,0 +1,4 @@
+﻿  apply make_rule
+cgv_logo.png.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  cgv_viewer.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\bin\cgv_viewer_sd14.exe
+  cgv_viewer.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\bin\cgv_viewer_sd14.pdb (Full PDB)

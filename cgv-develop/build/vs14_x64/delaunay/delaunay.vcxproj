@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug Dll|x64">
+      <Configuration>Debug Dll</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Dll|x64">
+      <Configuration>Release Dll</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{334B280C-CEFC-461E-BB1E-BE50FC399C7E}</ProjectGuid>
+    <RootNamespace>delaunay</RootNamespace>
+    <Keyword>x64Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="delaunay.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\delaunay\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectName)64_s14</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\delaunay\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName)64_sd14</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\delaunay\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">$(ProjectName)64_14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\delaunay\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">$(ProjectName)64_d14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/libs/delaunay;CGV_FORCE_STATIC;NDEBUG;_WINDOWS;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DebugInformationFormat></DebugInformationFormat>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/libs/delaunay;CGV_FORCE_STATIC;_DEBUG;CGV_FORCE_STATIC;_WINDOWS;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/libs/delaunay;NDEBUG;_WINDOWS;_USRDLL;DELAUNAY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat></DebugInformationFormat>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/libs/delaunay;_DEBUG;_WINDOWS;_USRDLL;DELAUNAY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\corner_connectivity.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\ext_corner_connectivity.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\instantiation.cxx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\corner_connectivity.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\delaunay_mesh.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\delaunay_mesh_with_hierarchy.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\epsilon.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\ext_corner_connectivity.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\instantiation.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\lib_begin.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\mesh_geometry.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\mesh_geometry_reference.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\point_2d.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\triangle_mesh.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay\delaunay.pj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">true</ExcludedFromBuild>
+
+    </make_rule>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="delaunay.targets" />
+  </ImportGroup>
+</Project>

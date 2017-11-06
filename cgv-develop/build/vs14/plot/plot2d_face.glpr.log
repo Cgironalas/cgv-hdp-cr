@@ -1,0 +1,5 @@
+const char* plot2d_face_glpr ="\
+files:plot2d_face\n\
+fragment_file:lighting.glsl\n\
+geometry_shader_info:triangles;triangle_strip;3\n\
+";

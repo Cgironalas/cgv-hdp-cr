@@ -1,0 +1,3 @@
+﻿  apply make_rule
+  cgv_render.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\bin\cgv_render_d14.dll
+  cgv_render.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\cgv_render\cgv_render_Debug Dll\cgv_render_d14.pdb (Full PDB)

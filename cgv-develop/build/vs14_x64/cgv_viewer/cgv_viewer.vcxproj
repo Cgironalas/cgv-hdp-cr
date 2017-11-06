@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug Dll|x64">
+      <Configuration>Debug Dll</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Dll|x64">
+      <Configuration>Release Dll</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8904414D-C452-4EC1-822E-8D6096B6EBFC}</ProjectGuid>
+    <RootNamespace>cgv_viewer</RootNamespace>
+    <Keyword>x64Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="cgv_viewer.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_viewer\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectName)64_s14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_viewer\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName)64_sd14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_viewer\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">$(ProjectName)64_14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_viewer\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">$(ProjectName)64_d14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/apps/cgv_viewer;CGV_FORCE_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DebugInformationFormat></DebugInformationFormat>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>user32.lib;cgv_signal64_s14.lib;cgv_base64_s14.lib;cgv_utils64_s14.lib;cgv_type64_s14.lib;cgv_data64_s14.lib;cgv_reflect64_s14.lib;cgv_gui64_s14.lib;cgv_media64_s14.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OutputFile>$(OutDir)$(ProjectName)64_s14.exe</OutputFile>
+    </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/apps/cgv_viewer;CGV_FORCE_STATIC;_DEBUG;CGV_FORCE_STATIC;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>user32.lib;cgv_signal64_sd14.lib;cgv_base64_sd14.lib;cgv_utils64_sd14.lib;cgv_type64_sd14.lib;cgv_data64_sd14.lib;cgv_reflect64_sd14.lib;cgv_gui64_sd14.lib;cgv_media64_sd14.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OutputFile>$(OutDir)$(ProjectName)64_sd14.exe</OutputFile>
+    </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/apps/cgv_viewer;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat></DebugInformationFormat>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>cgv_signal64_14.lib;cgv_base64_14.lib;cgv_utils64_14.lib;cgv_type64_14.lib;cgv_data64_14.lib;cgv_reflect64_14.lib;cgv_gui64_14.lib;cgv_media64_14.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OutputFile>$(OutDir)$(ProjectName)64_14.exe</OutputFile>
+    </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/apps/cgv_viewer;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>cgv_signal64_d14.lib;cgv_base64_d14.lib;cgv_utils64_d14.lib;cgv_type64_d14.lib;cgv_data64_d14.lib;cgv_reflect64_d14.lib;cgv_gui64_d14.lib;cgv_media64_d14.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OutputFile>$(OutDir)$(ProjectName)64_d14.exe</OutputFile>
+    </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_viewer\cgv_logo.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\apps\cgv_viewer\main.cxx" />
+  </ItemGroup>
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\apps\cgv_viewer\cgv_viewer.pj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">true</ExcludedFromBuild>
+
+    </make_rule>
+  </ItemGroup>
+  <ItemGroup>
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\apps\cgv_viewer\cgv_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cgv_signal\cgv_signal.vcxproj">
+      <Project>{AD3F46B7-ADFC-4204-872B-AFC04ADE28EC}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\cgv_base\cgv_base.vcxproj">
+      <Project>{25D15D19-2543-4A26-B02E-9029EEDA103D}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\cgv_gui\cgv_gui.vcxproj">
+      <Project>{007BDDD7-C862-4181-9AB5-1FE6394A6BAB}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\res_prep\res_prep.vcxproj">
+      <Project>{F514B4C6-C19A-4137-8C8E-CE0B6D956B39}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="cgv_viewer.targets" />
+  </ImportGroup>
+</Project>

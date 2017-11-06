@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug Dll|Win32">
+      <Configuration>Debug Dll</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Dll|Win32">
+      <Configuration>Release Dll</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{04047BF0-FC32-11DD-87AF-0800200C9A66}</ProjectGuid>
+    <RootNamespace>tiff</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="tiff.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\tiff\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectName)_s14</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\tiff\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)_sd14</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\tiff\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">$(ProjectName)_14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\tiff\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">$(ProjectName)_d14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\jpeg;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/3rd/tiff;CGV_FORCE_STATIC;NDEBUG;_WINDOWS;_LIB;_CRT_SECURE_NO_DEPRECATE;AVOID_WIN32_FILEIO;CHECK_JPEG_YCBCR_SUBSAMPLING;DEFAULT_EXTRASAMPLE_AS_ALPHA;STRIPCHOP_DEFAULT=TIFF_STRIPCHOP;STRIP_SIZE_DEFAULT=8192;LOGLUV_SUPPORT;NEXT_SUPPORT;THUNDER_SUPPORT;LZW_SUPPORT;JPEG_SUPPORT;ZIP_SUPPORT;PACKBITS_SUPPORT;CCITT_SUPPORT;TIF_PLATFORM_CONSOLE;FILLODER_LSB2MSB;JPEG_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\jpeg;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/3rd/tiff;CGV_FORCE_STATIC;_DEBUG;CGV_FORCE_STATIC;_WINDOWS;_LIB;_CRT_SECURE_NO_DEPRECATE;AVOID_WIN32_FILEIO;CHECK_JPEG_YCBCR_SUBSAMPLING;DEFAULT_EXTRASAMPLE_AS_ALPHA;STRIPCHOP_DEFAULT=TIFF_STRIPCHOP;STRIP_SIZE_DEFAULT=8192;LOGLUV_SUPPORT;NEXT_SUPPORT;THUNDER_SUPPORT;LZW_SUPPORT;JPEG_SUPPORT;ZIP_SUPPORT;PACKBITS_SUPPORT;CCITT_SUPPORT;TIF_PLATFORM_CONSOLE;FILLODER_LSB2MSB;JPEG_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\jpeg;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/3rd/tiff;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;AVOID_WIN32_FILEIO;CHECK_JPEG_YCBCR_SUBSAMPLING;DEFAULT_EXTRASAMPLE_AS_ALPHA;STRIPCHOP_DEFAULT=TIFF_STRIPCHOP;STRIP_SIZE_DEFAULT=8192;LOGLUV_SUPPORT;NEXT_SUPPORT;THUNDER_SUPPORT;LZW_SUPPORT;JPEG_SUPPORT;ZIP_SUPPORT;PACKBITS_SUPPORT;CCITT_SUPPORT;TIF_PLATFORM_CONSOLE;FILLODER_LSB2MSB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>jpeg_14.lib;zlib_14.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\libtiff.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\jpeg;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/3rd/tiff;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;AVOID_WIN32_FILEIO;CHECK_JPEG_YCBCR_SUBSAMPLING;DEFAULT_EXTRASAMPLE_AS_ALPHA;STRIPCHOP_DEFAULT=TIFF_STRIPCHOP;STRIP_SIZE_DEFAULT=8192;LOGLUV_SUPPORT;NEXT_SUPPORT;THUNDER_SUPPORT;LZW_SUPPORT;JPEG_SUPPORT;ZIP_SUPPORT;PACKBITS_SUPPORT;CCITT_SUPPORT;TIF_PLATFORM_CONSOLE;FILLODER_LSB2MSB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>jpeg_d14.lib;zlib_d14.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\libtiff.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_aux.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_close.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_codec.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_color.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_compress.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_dir.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_dirinfo.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_dirread.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_dirwrite.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_dumpmode.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_error.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_extension.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_fax3.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_fax3sm.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_flush.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_getimage.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_jbig.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_jpeg.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_jpeg_12.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_luv.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_lzma.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_lzw.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_next.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_ojpeg.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_open.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_os.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_packbits.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_pixarlog.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_predict.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_print.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_read.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_stream.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_strip.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_swab.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_thunder.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_tile.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_version.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_warning.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_write.c" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_zip.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\t4.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tiff.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tiffconf.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tiffconf.vc.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tiffconf.wince.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tiffio.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tiffio.hxx" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tiffiop.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tiffvers.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_config.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_config.vc.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_config.wince.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_dir.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_fax3.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_predict.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_unix.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tif_win32.h" />
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\uvcode.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\libtiff.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\tiff\tiff.pj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release Dll|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Dll|Win32'">true</ExcludedFromBuild>
+    </make_rule>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\jpeg\jpeg.vcxproj">
+      <Project>{1CD43810-FC31-11DD-87AF-0800200C9A66}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\zlib\zlib.vcxproj">
+      <Project>{FA9D1050-FC30-11DD-87AF-0800200C9A66}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="tiff.targets" />
+  </ImportGroup>
+</Project>

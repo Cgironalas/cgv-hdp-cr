@@ -1,0 +1,26 @@
+const char* gpu_test_glfs ="\
+uniform sampler2D tex;\n\
+uniform sampler2D img_tex;\n\
+uniform float ambient;\n\
+uniform bool show_tex;\n\
+uniform bool show_img_tex;\n\
+varying vec3 N;\n\
+varying vec4 l;\n\
+varying vec4 h;\n\
+\n\
+vec4 my_color_transform(in vec4 c);\n\
+\n\
+void main (void) {\n\
+\tvec3  n = normalize(N);\n\
+\tfloat L_d =clamp(dot(l.xyz, n),0.0,1.0);\n\
+\tfloat L_s = pow(clamp(dot(h.xyz, n),\n\
+\t\t\t  0.0,1.0), gl_FrontMaterial.shininess);\n\
+   vec4  c = gl_Color;\n\
+\tif (show_tex) \n\
+\t   c = c*texture2D(tex, gl_TexCoord[0].xy); \n\
+\tif (show_img_tex) \n\
+\t   c = c*texture2D(img_tex, gl_TexCoord[0].xy); \n\
+\tgl_FragColor = my_color_transform(L_d * c\n\
+\t             + L_s * vec4(1.0,1.0,1.0,1.0)\n\
+\t\t\t\t\t + ambient * gl_Color);\n\
+}";

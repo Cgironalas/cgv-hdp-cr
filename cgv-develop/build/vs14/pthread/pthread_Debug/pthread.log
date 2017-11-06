@@ -1,0 +1,6 @@
+﻿  apply make_rule
+  pthread.c
+d:\users\cgiron\documents\project\cgv-develop\3rd\pthread\ptw32_relmillisecs.c(97): warning C4996: '_ftime64': This function or variable may be unsafe. Consider using _ftime64_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\sys\timeb.h(76): note: see declaration of '_ftime64'
+d:\users\cgiron\documents\project\cgv-develop\3rd\pthread\pthread_delay_np.c(105): warning C4244: '=': conversion from 'time_t' to 'DWORD', possible loss of data
+  pthread.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\pthread_sd14.lib

@@ -1,0 +1,29 @@
+const char* textured_material_glfs ="\
+#version 150 compatibility\n\
+\n\
+uniform sampler2D diffuse_map;\n\
+uniform bool use_diffuse_map;\n\
+uniform bool use_bump_map;\n\
+\n\
+in vec3 N;\n\
+in vec3 s;\n\
+in vec2 tc;\n\
+\n\
+vec3 bump_map_normal(vec3 s, vec2 tc, vec3 N);\n\
+\n\
+vec4 doLighting(vec3 position, vec3 normal, vec4 diffuseMaterial);\n\
+\n\
+void main()\n\
+{\n\
+\t\tvec4 diff = gl_FrontMaterial.diffuse;\n\
+\tif (use_diffuse_map) {\n\
+\t\tdiff = texture2D(diffuse_map, tc);\n\
+\t}\n\
+\tif (use_bump_map) {\n\
+\t\tgl_FragColor = doLighting(s, normalize(bump_map_normal(s,tc,N)),diff);\n\
+\t}\n\
+\telse {\n\
+\t\tgl_FragColor = doLighting(s, N, diff);\n\
+\t}\n\
+\tgl_FragColor.a = diff.a;\n\
+}";

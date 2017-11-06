@@ -1,0 +1,5 @@
+const char* box_wire_glpr ="\
+files:box_wire\n\
+vertex_file:group.glsl\n\
+geometry_file:group.glsl\n\
+geometry_shader_info:points;line_strip;16";

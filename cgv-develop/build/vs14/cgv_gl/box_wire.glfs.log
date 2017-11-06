@@ -1,0 +1,9 @@
+const char* box_wire_glfs ="\
+#version 150 compatibility\n\
+\n\
+in vec4 color;\n\
+\n\
+void main()\n\
+{\n\
+\t\tgl_FragColor = color;\n\
+}";

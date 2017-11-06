@@ -1,0 +1,75 @@
+const char* ellipsoid_glvs ="\
+varying vec3 q_tilde;\n\
+varying vec3 inv_T_square_v;\n\
+varying vec3 inv_T_square_e_c;\n\
+varying vec4 e_clip;\n\
+varying vec4 V_clip;\n\
+varying vec3 h0;\n\
+varying vec3 l0;\n\
+varying vec3 h1;\n\
+varying vec3 l1;\n\
+varying vec4 a;\n\
+\n\
+void main()\n\
+{\n\
+\t\tmat3 T;\n\
+\tT[0]    = gl_MultiTexCoord0.xyz;\n\
+\tT[1].x  = gl_MultiTexCoord0.y;\n\
+\tT[1].yz = gl_MultiTexCoord1.xy;\n\
+\tT[2].x  = gl_MultiTexCoord0.z;\n\
+\tT[2].y  = gl_MultiTexCoord1.y;\n\
+\tT[2].z  = gl_MultiTexCoord1.z;\n\
+\n\
+\t\tmat3 inv_T;\n\
+\tfloat inv_denom = 1.0/dot(T[0],cross(T[1],T[2]));\n\
+\tinv_T[0] = inv_denom*cross(T[1],T[2]);\n\
+\tinv_T[1] = inv_denom*cross(T[2],T[0]);\n\
+\tinv_T[2] = inv_denom*cross(T[0],T[1]);\n\
+\n\
+\t\tvec3 e = gl_ModelViewMatrixInverse[3].xyz;\n\
+\tvec3 e_tilde = inv_T*(e - gl_Vertex.xyz);\n\
+\n\
+\t\tfloat inv_e_square = 1.0/dot(e_tilde,e_tilde);\n\
+\n\
+\t\tvec3 m_tilde = inv_e_square*e_tilde;\n\
+\n\
+\t\tfloat r = sqrt(1.0-inv_e_square);\n\
+\n\
+\t\tvec3 x_tilde = vec3(0,0,0);\n\
+\tif (abs(e_tilde[1]) > abs(e_tilde[0]))\n\
+\t\tx_tilde[0] = 1.0;\n\
+\telse\n\
+\t\tx_tilde[1] = 1.0;\n\
+\tx_tilde      = r*normalize(cross(x_tilde,e_tilde));\n\
+\n\
+\t\tvec3 y_tilde = r*normalize(cross(e_tilde,x_tilde));\n\
+\n\
+\t\tvec3 V_tilde = m_tilde+gl_MultiTexCoord2.x*x_tilde+gl_MultiTexCoord2.y*y_tilde;\n\
+\tvec3 v_tilde = V_tilde - e_tilde;\n\
+\n\
+\tvec4 V;\n\
+\tV.xyz = T*V_tilde+gl_Vertex.xyz;\n\
+\tV.w = 1.0;\n\
+ \n\
+\tq_tilde.xy = gl_MultiTexCoord2.xy;\n\
+\tq_tilde.z = sqrt(inv_e_square);\n\
+\n\
+\t\tvec3 v = (gl_ModelViewMatrix*V).xyz;\n\
+\n\
+\n\
+\t\tinv_T_square_e_c = gl_NormalMatrix*(inv_T*e_tilde);\n\
+\tinv_T_square_v   = gl_NormalMatrix*(inv_T*v_tilde);\n\
+\n\
+\t\tl0 = normalize(gl_LightSource[0].position.xyz);\n\
+\n\
+\t\tv = -normalize(v);\n\
+\th0 = normalize(v+l0);\n\
+\tl1 = normalize(vec3(gl_LightSource[1].position));\n\
+\th1 = normalize(v+l1);\n\
+\n\
+\tgl_FrontColor  = gl_Color;\n\
+\te_clip         = gl_ModelViewProjectionMatrix * gl_ModelViewMatrixInverse[3];\n\
+\tV_clip         = gl_ModelViewProjectionMatrix * V;\n\
+\tgl_Position\t   = V_clip;\n\
+\ta = gl_FrontLightModelProduct.sceneColor;\n\
+}";

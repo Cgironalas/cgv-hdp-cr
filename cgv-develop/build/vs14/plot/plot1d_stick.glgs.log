@@ -1,0 +1,21 @@
+const char* plot1d_stick_glgs ="\
+#version 150 compatibility\n\
+#extension GL_EXT_geometry_shader4 : enable\n\
+\n\
+in vec4 colors[];\n\
+out vec4 color;\n\
+\n\
+vec4 map_plot_to_screen(in vec2 pnt);\n\
+\n\
+void main()\n\
+{\n\
+\tcolor = colors[0];\n\
+\n\
+\tgl_Position = map_plot_to_screen(vec2(gl_PositionIn[0].x, 0.0));\n\
+\tEmitVertex();\n\
+\n\
+\tgl_Position = map_plot_to_screen(gl_PositionIn[0].xy);\n\
+\tEmitVertex();\n\
+\n\
+\tEndPrimitive();\n\
+}";

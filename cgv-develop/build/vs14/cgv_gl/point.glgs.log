@@ -1,0 +1,87 @@
+const char* point_glgs ="\
+#version 150 compatibility\n\
+#extension GL_EXT_geometry_shader4 : enable\n\
+\n\
+layout(points) in;\n\
+layout(triangle_strip, max_vertices = 4) out;\n\
+\n\
+uniform bool measure_point_size_in_pixel;\n\
+uniform float reference_point_size;\n\
+\n\
+uniform bool orient_splats;\n\
+uniform float outline_width_from_pixel;\n\
+uniform float percentual_outline_width;\n\
+uniform float percentual_halo;\n\
+uniform float pixel_extent_per_depth;\n\
+\n\
+in vec3 normal_gs[];\n\
+in vec4 color_gs[];\n\
+\n\
+out vec3 normal;\n\
+out vec2 uv;\n\
+out vec4 color;\n\
+out vec3 position;\n\
+\n\
+out float percentual_outline_start;\n\
+out float percentual_halo_start;\n\
+out float percentual_pixel_extent;\n\
+out float percentual_splat_size;\n\
+flat out int   side; \n\
+int surface_side_handling(in vec3 position, inout vec3 normal, inout vec4 color);\n\
+\n\
+void emit_corner(in vec3 corner, in float u, in float v)\n\
+{\n\
+\tposition = corner;\n\
+\n\
+\tuv = vec2(u,v);\n\
+\n\
+\t\tgl_Position\t   = gl_ProjectionMatrix * vec4(position,1.0);\n\
+\n\
+\tEmitVertex();\n\
+}\n\
+\n\
+void main()\n\
+{\n\
+\t\tcolor = color_gs[0];\n\
+\t\tnormal = normalize(gl_NormalMatrix*(normal_gs[0]));\n\
+\t\tvec3 position_eye = (gl_ModelViewMatrix*gl_PositionIn[0]).xyz;\n\
+\t\tfloat sign_indicator = dot(normal, position_eye);\n\
+\n\
+\t\tside = surface_side_handling(position_eye, normal, color);\n\
+\tif (side == -1)\n\
+\t\treturn;\n\
+\n\
+\t\tfloat depth = abs(position_eye.z);\n\
+\tfloat point_radius = 0.5 * gl_PointSizeIn[0];\n\
+\tif (measure_point_size_in_pixel) {\n\
+\t\tpoint_radius *= pixel_extent_per_depth * depth;\n\
+\t}\n\
+\telse {\n\
+\t\tpoint_radius *= reference_point_size;\n\
+\t}\n\
+\t\tpercentual_pixel_extent = pixel_extent_per_depth * depth / point_radius;\n\
+\tfloat percentual_outline_width_final = max(percentual_outline_width, outline_width_from_pixel * percentual_pixel_extent);\n\
+\tfloat percentual_halo_width_final = max(percentual_halo, outline_width_from_pixel * percentual_pixel_extent);\n\
+\t\tpercentual_splat_size    = 1.0 + 0.5 * (percentual_outline_width_final + percentual_pixel_extent);\n\
+\tpercentual_outline_start = 1.0 - 0.5 * (percentual_outline_width_final + percentual_pixel_extent);\n\
+\tpercentual_halo_start = 2.0;\n\
+\tif (percentual_halo > 0.0)\n\
+\t\tpercentual_halo_start = 1.0 - 0.5 * (percentual_halo_width_final + percentual_pixel_extent);\n\
+\tfloat splat_radius = point_radius * percentual_splat_size;\n\
+\n\
+\t\tvec3 dx = vec3(1.0 ,0.0, 0.0);\n\
+\tvec3 dy = vec3(0.0, 1.0, 0.0);\n\
+\n\
+\tif (orient_splats) {\n\
+\t\tdx = normalize(cross(dy, normal));\n\
+\t\tdy = cross(normal, dx);\n\
+\t}\n\
+\tdx *= splat_radius;\n\
+\tdy *= splat_radius;\n\
+\n\
+\t\temit_corner(position_eye + dx - dy,  percentual_splat_size, -percentual_splat_size);\n\
+\temit_corner(position_eye + dx + dy,  percentual_splat_size,  percentual_splat_size);\n\
+\temit_corner(position_eye - dx - dy, -percentual_splat_size, -percentual_splat_size);\n\
+\temit_corner(position_eye - dx + dy, -percentual_splat_size,  percentual_splat_size);\n\
+}\n\
+";

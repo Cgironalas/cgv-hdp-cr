@@ -1,0 +1,3 @@
+const char* plot2d_line_glpr ="\
+files:plot2d_line\n\
+geometry_shader_info:lines;line_strip;6";

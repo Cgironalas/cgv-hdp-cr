@@ -1,0 +1,17 @@
+﻿  apply make_rule
+  material_gui.cxx
+  light_source_gui.cxx
+  fvec_gui.cxx
+d:\users\cgiron\documents\project\cgv-develop\plugins\cg_ext\fvec_gui.cxx(104): warning C4018: '<': signed/unsigned mismatch
+  d:\users\cgiron\documents\project\cgv-develop\plugins\cg_ext\fvec_gui.cxx(78): note: while compiling class template member function 'void ensure_ascending_functor<double>::operator ()(cgv::gui::control<T> &) const'
+          with
+          [
+              T=double
+          ]
+  d:\users\cgiron\documents\project\cgv-develop\plugins\cg_ext\fvec_gui.cxx(282): note: see reference to class template instantiation 'ensure_ascending_functor<double>' being compiled
+  fmat_gui.cxx
+  file_name_gui.cxx
+  bit_field_controler.cxx
+  axis_aligned_box_gui.cxx
+  Generating Code...
+  cg_ext.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cg_ext_sd14.lib

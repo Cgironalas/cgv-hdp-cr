@@ -1,0 +1,20 @@
+﻿  apply ppp_headers
+  apply make_rule
+  tokenizer.cxx
+  token.cxx
+  stopwatch.cxx
+  statistics.cxx
+  scan_enum.cxx
+  scan.cxx
+  progression.cxx
+  ostream_printf.cxx
+  file.cxx
+  dir.cxx
+  date_time.cxx
+  convert_string.cxx
+  convert.cxx
+  bit_operations.cxx
+  big_binary_file.cxx
+  advanced_scan.cxx
+  Generating Code...
+  cgv_utils.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cgv_utils_sd14.lib

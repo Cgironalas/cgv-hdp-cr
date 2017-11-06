@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="headers">
+    </Filter>
+    <Filter Include="make">
+    </Filter>
+    <Filter Include="ppp">
+    </Filter>
+    <Filter Include="sources">
+    </Filter>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\abst_signal.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\bool_combiner.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\bool_signal.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\callback_stream.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\lib_begin.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\rebind.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\signal.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\cgv_signal.pj">
+       <Filter>make</Filter>
+    </make_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\abst_signal.ph">
+       <Filter>ppp</Filter>
+    </ppp_headers>
+    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\bool_signal.ph">
+       <Filter>ppp</Filter>
+    </ppp_headers>
+    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\rebind.ph">
+       <Filter>ppp</Filter>
+    </ppp_headers>
+    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\signal.ph">
+       <Filter>ppp</Filter>
+    </ppp_headers>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\abst_signal.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\bool_combiner.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

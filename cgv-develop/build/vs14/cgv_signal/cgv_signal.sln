@@ -1,0 +1,27 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2018
+
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgv_signal", "cgv_signal.vcxproj", "{AD3F46B7-ADFC-4204-872B-AFC04ADE28EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Dll|Win32 = Debug Dll|Win32
+		Release Dll|Win32 = Release Dll|Win32
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AD3F46B7-ADFC-4204-872B-AFC04ADE28EC}.Debug Dll|Win32.ActiveCfg = Debug Dll|Win32
+		{AD3F46B7-ADFC-4204-872B-AFC04ADE28EC}.Debug Dll|Win32.Build.0 = Debug Dll|Win32
+		{AD3F46B7-ADFC-4204-872B-AFC04ADE28EC}.Release Dll|Win32.ActiveCfg = Release Dll|Win32
+		{AD3F46B7-ADFC-4204-872B-AFC04ADE28EC}.Release Dll|Win32.Build.0 = Release Dll|Win32
+		{AD3F46B7-ADFC-4204-872B-AFC04ADE28EC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AD3F46B7-ADFC-4204-872B-AFC04ADE28EC}.Debug|Win32.Build.0 = Debug|Win32
+		{AD3F46B7-ADFC-4204-872B-AFC04ADE28EC}.Release|Win32.ActiveCfg = Release|Win32
+		{AD3F46B7-ADFC-4204-872B-AFC04ADE28EC}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

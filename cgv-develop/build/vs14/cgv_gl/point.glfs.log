@@ -1,0 +1,50 @@
+const char* point_glfs ="\
+#version 150 compatibility\n\
+\n\
+uniform bool smooth_points = true;\n\
+uniform int illumination_mode = 1;\n\
+uniform vec4 halo_color;\n\
+\n\
+in vec3 normal;\n\
+in vec2 uv;\n\
+in vec4 color;\n\
+in vec3 position;\n\
+in vec2 position_pixel;\n\
+in float percentual_outline_start;\n\
+in float percentual_halo_start;\n\
+in float percentual_pixel_extent;\n\
+in float percentual_splat_size;\n\
+flat in int  side;\n\
+\n\
+\n\
+vec4 doLighting(vec3 position, vec3 normal, vec4 diffuseMaterial);\n\
+vec4 doTwoSidedLighting(vec3 position, vec3 normal, vec4 diffuseMaterial, int side);\n\
+\n\
+void main()\n\
+{\n\
+\n\
+\tfloat l = length(uv);\n\
+\t\n\
+\tif (smooth_points && (l > percentual_splat_size))\n\
+\t\tdiscard;\n\
+\n\
+\tfloat pixel_scale = 1.0 / percentual_pixel_extent;\n\
+\tfloat outline_width = percentual_splat_size - percentual_outline_start - percentual_pixel_extent;\n\
+\tif (outline_width < 0.01) {\n\
+\t\toutline_width = 0.01;\n\
+\t}\n\
+\n\
+\tfloat lambda_in   = clamp(pixel_scale*(percentual_outline_start + percentual_pixel_extent - l), 0.0, 1.0);\n\
+\tfloat lambda_out  = clamp(pixel_scale*(l - percentual_splat_size), 0.0, 1.0);\n\
+\tfloat lambda_line =  clamp((percentual_splat_size - 0.5*percentual_pixel_extent - l)/outline_width, 0.0, 1.0);\n\
+\n\
+\t\tvec4 color_in = color;\n\
+\tif (l > percentual_halo_start)\n\
+\t\tcolor_in = halo_color;\n\
+\tswitch (illumination_mode) {\n\
+\tcase 1: color_in.rgb = doLighting(position, normal, color_in).rgb; break;\n\
+\tcase 2: color_in.rgb = doTwoSidedLighting(position, normal, color_in, side).rgb; break;\n\
+\t}\n\
+\tvec4 color_line = vec4(color_in.rgb, lambda_line*color_in.a);\n\
+\tgl_FragColor = lambda_in * color_in + (1.0 - lambda_out - lambda_in) * color_line;\n\
+}";

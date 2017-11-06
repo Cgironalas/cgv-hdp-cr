@@ -1,0 +1,4 @@
+﻿  apply text_rule
+  apply make_rule
+  glsu.c
+  glsu.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\glsu_sd14.lib

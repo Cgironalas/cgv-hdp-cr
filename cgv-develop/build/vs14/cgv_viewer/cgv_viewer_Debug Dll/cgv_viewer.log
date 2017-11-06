@@ -1,0 +1,5 @@
+﻿  apply resources_rule
+  apply make_rule
+  cgv_logo.png.cxx
+  cgv_viewer.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\bin\cgv_viewer_d14.exe
+  cgv_viewer.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\bin\cgv_viewer_d14.pdb (Full PDB)

@@ -1,0 +1,25 @@
+const char* plot2d_face_glgs ="\
+#version 150 compatibility\n\
+#extension GL_EXT_geometry_shader4 : enable\n\
+\n\
+out vec3  eye_position;\n\
+out vec3  normal;\n\
+\n\
+void main()\n\
+{\n\
+\n\
+\tvec3 p0 = gl_PositionIn[0].xyz;\n\
+\tvec3 p1 = gl_PositionIn[1].xyz;\n\
+\tvec3 p2 = gl_PositionIn[2].xyz;\n\
+\n\
+\tnormal = normalize(gl_NormalMatrix * cross(p2-p0,p1-p0));\n\
+\n\
+\tfor (int i=0; i<3; ++i) {\n\
+\t\tvec4 heye_position  = gl_ModelViewMatrix * gl_PositionIn[i];\n\
+\t\teye_position  = heye_position.xyz / heye_position.w;\n\
+\t\tgl_Position = gl_ProjectionMatrix * heye_position; \n\
+\n\
+\t\tEmitVertex();\n\
+\t}\n\
+\tEndPrimitive();\n\
+}";

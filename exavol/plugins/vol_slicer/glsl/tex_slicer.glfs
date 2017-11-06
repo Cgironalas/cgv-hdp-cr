@@ -1,0 +1,9 @@
+#version 150 compatibility
+
+uniform sampler3D volume;
+in vec3 tex_coords;
+
+void main()
+{
+	gl_FragColor = texture(volume, tex_coords);
+}

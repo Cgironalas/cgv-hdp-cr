@@ -1,0 +1,14 @@
+const char* shader_test_glvs ="\
+varying vec3 eye_normal;\n\
+varying vec3 eye_position;\n\
+\n\
+void main()\n\
+{\n\
+\tgl_Position = ftransform();\n\
+\t\n\
+\tvec4 heye_pos = gl_ModelViewMatrix*gl_Vertex; \n\
+\teye_position  = heye_pos.xyz / heye_pos.w;\n\
+\n\
+\teye_normal    = normalize(gl_NormalMatrix * gl_Normal);\n\
+}\n\
+";

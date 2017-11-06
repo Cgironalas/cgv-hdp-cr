@@ -1,0 +1,7 @@
+﻿  apply make_rule
+  sparse_les.cxx
+  solve_polynom.cxx
+  normal_estimation.cxx
+  functions.cxx
+  Generating Code...
+  cgv_math.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cgv_math_sd14.lib

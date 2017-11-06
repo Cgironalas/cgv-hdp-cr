@@ -1,0 +1,67 @@
+const char* sphere_pglfs ="\
+\n\
+varying vec3 q_tilde;\n\
+varying vec3 inv_T_square_v;\n\
+varying vec3 inv_T_square_e_c;\n\
+varying vec4 ev_clip;\n\
+\n\
+varying vec3 h0;\n\
+varying vec3 l0;\n\
+\n\
+varying vec3 h1;\n\
+varying vec3 l1;\n\
+\n\
+varying vec3 h2;\n\
+varying vec3 l2;\n\
+\n\
+varying vec3 h3;\n\
+varying vec3 l3;\n\
+\n\
+varying vec4 a;\n\
+varying vec4 d;\n\
+varying vec4 s;\n\
+\n\
+void main()\n\
+{\n\
+\tfloat q_tilde_squared_length = dot(q_tilde.xy,q_tilde.xy);\n\
+\tif (q_tilde_squared_length > 1.0)\n\
+\t\tdiscard;\n\
+\tfloat lambda = 1.0/(1.0+q_tilde.z*sqrt(1.0-q_tilde_squared_length));\n\
+\tvec3 n = inv_T_square_e_c + lambda * inv_T_square_v;\n\
+\n\
+\tgl_FragColor = a;\n\
+\tfloat ldotn;\n\
+    \n\
+\t\tldotn = dot(n,l0);\n\
+\t\tif (ldotn > 0.0) {\n\
+\t\t\tgl_FragColor += \n\
+\t\t\t\tldotn*gl_LightSource[0].diffuse*d+\n\
+\t\t\t\tpow(max(dot(n,normalize(h0)), 0.0), gl_FrontMaterial.shininess)*\n\
+\t\t\t\ts*gl_LightSource[0].specular;\n\
+\t\t}\n\
+\t\n\
+\t\tldotn = dot(n,l1);\n\
+\t\tif (ldotn > 0.0) {\n\
+\t\t\tgl_FragColor += \n\
+\t\t\t\tldotn*gl_LightSource[1].diffuse*d+\n\
+\t\t\t\tpow(max(dot(n,normalize(h1)), 0.0), gl_FrontMaterial.shininess)*\n\
+\t\t\t\ts*gl_LightSource[1].specular;\n\
+\t\t}\n\
+\t\n\
+\t\tldotn = dot(n,l2);\n\
+\t\tif (ldotn > 0.0) {\n\
+\t\t\tgl_FragColor += \n\
+\t\t\t\tldotn*gl_LightSource[2].diffuse*d+\n\
+\t\t\t\tpow(max(dot(n,normalize(h2)), 0.0), gl_FrontMaterial.shininess)*\n\
+\t\t\t\ts*gl_LightSource[2].specular;\n\
+\t\t}\n\
+\t\n\
+\t\tldotn = dot(n,l3);\n\
+\t\tif (ldotn > 0.0) {\n\
+\t\t\tgl_FragColor += \n\
+\t\t\t\tldotn*gl_LightSource[3].diffuse*d+\n\
+\t\t\t\tpow(max(dot(n,normalize(h3)), 0.0), gl_FrontMaterial.shininess)*\n\
+\t\t\t\ts*gl_LightSource[3].specular;\n\
+\t\t}\n\
+\t\n\
+}";

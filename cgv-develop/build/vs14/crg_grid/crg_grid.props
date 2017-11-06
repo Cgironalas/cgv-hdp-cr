@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup
+    Condition="'$(resources_ruleBeforeTargets)' == '' and '$(resources_ruleAfterTargets)' == '' and '$(ConfigurationType)' != 'Makefile'">
+    <resources_ruleBeforeTargets>Midl</resources_ruleBeforeTargets>
+    <resources_ruleAfterTargets>CustomBuild</resources_ruleAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <resources_ruleDependsOn
+      Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;$(resources_ruleDependsOn)</resources_ruleDependsOn>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <resources_rule>
+      <CommandLineTemplate>&quot;$(CGV_INSTALL)\bin\res_prep&quot; &quot;%(RootDir)%(Directory)%(Filename)%(Extension)&quot; &quot;$(ProjectDir)%(Filename)%(Extension).cxx&quot;</CommandLineTemplate>
+      <Outputs>$(ProjectDir)%(Filename)%(Extension).cxx</Outputs>
+      <ExecutionDescription>apply resources_rule</ExecutionDescription>
+    </resources_rule>
+  </ItemDefinitionGroup>
+  <PropertyGroup
+    Condition="'$(text_ruleBeforeTargets)' == '' and '$(text_ruleAfterTargets)' == '' and '$(ConfigurationType)' != 'Makefile'">
+    <text_ruleBeforeTargets>Midl</text_ruleBeforeTargets>
+    <text_ruleAfterTargets>CustomBuild</text_ruleAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <text_ruleDependsOn
+      Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;$(text_ruleDependsOn)</text_ruleDependsOn>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <text_rule>
+      <CommandLineTemplate>&quot;$(CGV_INSTALL)\bin\res_prep&quot; &quot;%(RootDir)%(Directory)%(Filename)%(Extension)&quot; &quot;$(ProjectDir)%(Filename).h&quot;</CommandLineTemplate>
+      <Outputs>$(ProjectDir)%(Filename).h</Outputs>
+      <ExecutionDescription>apply text_rule</ExecutionDescription>
+    </text_rule>
+  </ItemDefinitionGroup>
+  <PropertyGroup
+    Condition="'$(ppp_headersBeforeTargets)' == '' and '$(ppp_headersAfterTargets)' == '' and '$(ConfigurationType)' != 'Makefile'">
+    <ppp_headersBeforeTargets>Midl</ppp_headersBeforeTargets>
+    <ppp_headersAfterTargets>CustomBuild</ppp_headersAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ppp_headersDependsOn
+      Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;$(ppp_headersDependsOn)</ppp_headersDependsOn>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ppp_headers>
+      <CommandLineTemplate>&quot;$(CGV_DIR)\bin\ppp&quot; &quot;%(RootDir)%(Directory)%(Filename)%(Extension)&quot; &quot;%(RootDir)%(Directory)%(Filename).h&quot;</CommandLineTemplate>
+      <Outputs>%(RootDir)%(Directory)%(Filename).h</Outputs>
+      <ExecutionDescription>apply ppp_headers</ExecutionDescription>
+    </ppp_headers>
+  </ItemDefinitionGroup>
+  <PropertyGroup
+    Condition="'$(make_ruleBeforeTargets)' == '' and '$(make_ruleAfterTargets)' == '' and '$(ConfigurationType)' != 'Makefile'">
+    <make_ruleBeforeTargets>Midl</make_ruleBeforeTargets>
+    <make_ruleAfterTargets>CustomBuild</make_ruleAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <make_ruleDependsOn
+      Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;$(make_ruleDependsOn)</make_ruleDependsOn>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <make_rule>
+      <CommandLineTemplate>&quot;$(CGV_DIR)\bin\ppp&quot; &quot;-script&quot; &quot;-CGV_COMPILER=vs14&quot; &quot;$(CGV_DIR)\makeppp	emplatesmake.ppp&quot; &quot;%(RootDir)%(Directory)%(Filename)%(Extension)&quot;</CommandLineTemplate>
+      <Outputs>$(ProjectDir)%(Filename).sln</Outputs>
+      <ExecutionDescription>apply make_rule</ExecutionDescription>
+    </make_rule>
+  </ItemDefinitionGroup>
+  <PropertyGroup
+    Condition="'$(doxygen_ruleBeforeTargets)' == '' and '$(doxygen_ruleAfterTargets)' == '' and '$(ConfigurationType)' != 'Makefile'">
+    <doxygen_ruleBeforeTargets>Midl</doxygen_ruleBeforeTargets>
+    <doxygen_ruleAfterTargets>CustomBuild</doxygen_ruleAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <doxygen_ruleDependsOn
+      Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;$(doxygen_ruleDependsOn)</doxygen_ruleDependsOn>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <doxygen_rule>
+      <CommandLineTemplate>&quot;doxygen&quot; &quot;%(RootDir)%(Directory)%(Filename)%(Extension)&quot;</CommandLineTemplate>
+      <Outputs>$(ProjectDir)htmlindex.html</Outputs>
+      <ExecutionDescription>apply doxygen_rule</ExecutionDescription>
+    </doxygen_rule>
+  </ItemDefinitionGroup>
+  <PropertyGroup
+    Condition="'$(latex_ruleBeforeTargets)' == '' and '$(latex_ruleAfterTargets)' == '' and '$(ConfigurationType)' != 'Makefile'">
+    <latex_ruleBeforeTargets>Midl</latex_ruleBeforeTargets>
+    <latex_ruleAfterTargets>CustomBuild</latex_ruleAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <latex_ruleDependsOn
+      Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;$(latex_ruleDependsOn)</latex_ruleDependsOn>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <latex_rule>
+      <CommandLineTemplate>&quot;pdflatex&quot; &quot;-include-directory=%(RootDir)%(Directory)&quot; &quot;%(RootDir)%(Directory)%(Filename)%(Extension)&quot;</CommandLineTemplate>
+      <Outputs>%(RootDir)%(Directory)%(Filename).pdf</Outputs>
+      <ExecutionDescription>apply latex_rule</ExecutionDescription>
+    </latex_rule>
+  </ItemDefinitionGroup>
+  <PropertyGroup
+    Condition="'$(shader_ruleBeforeTargets)' == '' and '$(shader_ruleAfterTargets)' == '' and '$(ConfigurationType)' != 'Makefile'">
+    <shader_ruleBeforeTargets>Midl</shader_ruleBeforeTargets>
+    <shader_ruleAfterTargets>CustomBuild</shader_ruleAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <shader_ruleDependsOn
+      Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;$(shader_ruleDependsOn)</shader_ruleDependsOn>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <shader_rule>
+      <CommandLineTemplate>&quot;$(CGV_INSTALL)\bin\shader_test&quot; &quot;%(RootDir)%(Directory)%(Filename)%(Extension)&quot; &quot;$(ProjectDir)%(Filename)%(Extension).log&quot;</CommandLineTemplate>
+      <Outputs>$(ProjectDir)%(Filename)%(Extension).log</Outputs>
+      <ExecutionDescription>apply shader_rule</ExecutionDescription>
+    </shader_rule>
+  </ItemDefinitionGroup>
+</Project>

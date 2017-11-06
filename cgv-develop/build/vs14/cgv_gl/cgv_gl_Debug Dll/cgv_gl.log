@@ -1,0 +1,34 @@
+﻿  apply ppp_headers
+  apply make_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  apply shader_rule
+  cgv_gl.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\bin\cgv_gl_d14.dll
+  cgv_gl.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\cgv_gl\cgv_gl_Debug Dll\cgv_gl_d14.pdb (Full PDB)

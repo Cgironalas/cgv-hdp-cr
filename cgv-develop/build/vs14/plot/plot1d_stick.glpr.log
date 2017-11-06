@@ -1,0 +1,7 @@
+const char* plot1d_stick_glpr ="\
+vertex_file:plot1d_empty.glvs\n\
+geometry_file:plot1d_stick.glgs\n\
+fragment_file:plot1d.glfs\n\
+geometry_file:plot1d_lib.glsl\n\
+geometry_shader_info:points;line_strip;2\n\
+";

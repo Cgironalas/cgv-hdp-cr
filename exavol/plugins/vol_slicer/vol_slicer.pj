@@ -1,0 +1,18 @@
+@=
+projectType="application_plugin";
+projectName="vol_slicer";
+projectGUID="A246C9AB-CC6D-49F1-91EB-6753B8154368";
+addProjectDirs=[CGV_DIR."/libs", CGV_DIR."/plugins", CGV_DIR."/3rd", INPUT_DIR."/../../libs"];
+addIncDirs=[CGV_DIR."/libs", INPUT_DIR."/../../libs"];
+addProjectDeps=[
+	"cgv_utils", "cgv_type", "cgv_reflect", "cgv_data", "cgv_signal", "cgv_base", "cgv_media", "cgv_gui", "cgv_render","cgv_os",
+	"cgv_reflect_types",
+	"cgv_viewer",
+	"cg_fltk", "crg_stereo_view", "crg_light", "cmi_io", "cmv_avi", "crg_grid", "cgv_gl", "cg_icons", "glew", "plot",
+	"vol_data"
+];
+addSharedDefines=["CGV_VOL_SLICER_EXPORTS"];
+addCommandLineArguments=[
+	'"type(shader_config):shader_path='."'".INPUT_DIR."/glsl;".INPUT_DIR."/../../libs/vol_viz;".CGV_DIR."/libs/plot/glsl;".CGV_DIR."/libs/cgv_gl/glsl'".'"',
+	'"config:'.INPUT_DIR.'/config.cfg"'
+];

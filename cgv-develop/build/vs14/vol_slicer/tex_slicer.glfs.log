@@ -1,0 +1,10 @@
+const char* tex_slicer_glfs ="\
+#version 150 compatibility\n\
+\n\
+uniform sampler3D volume;\n\
+in vec3 tex_coords;\n\
+\n\
+void main()\n\
+{\n\
+\tgl_FragColor = texture(volume, tex_coords);\n\
+}";

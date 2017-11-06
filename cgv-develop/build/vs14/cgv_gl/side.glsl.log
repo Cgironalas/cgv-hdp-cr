@@ -1,0 +1,41 @@
+const char* side_glsl ="\
+#version 150 compatibility\n\
+\n\
+uniform int culling_mode;\n\
+uniform int map_color_to_material;\n\
+uniform int illumination_mode;\n\
+\n\
+int surface_side_handling(in vec3 position, inout vec3 normal, inout vec4 color)\n\
+{\n\
+\t\tfloat sign_indicator = dot(normal, position);\n\
+\tint side = (sign_indicator < 0.0) ? 1 : 0;\n\
+\t\tswitch (culling_mode) {\n\
+\tcase 1: \t\tif (sign_indicator > 0.0) {\n\
+\t\t\treturn -1;\n\
+\t\t}\n\
+\t\tbreak;\n\
+\tcase 2: \t\tif (sign_indicator < 0.0) {\n\
+\t\t\treturn -1;\n\
+\t\t}\n\
+\t\tbreak;\n\
+\t}\n\
+\t\tif (illumination_mode > 0) {\n\
+\n\
+\t\t\t\tif (illumination_mode == 2 && side == 0) {\n\
+\t\t\tnormal = -normal;\n\
+\t\t}\n\
+\t\t\t\tif (side == 1) {\n\
+\t\t\tif ((map_color_to_material & 1) == 0) {\n\
+\t\t\t\tcolor = gl_FrontMaterial.diffuse;\n\
+\t\t\t}\n\
+\t\t}\n\
+\t\telse {\n\
+\t\t\tif ((map_color_to_material & 2) == 0) {\n\
+\t\t\t\tcolor = gl_BackMaterial.diffuse;\n\
+\t\t\t}\n\
+\t\t}\n\
+\t}\n\
+\treturn side;\n\
+}\n\
+\n\
+";

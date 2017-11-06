@@ -1,0 +1,43 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2018
+
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "library", "library", "{5A46AE2A-975D-4570-BE19-A5B7B8C13E24}"
+EndProject
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ppp_lib", "ppp_lib.vcxproj", "{4B407CE9-D1A4-449E-9A74-6EAD5D6DF93A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgv_utils", "..\cgv_utils\cgv_utils.vcxproj", "{7F328ACD-12F1-44F6-8B32-8A16BCD44574}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Dll|Win32 = Debug Dll|Win32
+		Release Dll|Win32 = Release Dll|Win32
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B407CE9-D1A4-449E-9A74-6EAD5D6DF93A}.Debug Dll|Win32.ActiveCfg = Debug Dll|Win32
+		{4B407CE9-D1A4-449E-9A74-6EAD5D6DF93A}.Debug Dll|Win32.Build.0 = Debug Dll|Win32
+		{4B407CE9-D1A4-449E-9A74-6EAD5D6DF93A}.Release Dll|Win32.ActiveCfg = Release Dll|Win32
+		{4B407CE9-D1A4-449E-9A74-6EAD5D6DF93A}.Release Dll|Win32.Build.0 = Release Dll|Win32
+		{4B407CE9-D1A4-449E-9A74-6EAD5D6DF93A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4B407CE9-D1A4-449E-9A74-6EAD5D6DF93A}.Debug|Win32.Build.0 = Debug|Win32
+		{4B407CE9-D1A4-449E-9A74-6EAD5D6DF93A}.Release|Win32.ActiveCfg = Release|Win32
+		{4B407CE9-D1A4-449E-9A74-6EAD5D6DF93A}.Release|Win32.Build.0 = Release|Win32
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Debug Dll|Win32.ActiveCfg = Debug Dll|Win32
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Debug Dll|Win32.Build.0 = Debug Dll|Win32
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Release Dll|Win32.ActiveCfg = Release Dll|Win32
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Release Dll|Win32.Build.0 = Release Dll|Win32
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Debug|Win32.Build.0 = Debug|Win32
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Release|Win32.ActiveCfg = Release|Win32
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+
+	GlobalSection(NestedProjects) = preSolution
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574} = {5A46AE2A-975D-4570-BE19-A5B7B8C13E24}
+	EndGlobalSection
+EndGlobal

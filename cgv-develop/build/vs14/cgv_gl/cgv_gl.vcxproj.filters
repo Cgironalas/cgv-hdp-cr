@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="gl">
+    </Filter>
+    <Filter Include="gl\headers">
+    </Filter>
+    <Filter Include="gl\ppp">
+    </Filter>
+    <Filter Include="gl\sources">
+    </Filter>
+    <Filter Include="glsl">
+    </Filter>
+    <Filter Include="glsl\shader">
+    </Filter>
+    <Filter Include="headers">
+    </Filter>
+    <Filter Include="make">
+    </Filter>
+    <Filter Include="sources">
+    </Filter>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl.h">
+       <Filter>gl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_context.h">
+       <Filter>gl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_context_switch.h">
+       <Filter>gl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_cursor.h">
+       <Filter>gl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_depth_peeler.h">
+       <Filter>gl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_image_drawable_base.h">
+       <Filter>gl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_implicit_surface_drawable_base.h">
+       <Filter>gl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_mesh_drawable_base.h">
+       <Filter>gl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_performance_monitor.h">
+       <Filter>gl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_tools.h">
+       <Filter>gl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_transparent_renderer.h">
+       <Filter>gl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_view.h">
+       <Filter>gl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\lib_begin.h">
+       <Filter>gl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\wgl.h">
+       <Filter>gl\headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_context_switch.ph">
+       <Filter>gl\ppp</Filter>
+    </ppp_headers>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl.cxx">
+       <Filter>gl\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_context.cxx">
+       <Filter>gl\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_context_unix.cxx">
+       <Filter>gl\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_context_win32.cxx">
+       <Filter>gl\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_cursor.cxx">
+       <Filter>gl\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_depth_peeler.cxx">
+       <Filter>gl\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_image_drawable_base.cxx">
+       <Filter>gl\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_implicit_surface_drawable_base.cxx">
+       <Filter>gl\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_mesh_drawable_base.cxx">
+       <Filter>gl\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_performance_monitor.cxx">
+       <Filter>gl\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_texture_tools.cxx">
+       <Filter>gl\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_tools.cxx">
+       <Filter>gl\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_transparent_renderer.cxx">
+       <Filter>gl\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_view.cxx">
+       <Filter>gl\sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box.glfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box.glgs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box.glpr">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box.glvs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box_wire.glfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box_wire.glgs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box_wire.glpr">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\box_wire.glvs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\bump_map.glfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\ellipsoid.glfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\ellipsoid.glvs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\group.glsl">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\lighting.glsl">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\normal.glfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\normal.glgs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\normal.glpr">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\normal.glvs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\point.glfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\point.glgs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\point.glpr">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\point.glvs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\side.glsl">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\sphere.glfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\sphere.glpr">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\sphere.glvs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\sphere.pglfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\sphere.pglvs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\textured_material.glfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\textured_material.glpr">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\glsl\textured_material.glvs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\box_renderer.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\box_wire_renderer.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\group_renderer.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\line_renderer.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\normal_renderer.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\point_renderer.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\renderer.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\surface_renderer.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\cgv_gl.pj">
+       <Filter>make</Filter>
+    </make_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\box_renderer.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\box_wire_renderer.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\group_renderer.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\line_renderer.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\normal_renderer.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\point_renderer.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\renderer.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\surface_renderer.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

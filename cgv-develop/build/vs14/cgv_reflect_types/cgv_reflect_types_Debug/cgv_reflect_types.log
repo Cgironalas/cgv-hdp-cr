@@ -1,0 +1,11 @@
+﻿  apply make_rule
+  view.cxx
+  context.cxx
+  color.cxx
+  phong_material.cxx
+  obj_material.cxx
+  light_source.cxx
+  perm_mat.cxx
+  shortcut.cxx
+  Generating Code...
+  cgv_reflect_types.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cgv_reflect_types_sd14.lib

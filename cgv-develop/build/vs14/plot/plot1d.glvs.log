@@ -1,0 +1,12 @@
+const char* plot1d_glvs ="\
+#version 150 compatibility\n\
+\n\
+out vec4 color;\n\
+\n\
+vec4 map_plot_to_screen(in vec2 pnt);\n\
+\n\
+void main()\n\
+{\n\
+\t\tgl_Position = map_plot_to_screen(gl_Vertex.xy);\n\
+\tcolor = gl_Color;\n\
+}";

@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="cgv_viewer">
+    </Filter>
+    <Filter Include="cgv_viewer\resources">
+    </Filter>
+    <Filter Include="cgv_viewer\sources">
+    </Filter>
+    <Filter Include="config">
+    </Filter>
+    <Filter Include="glsl">
+    </Filter>
+    <Filter Include="glsl\shader">
+    </Filter>
+    <Filter Include="headers">
+    </Filter>
+    <Filter Include="make">
+    </Filter>
+    <Filter Include="sources">
+    </Filter>
+  </ItemGroup>
+
+  <ItemGroup>
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\apps\cgv_viewer\cgv_logo.png">
+       <Filter>cgv_viewer\resources</Filter>
+    </resources_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\cgv_viewer\cgv_logo.png.cxx">
+       <Filter>cgv_viewer\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\apps\cgv_viewer\main.cxx">
+       <Filter>cgv_viewer\sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="D:\Users\CGiron\Documents\Project\exavol\plugins\vol_slicer\config.def">
+       <Filter>config</Filter>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\exavol\plugins\vol_slicer\glsl\tex_slicer.glfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\exavol\plugins\vol_slicer\glsl\tex_slicer.glpr">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\exavol\plugins\vol_slicer\glsl\tex_slicer.glvs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\exavol\plugins\vol_slicer\lib_begin.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\exavol\plugins\vol_slicer\volume_slicer.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\exavol\plugins\vol_slicer\vol_slicer.pj">
+       <Filter>make</Filter>
+    </make_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\exavol\plugins\vol_slicer\volume_slicer.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

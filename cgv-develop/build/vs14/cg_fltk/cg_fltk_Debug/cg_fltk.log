@@ -1,0 +1,45 @@
+﻿  apply make_rule
+  fltk_viewer_window.cxx
+  fltk_value_view.cxx
+  fltk_value_control.cxx
+  fltk_trigger_server.cxx
+  fltk_tree_group.cxx
+  fltk_text_editor.cxx
+  fltk_tab_group.cxx
+  fltk_string_view.cxx
+  fltk_string_control.cxx
+  fltk_shortcut_control.cxx
+  fltk_layout_group.cxx
+  fltk_gui_group.cxx
+  fltk_gl_view.cxx
+  fltk_generic_window.cxx
+  fltk_font_server.cxx
+  fltk_event.cxx
+  fltk_enum_control.cxx
+  fltk_driver_registry.cxx
+  fltk_driver.cxx
+  fltk_dragger.cxx
+  Generating Code...
+  Compiling...
+  fltk_dockable_group.cxx
+  fltk_decorator.cxx
+  fltk_color_control.cxx
+  fltk_button.cxx
+  fltk_bool_control.cxx
+  fltk_base.cxx
+  fltk_align_group.cxx
+  DockableGroup.cxx
+  Generating Code...
+ws2_32.lib(WS2_32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+ws2_32.lib(WS2_32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+opengl32.lib(OPENGL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+opengl32.lib(OPENGL32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+glu32.lib(GLU32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+glu32.lib(GLU32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+gdi32.lib(GDI32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+gdi32.lib(GDI32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+msimg32.lib(MSIMG32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+msimg32.lib(MSIMG32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+Comdlg32.lib(COMDLG32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in user32.lib(USER32.dll); second definition ignored
+Comdlg32.lib(COMDLG32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+  cg_fltk.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cg_fltk_sd14.lib

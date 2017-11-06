@@ -1,0 +1,187 @@
+﻿  apply make_rule
+  xpmImage.cxx
+  xbmImage.cxx
+  WizardGroup.cxx
+  Window_iconize.cxx
+  Window_hotspot.cxx
+  Window_fullscreen.cxx
+  Window.cxx
+  Widget_draw.cxx
+  WidgetAssociation.cxx
+  Widget.cxx
+  ValueSlider.cxx
+  ValueOutput.cxx
+  ValueInput.cxx
+  Valuator.cxx
+  UpBox.cxx
+  Tooltip.cxx
+  TiledImage.cxx
+  TiledGroup.cxx
+  ThumbWheel.cxx
+  TextEditor.cxx
+d:\users\cgiron\documents\project\cgv-develop\3rd\fltk\src\texteditor.cxx(191): warning C4838: conversion from 'int' to 'char' requires a narrowing conversion
+  Generating Code...
+  Compiling...
+  TextDisplay.cxx
+  TextBuffer.cxx
+  TabGroup2.cxx
+  TabGroup.cxx
+  SystemMenuBar.cxx
+  Symbol.cxx
+  StyleSet.cxx
+  Style.cxx
+  StringList.cxx
+  StatusBarGroup.cxx
+  Slider.cxx
+d:\users\cgiron\documents\project\cgv-develop\3rd\fltk\src\slider.cxx(304): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\users\cgiron\documents\project\cgv-develop\3rd\fltk\src\slider.cxx(320): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\users\cgiron\documents\project\cgv-develop\3rd\fltk\src\slider.cxx(340): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\users\cgiron\documents\project\cgv-develop\3rd\fltk\src\slider.cxx(350): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  show_colormap.cxx
+  ShortcutAssignment.cxx
+  SharedImage.cxx
+  ShapedWindow.cxx
+  ShadowBox.cxx
+  setvisual.cxx
+  setdisplay.cxx
+  setcolor.cxx
+  scrollrect.cxx
+  Generating Code...
+  Compiling...
+  ScrollGroup.cxx
+  Scrollbar.cxx
+  run.cxx
+d:\users\cgiron\documents\project\cgv-develop\3rd\fltk\src\win32\run.cxx(1240): warning C4273: 'TrackMouseEvent': inconsistent dll linkage
+  c:\program files (x86)\windows kits\8.1\include\um\winuser.h(2658): note: see previous definition of 'TrackMouseEvent'
+  RoundedBox.cxx
+  RoundBox.cxx
+  ReturnButton.cxx
+  RepeatButton.cxx
+  readimage.cxx
+  RadioButton.cxx
+  ProgressBar.cxx
+  Preferences.cxx
+  PopupMenu.cxx
+  PlasticBox.cxx
+  path.cxx
+  PackedGroup.cxx
+  own_colormap.cxx
+  overlay_rect.cxx
+  OvalBox.cxx
+  Output.cxx
+  numericsort.cxx
+  Generating Code...
+  Compiling...
+  NumericInput.cxx
+  MultiImage.cxx
+  message.cxx
+  Menu_popup.cxx
+  Menu_global.cxx
+  Menu_add.cxx
+  MenuWindow.cxx
+  MenuBar.cxx
+  Menu.cxx
+  lock.cxx
+  load_plugin.cxx
+  list_fonts.cxx
+  LightButton.cxx
+  key_name.cxx
+  Item.cxx
+  InvisibleWidget.cxx
+  InputBrowser.cxx
+  Input.cxx
+  Image.cxx
+  HighlightButton.cxx
+  Generating Code...
+  Compiling...
+  HelpView.cxx
+  GSave.cxx
+  Group.cxx
+  gifImage.cxx
+  Font.cxx
+  Fl_Menu_Item.cxx
+  fltk_theme.cxx
+  FloatInput.cxx
+  fillrect.cxx
+  file_chooser.cxx
+  filename_name.cxx
+  filename_match.cxx
+  filename_list.cxx
+  filename_isdir.cxx
+  filename_ext.cxx
+  filename_absolute.cxx
+  FileInput.cxx
+  FileIcon.cxx
+  FileChooser2.cxx
+  FileChooser.cxx
+  Generating Code...
+  Compiling...
+  FileBrowser.cxx
+  event_key_state.cxx
+  error.cxx
+  EngravedLabel.cxx
+  drawtext.cxx
+d:\users\cgiron\documents\project\cgv-develop\3rd\fltk\src\drawtext.cxx(446): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  dnd.cxx
+  DiamondBox.cxx
+  Dial.cxx
+  default_glyph.cxx
+  CycleButton.cxx
+  Cursor.cxx
+  compose.cxx
+  ComboBox.cxx
+  color_chooser.cxx
+  Color.cxx
+  Clock.cxx
+  clip.cxx
+  Choice.cxx
+  CheckButton.cxx
+  Button.cxx
+  Generating Code...
+  Compiling...
+  Browser_load.cxx
+  Browser.cxx
+d:\users\cgiron\documents\project\cgv-develop\3rd\fltk\src\browser.cxx(1751): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  bmpImage.cxx
+  BarGroup.cxx
+  args.cxx
+  AnsiWidget.cxx
+d:\users\cgiron\documents\project\cgv-develop\3rd\fltk\src\ansiwidget.cxx(555): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  AlignGroup.cxx
+  Adjuster.cxx
+  add_idle.cxx
+  addcurve.cxx
+  addarc.cxx
+  xpmFileImage.cxx
+  pnmImage.cxx
+  images_core.cxx
+  HelpDialog.cxx
+  fl_png.cxx
+  fl_jpeg.cxx
+  Fl_Guess_Image.cxx
+  FileIcon2.cxx
+  gl_start.cxx
+  Generating Code...
+  Compiling...
+  gl_draw.cxx
+  Fl_Gl_Window.cxx
+  Fl_Gl_Overlay.cxx
+  Fl_Gl_Choice.cxx
+  Generating Code...
+  vsnprintf.c
+  utf.c
+  string.c
+  scandir.c
+d:\users\cgiron\documents\project\cgv-develop\3rd\fltk\src\win32\scandir.c(48): warning C4013: 'strlcpy' undefined; assuming extern returning int
+  Generating Code...
+glu32.lib(GLU32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in opengl32.lib(OPENGL32.dll); second definition ignored
+glu32.lib(GLU32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+user32.lib(USER32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in opengl32.lib(OPENGL32.dll); second definition ignored
+user32.lib(USER32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+gdi32.lib(GDI32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in opengl32.lib(OPENGL32.dll); second definition ignored
+gdi32.lib(GDI32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+ws2_32.lib(WS2_32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in opengl32.lib(OPENGL32.dll); second definition ignored
+ws2_32.lib(WS2_32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+msimg32.lib(MSIMG32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in opengl32.lib(OPENGL32.dll); second definition ignored
+msimg32.lib(MSIMG32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+  fltk.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\fltk_sd14.lib

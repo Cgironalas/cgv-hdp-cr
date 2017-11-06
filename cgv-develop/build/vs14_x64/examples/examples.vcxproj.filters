@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="cgv_viewer">
+    </Filter>
+    <Filter Include="cgv_viewer\resources">
+    </Filter>
+    <Filter Include="cgv_viewer\sources">
+    </Filter>
+    <Filter Include="config">
+    </Filter>
+    <Filter Include="gui">
+    </Filter>
+    <Filter Include="headers">
+    </Filter>
+    <Filter Include="make">
+    </Filter>
+    <Filter Include="resources">
+    </Filter>
+    <Filter Include="shader">
+    </Filter>
+    <Filter Include="sources">
+    </Filter>
+  </ItemGroup>
+
+  <ItemGroup>
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\apps\cgv_viewer\cgv_logo.png">
+       <Filter>cgv_viewer\resources</Filter>
+    </resources_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_viewer\cgv_logo.png.cxx">
+       <Filter>cgv_viewer\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\apps\cgv_viewer\main.cxx">
+       <Filter>cgv_viewer\sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\config.def">
+       <Filter>config</Filter>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\examples.gui">
+       <Filter>gui</Filter>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\bump_mapper.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\gl_delaunay_mesh_draw.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\mouse_tracker.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\picker.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\shape.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_1.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_2.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_3.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_4.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_5.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_6.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_7.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_8.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_9.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\examples.pj">
+       <Filter>make</Filter>
+    </make_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\alhambra.png">
+       <Filter>resources</Filter>
+    </resources_rule>
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\cartuja.png">
+       <Filter>resources</Filter>
+    </resources_rule>
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\testimg.jpg">
+       <Filter>resources</Filter>
+    </resources_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\bump_mapper.glfs">
+       <Filter>shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\bump_mapper.glpr">
+       <Filter>shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\bump_mapper.glvs">
+       <Filter>shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\gpu_test.glfs">
+       <Filter>shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\gpu_test.glpr">
+       <Filter>shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\gpu_test.glvs">
+       <Filter>shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\my_support_functions.glsl">
+       <Filter>shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\shader_test.glfs">
+       <Filter>shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\shader_test.glpr">
+       <Filter>shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\shader_test.glvs">
+       <Filter>shader</Filter>
+    </shader_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\examples\alhambra.png.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\base_provider_test.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\browser_test.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\buffer_test.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\bump_mapper.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\examples\cartuja.png.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\cube_demo.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\depth_peeler_test.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\gl_delaunay_mesh_draw.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\gpu_test.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\gui_test.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\image_drawable.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\infinite_grid.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\mouse_tracker.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\n_rook_estimator.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\picker.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\random_sampler.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\renderer_tests.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\shader_test.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\shape.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\examples\testimg.jpg.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\textured_shape.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\video_creator.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\video_drawable.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\webserver_test.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

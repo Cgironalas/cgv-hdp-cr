@@ -1,0 +1,4 @@
+﻿  apply text_rule
+  apply make_rule
+  glsu.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\bin\glsu_d14.dll
+  glsu.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\glsu\glsu_Debug Dll\glsu_d14.pdb (Full PDB)

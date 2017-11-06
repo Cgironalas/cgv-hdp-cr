@@ -1,0 +1,27 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2018
+
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgv_utils", "cgv_utils.vcxproj", "{7F328ACD-12F1-44F6-8B32-8A16BCD44574}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Dll|x64 = Debug Dll|x64
+		Release Dll|x64 = Release Dll|x64
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Debug Dll|x64.ActiveCfg = Debug Dll|x64
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Debug Dll|x64.Build.0 = Debug Dll|x64
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Release Dll|x64.ActiveCfg = Release Dll|x64
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Release Dll|x64.Build.0 = Release Dll|x64
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Debug|x64.ActiveCfg = Debug|x64
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Debug|x64.Build.0 = Debug|x64
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Release|x64.ActiveCfg = Release|x64
+		{7F328ACD-12F1-44F6-8B32-8A16BCD44574}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

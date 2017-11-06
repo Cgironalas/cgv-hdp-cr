@@ -1,0 +1,23 @@
+const char* normal_glgs ="\
+#version 150 compatibility\n\
+#extension GL_EXT_geometry_shader4 : enable\n\
+\n\
+layout(points) in;\n\
+layout(line_strip, max_vertices = 2) out;\n\
+\n\
+uniform float normal_length;\n\
+\n\
+in vec3 normal_gs[];\n\
+in vec4 color_gs[];\n\
+\n\
+out vec4 color;\n\
+\n\
+void main()\n\
+{\n\
+\tcolor = color_gs[0];\n\
+\tgl_Position = gl_ModelViewProjectionMatrix * gl_PositionIn[0];\n\
+\tEmitVertex();\n\
+\tgl_Position = gl_ModelViewProjectionMatrix * (gl_PositionIn[0] + normal_length * vec4(normal_gs[0],0.0));\n\
+\tEmitVertex();\n\
+}\n\
+";

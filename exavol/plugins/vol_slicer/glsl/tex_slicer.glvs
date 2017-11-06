@@ -1,0 +1,10 @@
+#version 150 compatibility
+
+out vec3 tex_coords;
+
+void main()
+{
+	tex_coords = gl_MultiTexCoord0.xyz;
+	gl_Position = ftransform();
+	gl_ClipVertex = gl_ModelViewMatrix * gl_Vertex;
+}

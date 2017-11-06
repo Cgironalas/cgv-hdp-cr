@@ -1,0 +1,17 @@
+﻿  apply make_rule
+  video_writer.cxx
+  video_reader.cxx
+  riff.cxx
+  color_scale.cxx
+  obj_reader.cxx
+  obj_loader.cxx
+  marching_cubes.cxx
+  image_writer.cxx
+  image_reader.cxx
+  bmp_writer.cxx
+  bmp_reader.cxx
+  light_source.cxx
+  font_server.cxx
+  font.cxx
+  Generating Code...
+  cgv_media.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\cgv_media_sd14.lib

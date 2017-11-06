@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug Dll|x64">
+      <Configuration>Debug Dll</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Dll|x64">
+      <Configuration>Release Dll</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EEAB296F-7692-495E-8464-DD3D1E0069B0}</ProjectGuid>
+    <RootNamespace>cg_icons</RootNamespace>
+    <Keyword>x64Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+
+    <PlatformToolset>v140</PlatformToolset>
+
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="cg_icons.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectName)64_s14</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName)64_sd14</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">$(ProjectName)64_14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\$(ProjectName)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">$(ProjectName)64_d14</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/plugins/cg_icons;CGV_FORCE_STATIC;NDEBUG;_WINDOWS;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DebugInformationFormat></DebugInformationFormat>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/plugins/cg_icons;CGV_FORCE_STATIC;_DEBUG;CGV_FORCE_STATIC;_WINDOWS;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/plugins/cg_icons;NDEBUG;_WINDOWS;_USRDLL;ICON_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat></DebugInformationFormat>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>cgv_base64_14.lib;cgv_utils64_14.lib;cgv_type64_14.lib;cgv_data64_14.lib;cgv_reflect64_14.lib;cgv_signal64_14.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/plugins/cg_icons;_DEBUG;_WINDOWS;_USRDLL;ICON_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader></PrecompiledHeader>
+
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>cgv_base64_d14.lib;cgv_utils64_d14.lib;cgv_type64_d14.lib;cgv_data64_d14.lib;cgv_reflect64_d14.lib;cgv_signal64_d14.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\append32.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\append64.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\copy_node48.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\cubemap20.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\cut_node48.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\del_node48.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\empty20.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\first_child48.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\image20.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\last_child48.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\light20.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\lock20.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\lock48.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\main.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\material20.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\mesh20.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\molecule20.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\next_sibling48.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\open32.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\open64.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\parent_node48.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\prev_sibling48.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\primitive20.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\project20.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\remove_parent48.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\save32.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\save64.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\style20.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\texture20.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\transform20.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\unlock20.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\unlock48.png.cxx" />
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cg_icons\view20.png.cxx" />
+  </ItemGroup>
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\cg_icons.pj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">true</ExcludedFromBuild>
+
+    </make_rule>
+  </ItemGroup>
+  <ItemGroup>
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\append32.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\append64.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\copy_node48.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\cubemap20.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\cut_node48.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\del_node48.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\empty20.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\first_child48.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\image20.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\last_child48.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\light20.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\lock20.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\lock48.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\material20.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\mesh20.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\molecule20.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\next_sibling48.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\open32.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\open64.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\parent_node48.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\prev_sibling48.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\primitive20.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\project20.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\remove_parent48.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\save32.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\save64.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\style20.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\texture20.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\transform20.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\unlock20.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\unlock48.png" />
+    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_icons\view20.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cgv_base\cgv_base.vcxproj">
+      <Project>{25D15D19-2543-4A26-B02E-9029EEDA103D}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\res_prep\res_prep.vcxproj">
+      <Project>{F514B4C6-C19A-4137-8C8E-CE0B6D956B39}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="cg_icons.targets" />
+  </ImportGroup>
+</Project>

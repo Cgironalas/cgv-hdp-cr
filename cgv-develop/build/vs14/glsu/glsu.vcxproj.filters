@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="GL">
+    </Filter>
+    <Filter Include="GL\headers">
+    </Filter>
+    <Filter Include="config">
+    </Filter>
+    <Filter Include="headers">
+    </Filter>
+    <Filter Include="make">
+    </Filter>
+    <Filter Include="sources">
+    </Filter>
+    <Filter Include="text">
+    </Filter>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu\GL\glsu.h">
+       <Filter>GL\headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu\glsu.def">
+       <Filter>config</Filter>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14\glsu\license.h">
+       <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu\glsu.pj">
+       <Filter>make</Filter>
+    </make_rule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu\glsu.c">
+       <Filter>sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <text_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu\license.txt">
+       <Filter>text</Filter>
+    </text_rule>
+  </ItemGroup>
+</Project>

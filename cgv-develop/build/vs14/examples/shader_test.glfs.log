@@ -1,0 +1,10 @@
+const char* shader_test_glfs ="\
+varying vec3 eye_normal;\n\
+varying vec3 eye_position;\n\
+\n\
+vec4 doLighting(vec3 position, vec3 normal, vec4 diffuseMaterial);\n\
+\n\
+void main()\n\
+{\n\
+\tgl_FragColor = doLighting(eye_position, eye_normal, gl_FrontMaterial.diffuse);\n\
+}";

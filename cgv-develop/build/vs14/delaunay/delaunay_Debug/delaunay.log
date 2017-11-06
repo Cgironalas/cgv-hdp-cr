@@ -1,0 +1,6 @@
+﻿  apply make_rule
+  instantiation.cxx
+  ext_corner_connectivity.cxx
+  corner_connectivity.cxx
+  Generating Code...
+  delaunay.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-develop\lib\delaunay_sd14.lib

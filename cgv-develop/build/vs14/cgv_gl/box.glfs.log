@@ -1,0 +1,20 @@
+const char* box_glfs ="\
+#version 150 compatibility\n\
+\n\
+in vec3 normal;\n\
+in vec4 color;\n\
+in vec3 position;\n\
+flat in int side;\n\
+uniform int illumination_mode = 1;\n\
+\n\
+vec4 doLighting(vec3 position, vec3 normal, vec4 diffuseMaterial);\n\
+vec4 doTwoSidedLighting(vec3 position, vec3 normal, vec4 diffuseMaterial, int side);\n\
+\n\
+void main()\n\
+{\n\
+\t\tgl_FragColor = color;\n\
+\tswitch (illumination_mode) {\n\
+\tcase 1: gl_FragColor.rgb = doLighting(position, normal, color).rgb; break;\n\
+\tcase 2: gl_FragColor.rgb = doTwoSidedLighting(position, normal, color, side).rgb; break;\n\
+\t}\n\
+}";
