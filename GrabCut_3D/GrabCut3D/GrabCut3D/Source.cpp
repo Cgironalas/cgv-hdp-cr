@@ -1,4 +1,3 @@
-#include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
@@ -9,6 +8,7 @@ using namespace cv;
 using namespace std;
 
 static Mat * masks;
+static Mat imageToShow;
 static string *filenames;
 static int index, folderSize, indexBegin, indexEnd, middle, currentImage;
 
@@ -29,7 +29,11 @@ static void help() {
 		"\tSHIFT+left mouse button - set GC_FGD pixels\n"
 		"\n"
 		"\tCTRL+right mouse button - set GC_PR_BGD pixels\n"
-		"\tSHIFT+right mouse button - set GC_PR_FGD pixels\n" << endl;
+		"\tSHIFT+right mouse button - set GC_PR_FGD pixels\n"
+		"\n"
+		"\tj - previous image\n"
+		"\tk - next image\n"
+		"\n"<< endl;
 }
 
 const Scalar RED = Scalar(0, 0, 255);
@@ -74,10 +78,9 @@ private:
 	const Mat* image;
 	Mat mask;
 	Mat bgdModel, fgdModel;
-
 	uchar rectState, lblsState, prLblsState;
+	
 	bool isInitialized;
-
 	Rect rect;
 	vector<Point> fgdPxls, bgdPxls, prFgdPxls, prBgdPxls;
 	int iterCount;
@@ -143,7 +146,9 @@ void GCApplication::setRectInMask() {
 	rect.y = max(0, rect.y);
 	rect.width = min(rect.width, image->cols - rect.x);
 	rect.height = min(rect.height, image->rows - rect.y);
+	cout << "1" << endl;
 	(mask(rect)).setTo(Scalar(GC_PR_FGD));
+	cout << "2" << endl;
 }
 
 void GCApplication::setLblsInMask(int flags, Point p, bool isPr) {
@@ -154,8 +159,7 @@ void GCApplication::setLblsInMask(int flags, Point p, bool isPr) {
 		fpxls = &fgdPxls;
 		bvalue = GC_BGD;
 		fvalue = GC_FGD;
-	}
-	else {
+	} else {
 		bpxls = &prBgdPxls;
 		fpxls = &prFgdPxls;
 		bvalue = GC_PR_BGD;
@@ -174,60 +178,63 @@ void GCApplication::setLblsInMask(int flags, Point p, bool isPr) {
 void GCApplication::mouseClick(int event, int x, int y, int flags, void*) {
 	// TODO add bad args check
 	switch (event) {
-	case EVENT_LBUTTONDOWN: {// set rect or GC_BGD(GC_FGD) labels
-		bool isb = (flags & BGD_KEY) != 0,
-			isf = (flags & FGD_KEY) != 0;
-		if (rectState == NOT_SET && !isb && !isf) {
-			rectState = IN_PROCESS;
-			rect = Rect(x, y, 1, 1);
+		case EVENT_LBUTTONDOWN: {/*set rect or GC_BGD(GC_FGD) labels*/
+			bool isb = (flags & BGD_KEY) != 0,
+				isf = (flags & FGD_KEY) != 0;
+			if (rectState == NOT_SET && !isb && !isf) {
+				rectState = IN_PROCESS;
+				rect = Rect(x, y, 1, 1);
+			}
+			if ((isb || isf) && rectState == SET)
+				lblsState = IN_PROCESS;
+			break;
 		}
-		if ((isb || isf) && rectState == SET)
-			lblsState = IN_PROCESS;
-	}
-							break;
-	case EVENT_RBUTTONDOWN: {// set GC_PR_BGD(GC_PR_FGD) labels
-		bool isb = (flags & BGD_KEY) != 0,
-			isf = (flags & FGD_KEY) != 0;
-		if ((isb || isf) && rectState == SET)
-			prLblsState = IN_PROCESS;
-	}
-							break;
-	case EVENT_LBUTTONUP:
-		if (rectState == IN_PROCESS) {
-			rect = Rect(Point(rect.x, rect.y), Point(x, y));
-			rectState = SET;
-			setRectInMask();
-			CV_Assert(bgdPxls.empty() && fgdPxls.empty() && prBgdPxls.empty() && prFgdPxls.empty());
-			showImage();
+
+		case EVENT_RBUTTONDOWN: {/*set GC_PR_BGD(GC_PR_FGD) labels*/
+			bool isb = (flags & BGD_KEY) != 0,
+				isf = (flags & FGD_KEY) != 0;
+			if ((isb || isf) && rectState == SET)
+				prLblsState = IN_PROCESS;
+			break;
 		}
-		if (lblsState == IN_PROCESS) {
-			setLblsInMask(flags, Point(x, y), false);
-			lblsState = SET;
-			showImage();
-		}
-		break;
-	case EVENT_RBUTTONUP:
-		if (prLblsState == IN_PROCESS) {
-			setLblsInMask(flags, Point(x, y), true);
-			prLblsState = SET;
-			showImage();
-		}
-		break;
-	case EVENT_MOUSEMOVE:
-		if (rectState == IN_PROCESS) {
-			rect = Rect(Point(rect.x, rect.y), Point(x, y));
-			CV_Assert(bgdPxls.empty() && fgdPxls.empty() && prBgdPxls.empty() && prFgdPxls.empty());
-			showImage();
-		}
-		else if (lblsState == IN_PROCESS) {
-			setLblsInMask(flags, Point(x, y), false);
-			showImage();
-		}
-		else if (prLblsState == IN_PROCESS) {
-			setLblsInMask(flags, Point(x, y), true);
-			showImage();
-		}
-		break;
+
+		case EVENT_LBUTTONUP:
+			if (rectState == IN_PROCESS) {
+				rect = Rect(Point(rect.x, rect.y), Point(x, y));
+				rectState = SET;
+				cout << "maybe here" << endl;
+				setRectInMask();
+				cout << "dies here" << endl;
+				CV_Assert(bgdPxls.empty() && fgdPxls.empty() && prBgdPxls.empty() && prFgdPxls.empty());
+				showImage();
+			}
+			if (lblsState == IN_PROCESS) {
+				setLblsInMask(flags, Point(x, y), false);
+				lblsState = SET;
+				showImage();
+			}
+			break;
+		case EVENT_RBUTTONUP:
+			if (prLblsState == IN_PROCESS) {
+				setLblsInMask(flags, Point(x, y), true);
+				prLblsState = SET;
+				showImage();
+			}
+			break;
+
+		case EVENT_MOUSEMOVE:
+			if (rectState == IN_PROCESS) {
+				rect = Rect(Point(rect.x, rect.y), Point(x, y));
+				CV_Assert(bgdPxls.empty() && fgdPxls.empty() && prBgdPxls.empty() && prFgdPxls.empty());
+				showImage();
+			} else if (lblsState == IN_PROCESS) {
+				setLblsInMask(flags, Point(x, y), false);
+				showImage();
+			} else if (prLblsState == IN_PROCESS) {
+				setLblsInMask(flags, Point(x, y), true);
+				showImage();
+			}
+			break;
 	}
 }
 
@@ -242,14 +249,15 @@ int GCApplication::nextIter() {
 			grabCut(*image, mask, rect, bgdModel, fgdModel, 1, GC_INIT_WITH_MASK);
 		else
 			grabCut(*image, mask, rect, bgdModel, fgdModel, 1, GC_INIT_WITH_RECT);
-
+		
 		isInitialized = true;
 	}
 	iterCount++;
 
-	bgdPxls.clear(); fgdPxls.clear();
-	prBgdPxls.clear(); prFgdPxls.clear();
-
+	bgdPxls.clear();
+	fgdPxls.clear();
+	prBgdPxls.clear();
+	prFgdPxls.clear();
 	return iterCount;
 }
 
@@ -259,32 +267,14 @@ static void on_mouse(int event, int x, int y, int flags, void* param) {
 	gcapp.mouseClick(event, x, y, flags, param);
 }
 
-int showImageWindow() {
+Mat showImageWindow() {
 	Mat image = imread(filenames[index], 1);// Set to 1 for RGB, with -1 set to RGB with alpha channel
 	if (image.empty()) {
 		cout << "\n Durn, couldn't read image filename " << filenames[index] << endl;
-		return 1;
+		return Mat();
 	}
 
-	cout << "File: " + filenames[index] << endl;
-
-	string nWinName = "image" + to_string(currentImage);
-
-	cout << nWinName << endl;
-
-	namedWindow(nWinName, WINDOW_AUTOSIZE);
-	//Creates a window with name 'image', possible flags:
-	//WINDOW_AUTOSIZE (get size of image, cannot be resized)
-	//WINDOW_OPENGL (opengl compatible window)
-
-	setMouseCallback(nWinName, on_mouse, 0);
-	//on_mouse is an in between function that they (in openCV in general) to manage mouse interaction
-	//They just send the values to their own defined function gcapp.mouseClick
-
-	gcapp.setImageAndWinName(image, nWinName);
-	gcapp.showImage();
-
-	return 0;
+	return image;
 }
 
 int main(int argc, char** argv) {
@@ -376,7 +366,27 @@ int main(int argc, char** argv) {
 	cout << "Current Image: " + to_string(currentImage) << endl;
 	cout << "Index: " + to_string(index) << endl;
 
-	showImageWindow();
+
+	const string winName = "image";
+
+	namedWindow(winName, WINDOW_AUTOSIZE);
+	//Creates a window with name 'image', possible flags:
+	//WINDOW_AUTOSIZE (get size of image, cannot be resized)
+	//WINDOW_OPENGL (opengl compatible window)
+
+	setMouseCallback(winName, on_mouse, 0);
+	//on_mouse is an in between function that they (in openCV in general) to manage mouse interaction
+	//They just send the values to their own defined function gcapp.mouseClick
+
+	imageToShow = showImageWindow();
+
+	if (imageToShow.empty()) {
+		cout << "image empty" << endl;
+		return -6;
+	}
+
+	gcapp.setImageAndWinName(imageToShow, winName);
+	gcapp.showImage();
 
 	for (;;) {
 		char c = (char)waitKey(0);
@@ -391,25 +401,28 @@ int main(int argc, char** argv) {
 			break;
 		case 'j':
 			cout << "j pressed" << endl;
-			destroyWindow("image" + to_string(currentImage));
 			currentImage -= 10;
 			index -= 10;
 
 			cout << "Current Image: " + to_string(currentImage) << endl;
 			cout << "Index: " + to_string(index) << endl;
+
 			gcapp.reset();
-			showImageWindow();
+			imageToShow = showImageWindow();
+			gcapp.showImage();
 			break;
 		case 'k':
 			cout << "k pressed" << endl;
-			destroyWindow("image" + to_string(currentImage));
+			destroyWindow("image");
 			currentImage += 10;
 			index += 10;
 
 			cout << "Current Image: " + to_string(currentImage) << endl;
 			cout << "Index: " + to_string(index) << endl;
+
 			gcapp.reset();
-			showImageWindow();
+			imageToShow = showImageWindow();
+			gcapp.showImage();
 			break;
 		case 'n':
 			int iterCount = gcapp.getIterCount();
@@ -425,6 +438,6 @@ int main(int argc, char** argv) {
 		}
 	}
 exit_main:
-	destroyWindow("image" + to_string(currentImage));
+	destroyWindow("image");
 	return 0;
 }
