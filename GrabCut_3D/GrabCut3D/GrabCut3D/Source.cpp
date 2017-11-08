@@ -7,7 +7,7 @@
 using namespace cv;
 using namespace std;
 
-static Mat * masks;
+static Mat *masks;
 static Mat imageToShow;
 static string *filenames;
 static int index, folderSize, indexBegin, indexEnd, middle, currentImage;
@@ -63,12 +63,16 @@ public:
 	static const int radius = 2;
 	static const int thickness = -1;
 
+	bool isInitialized;
+	Mat mask;
+
 	void reset();
 	void setImageAndWinName(const Mat& _image, const string& _winName);
 	void showImage() const;
 	void mouseClick(int event, int x, int y, int flags, void* param);
 	int nextIter();
 	int getIterCount() const { return iterCount; }
+	Mat getMask() const { return mask; }
 
 private:
 	void setRectInMask();
@@ -76,16 +80,16 @@ private:
 
 	const string* winName;
 	const Mat* image;
-	Mat mask;
 	Mat bgdModel, fgdModel;
 	uchar rectState, lblsState, prLblsState;
 	
-	bool isInitialized;
 	Rect rect;
 	vector<Point> fgdPxls, bgdPxls, prFgdPxls, prBgdPxls;
 	int iterCount;
 };
 
+
+//Set all the elements of the class as null or equivalent (mat with 0s, NOT_SET, 0, etc.)
 void GCApplication::reset() {
 	if (!mask.empty())
 		mask.setTo(Scalar::all(GC_BGD));
@@ -101,6 +105,8 @@ void GCApplication::reset() {
 	iterCount = 0;
 }
 
+
+//Kind of like a constructor, just sets the image and winName elements of the class
 void GCApplication::setImageAndWinName(const Mat& _image, const string& _winName) {
 	if (_image.empty() || _winName.empty())
 		return;
@@ -110,6 +116,8 @@ void GCApplication::setImageAndWinName(const Mat& _image, const string& _winName
 	reset();
 }
 
+
+//
 void GCApplication::showImage() const {
 	if (image->empty() || winName->empty())
 		return;
@@ -139,6 +147,8 @@ void GCApplication::showImage() const {
 	imshow(*winName, res);
 }
 
+
+//
 void GCApplication::setRectInMask() {
 	CV_Assert(!mask.empty());
 	mask.setTo(GC_BGD);
@@ -151,6 +161,8 @@ void GCApplication::setRectInMask() {
 	cout << "2" << endl;
 }
 
+
+//
 void GCApplication::setLblsInMask(int flags, Point p, bool isPr) {
 	vector<Point> *bpxls, *fpxls;
 	uchar bvalue, fvalue;
@@ -175,6 +187,8 @@ void GCApplication::setLblsInMask(int flags, Point p, bool isPr) {
 	}
 }
 
+
+//Listener for mouse events
 void GCApplication::mouseClick(int event, int x, int y, int flags, void*) {
 	// TODO add bad args check
 	switch (event) {
@@ -238,6 +252,8 @@ void GCApplication::mouseClick(int event, int x, int y, int flags, void*) {
 	}
 }
 
+
+//
 int GCApplication::nextIter() {
 	if (isInitialized)
 		grabCut(*image, mask, rect, bgdModel, fgdModel, 1);
@@ -263,6 +279,8 @@ int GCApplication::nextIter() {
 
 GCApplication gcapp;
 
+
+//Passthrough function for the GCApplication mouseClick
 static void on_mouse(int event, int x, int y, int flags, void* param) {
 	gcapp.mouseClick(event, x, y, flags, param);
 }
@@ -326,6 +344,9 @@ int main(int argc, char** argv) {
 	folderSize = indexEnd - indexBegin;
 	filenames = new string[folderSize];
 	masks = new Mat[folderSize];
+	for (int i = 0; i < folderSize; i++) {
+		masks[i].setTo(Scalar::all(0));
+	}
 
 	for (int i = indexBegin; i < indexEnd; i++) {
 		index = i - indexBegin;
@@ -364,7 +385,7 @@ int main(int argc, char** argv) {
 	index = middle;
 
 	cout << "Current Image: " + to_string(currentImage) << endl;
-	cout << "Index: " + to_string(index) << endl;
+	cout << "Index: " + to_string(index) + "\n" << endl;
 
 
 	const string winName = "image";
@@ -388,6 +409,7 @@ int main(int argc, char** argv) {
 	gcapp.setImageAndWinName(imageToShow, winName);
 	gcapp.showImage();
 
+	bool go = false;
 	for (;;) {
 		char c = (char)waitKey(0);
 		switch (c) {
@@ -400,30 +422,68 @@ int main(int argc, char** argv) {
 			gcapp.showImage();
 			break;
 		case 'j':
-			cout << "j pressed" << endl;
-			currentImage -= 10;
-			index -= 10;
+			masks[index] = gcapp.getMask();
+			if (currentImage == indexBegin) {
+				cout << "Finished this side" << endl;
+				currentImage = indexBegin + middle;
+				index = middle;
+			}
+			else {
+				currentImage--;
+				index--;
+				if (masks[index].empty()) {
+					go = true;
+					masks[index] = gcapp.getMask();
+				}
+				//masks[index] = gcapp.getMask();
+			}
 
 			cout << "Current Image: " + to_string(currentImage) << endl;
-			cout << "Index: " + to_string(index) << endl;
+			cout << "Index: " + to_string(index) + "\n" << endl;
 
-			gcapp.reset();
+			//gcapp.reset();
+			gcapp.mask = masks[index];
+			//gcapp.isInitialized = true;
+
 			imageToShow = showImageWindow();
 			gcapp.showImage();
+			if (go == true) {
+				go = false;
+				goto nextIter;
+			}
 			break;
 		case 'k':
-			cout << "k pressed" << endl;
-			destroyWindow("image");
-			currentImage += 10;
-			index += 10;
+			masks[index] = gcapp.getMask();
+			if (currentImage == indexEnd) {
+				cout << "Finished this side" << endl;
+				currentImage = indexBegin + middle;
+				index = middle;
+			}
+			else {
+				currentImage++;
+				index++;
+				if (masks[index].empty()) {
+					go = true;
+					masks[index] = gcapp.getMask();
+				}
+				//masks[index] = gcapp.getMask();
+			}
 
 			cout << "Current Image: " + to_string(currentImage) << endl;
-			cout << "Index: " + to_string(index) << endl;
+			cout << "Index: " + to_string(index) + "\n" << endl;
 
-			gcapp.reset();
+			//gcapp.reset();
+			gcapp.mask = masks[index];
+			//gcapp.isInitialized = true;
+
 			imageToShow = showImageWindow();
 			gcapp.showImage();
+			if (go == true) {
+				go = false;
+				goto nextIter;
+			}
 			break;
+nextIter:
 		case 'n':
 			int iterCount = gcapp.getIterCount();
 			cout << "<" << iterCount << "... ";
