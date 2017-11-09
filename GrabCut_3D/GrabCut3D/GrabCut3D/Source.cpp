@@ -8,7 +8,8 @@ using namespace cv;
 using namespace std;
 
 static Mat *masks;
-static Mat imageToShow;
+static Mat imageToShow, aMask, tempMask, binaryMask;
+static Mat* imagePointer;
 static string *filenames;
 static int index, folderSize, indexBegin, indexEnd, middle, currentImage;
 
@@ -333,22 +334,27 @@ int main(int argc, char** argv) {
 	cout << "File Extension: " + fileExtension << endl;
 
 	sscanf_s(argv[3], "%i", &indexBegin);
-	cout << "Index Begin: " + to_string(indexBegin);
+	cout << "Index Begin: " + to_string(indexBegin) << endl;
 
 	sscanf_s(argv[4], "%i", &indexEnd);
-	cout << "Index End: " + to_string(indexEnd);
+	cout << "Index End: " + to_string(indexEnd) << endl;
 
 
 	help();
 
-	folderSize = indexEnd - indexBegin;
+
+	string resultDir = directory + "/result/";
+	string maskDir = directory + "/mask/";
+	string tempDir;
+	folderSize = indexEnd - indexBegin + 1;
+	cout << "folder size: " + to_string(folderSize) << endl;
 	filenames = new string[folderSize];
 	masks = new Mat[folderSize];
 	for (int i = 0; i < folderSize; i++) {
 		masks[i].setTo(Scalar::all(0));
 	}
 
-	for (int i = indexBegin; i < indexEnd; i++) {
+	for (int i = 0; i <= folderSize; i++) {
 		index = i - indexBegin;
 		filenames[index] = directory + "/rgb" + std::to_string(i) + "." + fileExtension;
 		if (filenames[index].empty()) {
@@ -416,34 +422,34 @@ int main(int argc, char** argv) {
 		case '\x1b':
 			cout << "Exiting ..." << endl;
 			goto exit_main;
+
 		case 'r':
 			cout << endl;
 			gcapp.reset();
 			gcapp.showImage();
 			break;
+
 		case 'j':
 			masks[index] = gcapp.getMask();
 			if (currentImage == indexBegin) {
 				cout << "Finished this side" << endl;
 				currentImage = indexBegin + middle;
 				index = middle;
+				gcapp.mask = masks[index].clone();
 			}
 			else {
 				currentImage--;
 				index--;
 				if (masks[index].empty()) {
 					go = true;
-					masks[index] = gcapp.getMask();
+					masks[index] = gcapp.getMask().clone();
 				}
-				//masks[index] = gcapp.getMask();
 			}
 
 			cout << "Current Image: " + to_string(currentImage) << endl;
 			cout << "Index: " + to_string(index) + "\n" << endl;
 
-			//gcapp.reset();
-			gcapp.mask = masks[index];
-			//gcapp.isInitialized = true;
+			gcapp.mask = masks[index].clone();
 
 			imageToShow = showImageWindow();
 			gcapp.showImage();
@@ -452,6 +458,7 @@ int main(int argc, char** argv) {
 				goto nextIter;
 			}
 			break;
+
 		case 'k':
 			masks[index] = gcapp.getMask();
 			if (currentImage == indexEnd) {
@@ -464,24 +471,32 @@ int main(int argc, char** argv) {
 				index++;
 				if (masks[index].empty()) {
 					go = true;
-					masks[index] = gcapp.getMask();
+					masks[index] = gcapp.getMask().clone();
 				}
-				//masks[index] = gcapp.getMask();
 			}
 
 			cout << "Current Image: " + to_string(currentImage) << endl;
 			cout << "Index: " + to_string(index) + "\n" << endl;
 
-			//gcapp.reset();
-			gcapp.mask = masks[index];
-			//gcapp.isInitialized = true;
+			gcapp.mask = masks[index].clone();
 
 			imageToShow = showImageWindow();
 			gcapp.showImage();
+			cout << "current image: " + to_string(currentImage) + " - index end: " + to_string(indexEnd) << endl;
 			if (go == true) {
 				go = false;
 				goto nextIter;
 			}
+			break;
+		case 'f':
+			for (int i = 0; i < folderSize; i++) {
+				tempDir = maskDir + "rgb" + to_string(i) + ".jpg";
+				cout << "Temp Dir: " + tempDir << endl;
+				//imwrite(resultDir + "rgb" + to_string(i) + ".jpg", );
+				imwrite(tempDir, masks[i]);
+				cout << "Wrote this" << endl;
+			}
+			goto exit_main;
 			break;
 nextIter:
 		case 'n':
