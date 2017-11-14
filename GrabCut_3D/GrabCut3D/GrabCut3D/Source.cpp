@@ -537,6 +537,7 @@ nextIter:
 			if (newIterCount > iterCount) {
 				gcapp.showImage();
 				cout << iterCount << ">" << endl;
+				maskFiles[index] = saveCurrentMask();
 			}
 			else
 				cout << "rect must be determined>" << endl;
