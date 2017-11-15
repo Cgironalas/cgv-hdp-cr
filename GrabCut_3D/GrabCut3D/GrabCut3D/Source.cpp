@@ -8,7 +8,7 @@
 using namespace cv;
 using namespace std;
 
-static bool go;
+static bool go, comeBack1, comeBack2;
 
 static Mat imageToShow;
 
@@ -499,7 +499,39 @@ int main(int argc, char** argv) {
 			break;
 
 		case 'c':
+			comeBack1 = true;
+come_back1:
+			while (index > 0) {
+				followingImage(false);
+				if (go == true) {
+					go = false;
+					goto nextIter;
+				}
+			}
+			comeBack1 = false;
 
+			followingImage(false);
+			if (go == true) {
+				go = false;
+				goto nextIter;
+			}
+
+			comeBack2 = true;
+come_back2:
+			while (index < folderSize - 2) {
+				followingImage(true);
+				if (go == true) {
+					go = false;
+					goto nextIter;
+				}
+			}
+			comeBack2 = false;
+
+			followingImage(true);
+			if (go == true) {
+				go = false;
+				goto nextIter;
+			}
 			break;
 
 		case 'l':
@@ -552,6 +584,13 @@ nextIter:
 			}
 			else
 				cout << "rect must be determined>" << endl;
+
+			if (comeBack1) {
+				goto come_back1;
+			}
+			if (comeBack2) {
+				goto come_back2;
+			}
 			break;
 		}
 	}
