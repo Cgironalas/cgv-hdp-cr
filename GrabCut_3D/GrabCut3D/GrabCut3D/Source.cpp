@@ -10,7 +10,7 @@ using namespace std;
 
 static bool go, comeBack1, comeBack2;
 
-static Mat imageToShow;
+static Mat imageToShow, tempMat;
 
 static string sourceDir,	//Directory of the source images
 			  maskDir,		//Directory of pre-existing masks or where they will be saved.
@@ -332,21 +332,30 @@ Mat showImageWindow() {
 		cout << "\n Durn, couldn't read image filename " << imgFiles[index] << endl;
 		return Mat();
 	}
+	Mat temp = imread(maskFiles[index], 0);
+	//gcapp.mask = imread(maskFiles[index], 0);
+	if (!temp.empty()) {
+		gcapp.mask = imread(maskFiles[index], 0);
+		gcapp.isInitialized = true;
+		cout << "source file: " + imgFiles[index] << endl;
+		cout << "mask file: " + maskFiles[index] << endl;
+	}
 
 	return image;
 }
 
 string saveCurrentMask() {
+	//Save GrabCut Mask
 	Mat tempMask = gcapp.getMask().clone();
-
 	string maskFile = maskDir + "/rgb" + to_string(currentImage) + ".bmp";
-	string binFile = binMaskDir + "/rgb" + to_string(currentImage) + ".bmp";
 
 	imwrite(maskFile, tempMask);
 
 	cout << "Saved mask for image: " + to_string(currentImage) << endl << endl;
 
+	//Save Binary Mask
 	Mat binMask(tempMask.size(), tempMask.type());
+	string binFile = binMaskDir + "/rgb" + to_string(currentImage) + ".bmp";
 	cv::threshold(tempMask, binMask, 2, 255, cv::THRESH_BINARY);
 
 	imwrite(binFile, binMask);
@@ -361,10 +370,16 @@ void resetCurrentImageValues() {
 }
 
 void checkFollowingMask() {
-	if (maskFiles[index] == "") {
+	Mat tempMask = imread(maskFiles[index], 0);
+	if (tempMask.empty()) {
+		cout << "mask was empty" << endl;
 		go = true;
 		maskFiles[index] = saveCurrentMask();
 	}
+	//if (maskFiles[index] == "") {
+	//	go = true;
+	//	maskFiles[index] = saveCurrentMask();
+	//}
 }
 
 void nextImage() {
@@ -404,10 +419,23 @@ void followingImage(bool next) {
 	cout << "Current Image: " + to_string(currentImage) << endl;
 	cout << "Index: " + to_string(index) + "\n" << endl;
 
-	gcapp.mask = imread(maskFiles[index], 0);
+	//gcapp.mask = imread(maskFiles[index], 0);
 
 	imageToShow = showImageWindow();
 	gcapp.showImage();
+}
+
+void resetImage() {
+	bool temp = false;
+	if (index > middle) {
+		temp = false;
+	}
+	if (index < middle) {
+		temp = true;
+	}
+	while (index != middle) {
+		followingImage(temp);
+	}
 }
 
 int main(int argc, char** argv) {
@@ -441,16 +469,19 @@ int main(int argc, char** argv) {
 	maskFiles = new string[folderSize];
 
 
-	for (int i = 0; i < folderSize; i++) {
-		maskFiles[i] = "";
-	}
-
 	for (int i = 0; i <= folderSize; i++) {
 		index = i - indexBegin;
-		imgFiles[index] = sourceDir + "/rgb" + std::to_string(i) + "." + fileExtension;
+
+		imgFiles[index] = sourceDir + "/rgb" + to_string(i) + "." + fileExtension;
 		if (imgFiles[index].empty()) {
 			cout << "\nEmpty filename" << endl;
 			return -5;
+		}
+
+		maskFiles[index] = maskDir + "/rgb" + to_string(i) + ".bmp";
+		if (maskFiles[index].empty()) {
+			cout << "\nEmpty mask filename" << endl;
+			return -6;
 		}
 	}
 
@@ -476,13 +507,20 @@ int main(int argc, char** argv) {
 	//They just send the values to their own defined function gcapp.mouseClick
 
 	imageToShow = showImageWindow();
-
+	
 	if (imageToShow.empty()) {
 		cout << "image empty" << endl;
 		return -6;
 	}
 
 	gcapp.setImageAndWinName(imageToShow, winName);
+	tempMat = imread(maskFiles[index], 0);
+	//gcapp.mask = imread(maskFiles[index], 0);
+	if (!tempMat.empty()) {
+		gcapp.mask = imread(maskFiles[index], 0);
+		gcapp.isInitialized = true;
+	}
+	tempMat = Mat();
 	gcapp.showImage();
 
 	for (;;) {
@@ -534,16 +572,42 @@ come_back2:
 			}
 			break;
 
-		case 'l':
+		case 'h':
+			cout << "presed h" << endl;
+			resetImage();
+			while (index > indexBegin-1) {
+				tempMat = imread(maskFiles[index], 0);
+				if (tempMat.empty()) {
+					followingImage(true);
+					break;
+				}
+				followingImage(false);
+			}
 
-			for (int i = folderSize - 1; i >= 0; i--) {
-
+			if (index = 1) {
+				tempMat = imread(maskFiles[index], 0);
+				if (tempMat.empty()) {
+					followingImage(true);
+				}
 			}
 			break;
 
-		case 'h':
-			for (int i = 0; i < folderSize; i++) {
-
+		case 'l':
+			cout << "pressed l" << endl;
+			resetImage();
+			while (index < indexEnd-1) {
+				tempMat = imread(maskFiles[index], 0);
+				if (tempMat.empty()) {
+					followingImage(false);
+					break;
+				}
+				followingImage(true);
+			}
+			if (index = indexEnd - 2) {
+				tempMat = imread(maskFiles[index], 0);
+				if (tempMat.empty()) {
+					followingImage(false);
+				}
 			}
 			break;
 
