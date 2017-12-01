@@ -280,10 +280,12 @@ int GCApplication::nextIter() {
 GCApplication gcapp;
 
 
+
 //Passthrough function for the GCApplication mouseClick
 static void on_mouse(int event, int x, int y, int flags, void* param) {
 	gcapp.mouseClick(event, x, y, flags, param);
 }
+
 
 
 void readConfigurationFile(string configFile) {
@@ -333,20 +335,22 @@ void readConfigurationFile(string configFile) {
 	}
 }
 
-Mat showImageWindow() {
-	Mat image = imread(sourceDir + imgFiles[index], 1);// Set to 1 for RGB, with -1 set to RGB with alpha channel
-	if (image.empty()) {
-		cout << "\n Durn, couldn't read image filename " << imgFiles[index] << endl;
-		return Mat();
-	}
-
-	Mat temp = imread(maskDir + maskFiles[index], 0);
+void readCurrentMask() {
+	Mat temp = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
 	if (!temp.empty()) {
 		temp = Mat();
-		gcapp.mask = imread(maskDir + maskFiles[index], 0);
+		gcapp.mask = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
 		gcapp.isInitialized = true;
 		cout << "source file: " + imgFiles[index] << endl;
 		cout << "mask file:   " + maskFiles[index] << endl;
+	}
+}
+
+Mat readCurrentImageAndMask() {
+	Mat image = imread(sourceDir + imgFiles[index], IMREAD_COLOR);// Set to 1 for RGB, with -1 set to RGB with alpha channel
+	if (image.empty()) {
+		cout << "\n Durn, couldn't read image filename " << imgFiles[index] << endl;
+		return Mat();
 	}
 
 	return image;
@@ -379,7 +383,7 @@ void resetCurrentImageValues() {
 
 void checkFollowingMask() {
 	cout << maskDir + maskFiles[index] << endl;
-	Mat tempMask = imread(maskDir + maskFiles[index], 0);
+	Mat tempMask = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
 	if (tempMask.empty()) {
 		cout << "mask was empty" << endl;
 		go = true;
@@ -426,13 +430,13 @@ void followingImage(bool next) {
 
 	//gcapp.mask = imread(maskFiles[index], 0);
 
-	imageToShow = showImageWindow();
+	imageToShow = readCurrentImageAndMask();
 	gcapp.showImage();
 }
 
 bool maskExists(int i) {
 	cout << "Mask to check: " + maskDir + maskFiles[i] << endl;
-	Mat temp = imread(maskDir + maskFiles[i], 0);
+	Mat temp = imread(maskDir + maskFiles[i], IMREAD_GRAYSCALE);
 	if (!temp.empty()) {
 		return true;
 	}
@@ -458,7 +462,7 @@ void resetImage() {
 	*/
 	if (index != middle) {
 		resetCurrentImageValues();
-		imageToShow = showImageWindow();
+		imageToShow = readCurrentImageAndMask();
 		gcapp.showImage();
 	}
 	cout << "end" << endl;
@@ -523,7 +527,7 @@ int main(int argc, char** argv) {
 	//on_mouse is an in between function that they (in openCV in general) to manage mouse interaction
 	//They just send the values to their own defined function gcapp.mouseClick
 
-	imageToShow = showImageWindow();
+	imageToShow = readCurrentImageAndMask();
 	
 	if (imageToShow.empty()) {
 		cout << "First image empty!!!" << endl;
@@ -532,9 +536,9 @@ int main(int argc, char** argv) {
 
 	gcapp.setImageAndWinName(imageToShow, winName);
 
-	tempMat = imread(maskDir + maskFiles[index], 0);
+	tempMat = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
 	if (!tempMat.empty()) {
-		gcapp.mask = imread(maskDir + maskFiles[index], 0);
+		gcapp.mask = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
 		gcapp.isInitialized = true;
 	}
 	tempMat = Mat();
@@ -634,7 +638,7 @@ come_back2:
 			cout << "dies before here" << endl;
 			counter = 0;
 			while (index < indexEnd - 1) {
-				tempMat = imread(maskDir + maskFiles[index], 0);
+				tempMat = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
 				if (tempMat.empty()) {
 					//followingImage(false);
 					break;
