@@ -36,148 +36,148 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\cond\has_virtual_destructor.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\cond\has_virtual_destructor.h">
        <Filter>cond\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\cond\is_abstract.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\cond\is_abstract.h">
        <Filter>cond\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\cond\is_base_of.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\cond\is_base_of.h">
        <Filter>cond\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\cond\is_const.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\cond\is_const.h">
        <Filter>cond\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\cond\is_enum.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\cond\is_enum.h">
        <Filter>cond\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\cond\is_standard_type.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\cond\is_standard_type.h">
        <Filter>cond\headers</Filter>
     </ClInclude>
   </ItemGroup>
 
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\ctrl\if_.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\ctrl\if_.h">
        <Filter>ctrl\headers</Filter>
     </ClInclude>
   </ItemGroup>
 
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\clean.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\clean.h">
        <Filter>func\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\drop_const.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\drop_const.h">
        <Filter>func\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\drop_pointer.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\drop_pointer.h">
        <Filter>func\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\drop_ref.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\drop_ref.h">
        <Filter>func\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\make_argument.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\make_argument.h">
        <Filter>func\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\make_const.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\make_const.h">
        <Filter>func\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\make_ref.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\make_ref.h">
        <Filter>func\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\make_return.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\make_return.h">
        <Filter>func\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\promote.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\promote.h">
        <Filter>func\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\promote_const.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\promote_const.h">
        <Filter>func\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\transfer_const.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\transfer_const.h">
        <Filter>func\headers</Filter>
     </ClInclude>
   </ItemGroup>
 
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\invalid_type.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\invalid_type.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\lib_begin.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\lib_begin.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\standard_types.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\standard_types.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\variant.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\variant.h">
        <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
 
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\info\type_id.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\info\type_id.h">
        <Filter>info\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\info\type_name.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\info\type_name.h">
        <Filter>info\headers</Filter>
     </ClInclude>
   </ItemGroup>
 
   <ItemGroup>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\info\type_id.cxx">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\info\type_id.cxx">
        <Filter>info\sources</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\info\type_name.cxx">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\info\type_name.cxx">
        <Filter>info\sources</Filter>
     </ClCompile>
   </ItemGroup>
 
   <ItemGroup>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\cgv_type.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\cgv_type.pj">
        <Filter>make</Filter>
     </make_rule>
   </ItemGroup>
 
   <ItemGroup>
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\invalid_type.ph">
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\invalid_type.ph">
        <Filter>ppp</Filter>
     </ppp_headers>
   </ItemGroup>
 
   <ItemGroup>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\variant.cxx">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\variant.cxx">
        <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>
 
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\function_pointer.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\function_pointer.h">
        <Filter>traits\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\max.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\max.h">
        <Filter>traits\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\member_pointer.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\member_pointer.h">
        <Filter>traits\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\method_pointer.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\method_pointer.h">
        <Filter>traits\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\min.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\min.h">
        <Filter>traits\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\one.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\one.h">
        <Filter>traits\headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\zero.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\zero.h">
        <Filter>traits\headers</Filter>
     </ClInclude>
   </ItemGroup>
 
   <ItemGroup>
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\function_pointer.ph">
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\function_pointer.ph">
        <Filter>traits\ppp</Filter>
     </ppp_headers>
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\method_pointer.ph">
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\method_pointer.ph">
        <Filter>traits\ppp</Filter>
     </ppp_headers>
   </ItemGroup>

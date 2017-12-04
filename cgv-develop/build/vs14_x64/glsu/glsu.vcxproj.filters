@@ -18,37 +18,37 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu\GL\glsu.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu\GL\glsu.h">
        <Filter>GL\headers</Filter>
     </ClInclude>
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu\glsu.def">
+    <None Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu\glsu.def">
        <Filter>config</Filter>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\glsu\license.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\glsu\license.h">
        <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
 
   <ItemGroup>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu\glsu.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu\glsu.pj">
        <Filter>make</Filter>
     </make_rule>
   </ItemGroup>
 
   <ItemGroup>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu\glsu.c">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu\glsu.c">
        <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>
 
   <ItemGroup>
-    <text_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu\license.txt">
+    <text_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu\license.txt">
        <Filter>text</Filter>
     </text_rule>
   </ItemGroup>

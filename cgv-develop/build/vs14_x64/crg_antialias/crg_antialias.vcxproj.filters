@@ -10,22 +10,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\crg_antialias\antialias.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\crg_antialias\antialias.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\crg_antialias\lib_begin.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\crg_antialias\lib_begin.h">
        <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
 
   <ItemGroup>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\crg_antialias\crg_antialias.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\crg_antialias\crg_antialias.pj">
        <Filter>make</Filter>
     </make_rule>
   </ItemGroup>
 
   <ItemGroup>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\crg_antialias\antialias.cxx">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\crg_antialias\antialias.cxx">
        <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>

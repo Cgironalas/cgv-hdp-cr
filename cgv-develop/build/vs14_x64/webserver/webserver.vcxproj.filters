@@ -10,40 +10,40 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\webserver\base64.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\webserver\base64.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\webserver\stdHelpers.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\webserver\stdHelpers.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\webserver\Tracer.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\webserver\Tracer.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\webserver\UrlHelper.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\webserver\UrlHelper.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\webserver\webserver.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\webserver\webserver.h">
        <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
 
   <ItemGroup>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\webserver\webserver.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\webserver\webserver.pj">
        <Filter>make</Filter>
     </make_rule>
   </ItemGroup>
 
   <ItemGroup>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\webserver\base64.cpp">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\webserver\base64.cpp">
        <Filter>sources</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\webserver\stdHelpers.cpp">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\webserver\stdHelpers.cpp">
        <Filter>sources</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\webserver\UrlHelper.cpp">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\webserver\UrlHelper.cpp">
        <Filter>sources</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\webserver\webserver.cpp">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\webserver\webserver.cpp">
        <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>

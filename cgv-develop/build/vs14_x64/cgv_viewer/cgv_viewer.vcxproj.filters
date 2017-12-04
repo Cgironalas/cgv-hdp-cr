@@ -10,22 +10,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\apps\cgv_viewer\cgv_viewer.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\apps\cgv_viewer\cgv_viewer.pj">
        <Filter>make</Filter>
     </make_rule>
   </ItemGroup>
 
   <ItemGroup>
-    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\apps\cgv_viewer\cgv_logo.png">
+    <resources_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\apps\cgv_viewer\cgv_logo.png">
        <Filter>resources</Filter>
     </resources_rule>
   </ItemGroup>
 
   <ItemGroup>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_viewer\cgv_logo.png.cxx">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\cgv_viewer\cgv_logo.png.cxx">
        <Filter>sources</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\apps\cgv_viewer\main.cxx">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\apps\cgv_viewer\main.cxx">
        <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>

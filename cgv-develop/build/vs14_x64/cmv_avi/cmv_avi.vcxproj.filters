@@ -10,28 +10,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmv_avi\avi_video_reader.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\cmv_avi\avi_video_reader.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmv_avi\avi_video_writer.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\cmv_avi\avi_video_writer.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmv_avi\lib_begin.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\cmv_avi\lib_begin.h">
        <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
 
   <ItemGroup>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmv_avi\cmv_avi.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\cmv_avi\cmv_avi.pj">
        <Filter>make</Filter>
     </make_rule>
   </ItemGroup>
 
   <ItemGroup>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmv_avi\avi_video_reader.cxx">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\cmv_avi\avi_video_reader.cxx">
        <Filter>sources</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cmv_avi\avi_video_writer.cxx">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\cmv_avi\avi_video_writer.cxx">
        <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>

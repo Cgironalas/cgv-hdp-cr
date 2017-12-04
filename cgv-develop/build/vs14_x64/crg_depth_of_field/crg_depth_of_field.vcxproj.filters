@@ -10,22 +10,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\crg_depth_of_field\depth_of_field.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\crg_depth_of_field\depth_of_field.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\crg_depth_of_field\lib_begin.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\crg_depth_of_field\lib_begin.h">
        <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
 
   <ItemGroup>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\crg_depth_of_field\crg_depth_of_field.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\crg_depth_of_field\crg_depth_of_field.pj">
        <Filter>make</Filter>
     </make_rule>
   </ItemGroup>
 
   <ItemGroup>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\crg_depth_of_field\depth_of_field.cxx">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\crg_depth_of_field\depth_of_field.cxx">
        <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>

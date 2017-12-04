@@ -12,55 +12,55 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\abst_signal.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\abst_signal.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\bool_combiner.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\bool_combiner.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\bool_signal.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\bool_signal.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\callback_stream.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\callback_stream.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\lib_begin.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\lib_begin.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\rebind.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\rebind.h">
        <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\signal.h">
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\signal.h">
        <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
 
   <ItemGroup>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\cgv_signal.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\cgv_signal.pj">
        <Filter>make</Filter>
     </make_rule>
   </ItemGroup>
 
   <ItemGroup>
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\abst_signal.ph">
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\abst_signal.ph">
        <Filter>ppp</Filter>
     </ppp_headers>
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\bool_signal.ph">
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\bool_signal.ph">
        <Filter>ppp</Filter>
     </ppp_headers>
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\rebind.ph">
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\rebind.ph">
        <Filter>ppp</Filter>
     </ppp_headers>
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\signal.ph">
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\signal.ph">
        <Filter>ppp</Filter>
     </ppp_headers>
   </ItemGroup>
 
   <ItemGroup>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\abst_signal.cxx">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\abst_signal.cxx">
        <Filter>sources</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\bool_combiner.cxx">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\bool_combiner.cxx">
        <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,13 +8,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_meta\cg_meta.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\cg_meta\cg_meta.pj">
        <Filter>make</Filter>
     </make_rule>
   </ItemGroup>
 
   <ItemGroup>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\cg_meta\object_browser.cxx">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\cg_meta\object_browser.cxx">
        <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>

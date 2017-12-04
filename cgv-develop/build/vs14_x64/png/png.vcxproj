@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug Dll|x64">
       <Configuration>Debug Dll</Configuration>
@@ -22,34 +22,27 @@
     <ProjectGuid>{B4ACE650-FC31-11DD-87AF-0800200C9A66}</ProjectGuid>
     <RootNamespace>png</RootNamespace>
     <Keyword>x64Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-
-    <PlatformToolset>v140</PlatformToolset>
-
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-
-    <PlatformToolset>v140</PlatformToolset>
-
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-
-    <PlatformToolset>v140</PlatformToolset>
-
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-
-    <PlatformToolset>v140</PlatformToolset>
-
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -72,29 +65,30 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\png\$(ProjectName)_$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\png\$(ProjectName)_$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectName)64_s14</TargetName>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\png\$(ProjectName)_$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\png\$(ProjectName)_$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName)64_sd14</TargetName>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\png\$(ProjectName)_$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\png\$(ProjectName)_$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">$(ProjectName)64_14</TargetName>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\png\$(ProjectName)_$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\png\$(ProjectName)_$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">$(ProjectName)64_d14</TargetName>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/3rd/png;CGV_FORCE_STATIC;NDEBUG;_WINDOWS;_LIB;PNG_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop;WIN32;INPUT_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop/3rd/png;CGV_FORCE_STATIC;NDEBUG;_WINDOWS;_LIB;PNG_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <DebugInformationFormat></DebugInformationFormat>
-      <PrecompiledHeader></PrecompiledHeader>
-
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Lib>
@@ -104,15 +98,15 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/3rd/png;CGV_FORCE_STATIC;_DEBUG;CGV_FORCE_STATIC;_WINDOWS;_LIB;PNG_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop;WIN32;INPUT_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop/3rd/png;CGV_FORCE_STATIC;_DEBUG;CGV_FORCE_STATIC;_WINDOWS;_LIB;PNG_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <PrecompiledHeader></PrecompiledHeader>
-
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Lib>
@@ -122,12 +116,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/3rd/png;NDEBUG;_WINDOWS;_USRDLL;PNG_BUILD_DLL;PNG_NO_MODULEDEF;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop;WIN32;INPUT_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop/3rd/png;NDEBUG;_WINDOWS;_USRDLL;PNG_BUILD_DLL;PNG_NO_MODULEDEF;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <DebugInformationFormat></DebugInformationFormat>
-      <PrecompiledHeader></PrecompiledHeader>
-
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
@@ -135,21 +130,21 @@
       <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ImportLibrary>D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/3rd/png;_DEBUG;_WINDOWS;_USRDLL;PNG_BUILD_DLL;PNG_NO_MODULEDEF;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop;WIN32;INPUT_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop/3rd/png;_DEBUG;_WINDOWS;_USRDLL;PNG_BUILD_DLL;PNG_NO_MODULEDEF;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <PrecompiledHeader></PrecompiledHeader>
-
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
@@ -157,40 +152,39 @@
       <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ImportLibrary>D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\png.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngerror.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pnggccrd.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngget.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngmem.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngpread.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngread.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngrio.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngrtran.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngrutil.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngset.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngtrans.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngvcrd.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngwio.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngwrite.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngwtran.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngwutil.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\png.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngerror.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pnggccrd.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngget.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngmem.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngpread.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngread.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngrio.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngrtran.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngrutil.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngset.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngtrans.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngvcrd.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngwio.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngwrite.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngwtran.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngwutil.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\png.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\pngconf.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\png.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\pngconf.h" />
   </ItemGroup>
   <ItemGroup>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\png\png.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\png\png.pj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">true</ExcludedFromBuild>
-
     </make_rule>
   </ItemGroup>
   <ItemGroup>

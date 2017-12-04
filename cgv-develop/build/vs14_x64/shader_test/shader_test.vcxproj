@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -10,13 +10,12 @@
     <ProjectGuid>{D120F524-7A7E-4B3F-8D71-08FF29349578}</ProjectGuid>
     <RootNamespace>shader_test</RootNamespace>
     <Keyword>x64Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-
-    <PlatformToolset>v140</PlatformToolset>
-
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -30,19 +29,20 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\shader_test\$(ProjectName)_$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\shader_test\$(ProjectName)_$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectName)64</TargetName>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew;D:\Users\CGiron\Documents\Project\cgv-develop\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/tool/shader_test;CGV_FORCE_STATIC;NDEBUG;_CONSOLE;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\glew;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop;WIN32;INPUT_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop/tool/shader_test;CGV_FORCE_STATIC;NDEBUG;_CONSOLE;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <DebugInformationFormat></DebugInformationFormat>
-      <PrecompiledHeader></PrecompiledHeader>
-
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
@@ -57,249 +57,238 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\action.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\attach_slot.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\base.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\base_generator.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\console.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\group.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\import.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\named.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\node.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\register.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\traverser.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\ascii_io_reflection_handlers.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\binary_io_reflection_handlers.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\component_format.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\data_format.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\data_view.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\image_view.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\io_reflection_handler.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\packing_info.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew\glew.c" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\ppp\command_token.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\ppp\expression_processor.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\ppp\operators.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\ppp\ph_processor.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\ppp\ppp_variant.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\ppp\variables.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\debug_reflection_handler.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\find_reflection_handler.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\get_reflection_handler.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\reflection_handler.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\reflection_traits.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\reflect_enum.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\set_reflection_handler.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\tool\shader_test\shader_test.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\abst_signal.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\bool_combiner.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\file_dialog.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\gui_driver.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\gui\control.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\image\image_writer.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\font\font.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\media\font\font_server.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\os\clipboard.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\context.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\drawable.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_texture_tools.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_context.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\cgv_gl\gl\gl_context_win32.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\shader_code.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\frame_buffer.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\render_buffer.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\render\shader_program.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\info\type_id.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\info\type_name.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\variant.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\advanced_scan.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\big_binary_file.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\bit_operations.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\convert.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\convert_string.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\date_time.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\dir.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\file.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\ostream_printf.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\progression.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\scan.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\scan_enum.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\statistics.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\stopwatch.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\token.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\tokenizer.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\action.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\attach_slot.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\base.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\base_generator.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\console.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\group.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\import.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\named.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\node.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\register.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\traverser.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\ascii_io_reflection_handlers.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\binary_io_reflection_handlers.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\component_format.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\data_format.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\data_view.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\image_view.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\io_reflection_handler.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\packing_info.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\glew\glew.c" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\ppp\command_token.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\ppp\expression_processor.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\ppp\operators.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\ppp\ph_processor.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\ppp\ppp_variant.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\ppp\variables.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\debug_reflection_handler.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\find_reflection_handler.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\get_reflection_handler.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\reflection_handler.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\reflection_traits.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\reflect_enum.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\set_reflection_handler.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\tool\shader_test\shader_test.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\abst_signal.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\bool_combiner.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\gui\file_dialog.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\gui\gui_driver.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\gui\control.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\media\image\image_writer.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\media\font\font.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\media\font\font_server.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\os\clipboard.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\render\context.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\render\drawable.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\cgv_gl\gl\gl.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\cgv_gl\gl\gl_texture_tools.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\cgv_gl\gl\gl_context.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\cgv_gl\gl\gl_context_win32.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\render\shader_code.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\render\frame_buffer.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\render\render_buffer.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\render\shader_program.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\info\type_id.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\info\type_name.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\variant.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\advanced_scan.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\big_binary_file.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\bit_operations.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\convert.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\convert_string.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\date_time.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\dir.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\file.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\ostream_printf.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\progression.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\scan.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\scan_enum.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\statistics.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\stopwatch.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\token.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\tokenizer.cxx" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\action.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\attach_slot.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\base.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\base_generator.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\call_interface_impl.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\console.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\find_action.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\group.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\import.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\lib_begin.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\named.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\node.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\register.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\traverser.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\ascii_io_reflection_handlers.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\binary_io_reflection_handlers.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\component_format.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\data_format.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\data_view.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\dynamic_priority_queue.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\grid.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\image_view.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\io_reflection_handler.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\lib_begin.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\packing_info.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\ref_arr.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\ref_counted.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\ref_ptr.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\union_find.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew\GL\eglew.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew\GL\glew.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew\GL\glxew.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew\GL\wglew.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\ppp\command_token.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\ppp\expression_processor.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\ppp\lib_begin.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\ppp\operators.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\ppp\ph_processor.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\ppp\variables.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\ppp\variant.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\debug_reflection_handler.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\find_reflection_handler.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\get_reflection_handler.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\lib_begin.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\method_interface_impl.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\reflection_handler.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\reflection_traits.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\reflection_traits_info.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\reflect_config.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\reflect_enum.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\reflect_extern.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\self_reflection_tag.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\set_reflection_handler.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\abst_signal.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\bool_combiner.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\bool_signal.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\callback_stream.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\lib_begin.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\rebind.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\signal.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\cond\has_virtual_destructor.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\cond\is_abstract.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\cond\is_base_of.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\cond\is_const.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\cond\is_enum.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\cond\is_standard_type.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\ctrl\if_.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\clean.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\drop_const.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\drop_pointer.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\drop_ref.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\make_argument.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\make_const.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\make_ref.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\make_return.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\promote.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\promote_const.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\func\transfer_const.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\invalid_type.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\lib_begin.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\standard_types.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\variant.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\info\type_access.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\info\type_id.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\info\type_name.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\info\type_ptr.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\function_pointer.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\max.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\member_pointer.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\method_pointer.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\min.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\one.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\zero.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\advanced_scan.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\big_binary_file.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\bit_operations.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\convert.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\convert_string.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\date_time.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\dir.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\file.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\lib_begin.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\ostream_printf.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\profiler.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\progression.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\scan.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\scan_enum.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\statistics.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\stopwatch.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\token.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\tokenizer.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\action.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\attach_slot.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\base.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\base_generator.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\call_interface_impl.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\console.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\find_action.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\group.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\import.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\lib_begin.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\named.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\node.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\register.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\traverser.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\ascii_io_reflection_handlers.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\binary_io_reflection_handlers.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\component_format.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\data_format.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\data_view.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\dynamic_priority_queue.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\grid.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\image_view.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\io_reflection_handler.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\lib_begin.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\packing_info.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\ref_arr.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\ref_counted.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\ref_ptr.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\union_find.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\glew\GL\eglew.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\glew\GL\glew.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\glew\GL\glxew.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\glew\GL\wglew.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\ppp\command_token.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\ppp\expression_processor.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\ppp\lib_begin.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\ppp\operators.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\ppp\ph_processor.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\ppp\variables.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\ppp\variant.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\debug_reflection_handler.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\find_reflection_handler.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\get_reflection_handler.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\lib_begin.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\method_interface_impl.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\reflection_handler.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\reflection_traits.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\reflection_traits_info.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\reflect_config.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\reflect_enum.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\reflect_extern.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\self_reflection_tag.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\set_reflection_handler.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\abst_signal.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\bool_combiner.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\bool_signal.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\callback_stream.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\lib_begin.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\rebind.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\signal.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\cond\has_virtual_destructor.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\cond\is_abstract.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\cond\is_base_of.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\cond\is_const.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\cond\is_enum.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\cond\is_standard_type.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\ctrl\if_.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\clean.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\drop_const.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\drop_pointer.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\drop_ref.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\make_argument.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\make_const.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\make_ref.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\make_return.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\promote.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\promote_const.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\func\transfer_const.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\invalid_type.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\lib_begin.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\standard_types.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\variant.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\info\type_access.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\info\type_id.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\info\type_name.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\info\type_ptr.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\function_pointer.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\max.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\member_pointer.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\method_pointer.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\min.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\one.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\zero.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\advanced_scan.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\big_binary_file.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\bit_operations.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\convert.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\convert_string.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\date_time.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\dir.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\file.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\lib_begin.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\ostream_printf.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\profiler.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\progression.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\scan.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\scan_enum.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\statistics.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\stopwatch.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\token.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\tokenizer.h" />
   </ItemGroup>
   <ItemGroup>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\cgv_base.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\cgv_base.pj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-
     </make_rule>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\data\cgv_data.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\data\cgv_data.pj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-
     </make_rule>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew\glew.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\glew\glew.pj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-
     </make_rule>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\tool\shader_test\shader_test.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\tool\shader_test\shader_test.pj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-
     </make_rule>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\libs\ppp\ppp_lib.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\ppp\ppp_lib.pj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-
     </make_rule>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\cgv_reflect.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\cgv_reflect.pj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-
     </make_rule>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\tool\shader_test\shader_test.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\tool\shader_test\shader_test.pj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-
     </make_rule>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\tool\shader_test\shader_test_app.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\tool\shader_test\shader_test_app.pj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-
     </make_rule>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\cgv_signal.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\cgv_signal.pj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-
     </make_rule>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\cgv_type.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\cgv_type.pj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-
     </make_rule>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\cgv_utils.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\cgv_utils.pj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-
     </make_rule>
   </ItemGroup>
   <ItemGroup>
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\base\call_interface_impl.ph" />
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\reflect\method_interface_impl.ph" />
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\abst_signal.ph" />
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\bool_signal.ph" />
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\rebind.ph" />
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\signal\signal.ph" />
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\invalid_type.ph" />
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\function_pointer.ph" />
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\type\traits\method_pointer.ph" />
-    <ppp_headers Include="D:\Users\CGiron\Documents\Project\cgv-develop\cgv\utils\ostream_printf.ph" />
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\base\call_interface_impl.ph" />
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\reflect\method_interface_impl.ph" />
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\abst_signal.ph" />
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\bool_signal.ph" />
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\rebind.ph" />
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\signal\signal.ph" />
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\invalid_type.ph" />
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\function_pointer.ph" />
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\type\traits\method_pointer.ph" />
+    <ppp_headers Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\utils\ostream_printf.ph" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

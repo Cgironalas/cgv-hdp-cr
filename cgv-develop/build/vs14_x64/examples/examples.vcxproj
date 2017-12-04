@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug Dll|x64">
       <Configuration>Debug Dll</Configuration>
@@ -30,50 +30,39 @@
     <ProjectGuid>{4F8C8790-FAB4-11DD-87AF-0800200C9A66}</ProjectGuid>
     <RootNamespace>examples</RootNamespace>
     <Keyword>x64Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-
-    <PlatformToolset>v140</PlatformToolset>
-
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-
-    <PlatformToolset>v140</PlatformToolset>
-
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-
-    <PlatformToolset>v140</PlatformToolset>
-
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-
-    <PlatformToolset>v140</PlatformToolset>
-
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Exe|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-
-    <PlatformToolset>v140</PlatformToolset>
-
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Exe|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-
-    <PlatformToolset>v140</PlatformToolset>
-
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -101,37 +90,38 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\examples\$(ProjectName)_$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\examples\$(ProjectName)_$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectName)64_s14</TargetName>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\lib\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\examples\$(ProjectName)_$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\examples\$(ProjectName)_$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName)64_sd14</TargetName>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\examples\$(ProjectName)_$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\examples\$(ProjectName)_$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">$(ProjectName)64_14</TargetName>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\examples\$(ProjectName)_$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\examples\$(ProjectName)_$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">$(ProjectName)64_d14</TargetName>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Exe|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release Exe|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\examples\$(ProjectName)_$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Exe|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release Exe|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\examples\$(ProjectName)_$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release Exe|x64'">$(ProjectName)64_14</TargetName>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release Exe|x64'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug Exe|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\bin\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug Exe|x64'">D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\examples\$(ProjectName)_$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug Exe|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug Exe|x64'">D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\examples\$(ProjectName)_$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug Exe|x64'">$(ProjectName)64_d14</TargetName>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug Exe|x64'">true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include;D:\Users\CGiron\Documents\Project\cgv-develop\libs;D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu;D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu;D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/plugins/examples;CGV_FORCE_STATIC;NDEBUG;_WINDOWS;_LIB;HAVE_STRUCT_TIMESPEC;PTW32_STATIC_LIB;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\glew;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\fltk\include;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\delaunay;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop;WIN32;INPUT_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop/plugins/examples;CGV_FORCE_STATIC;NDEBUG;_WINDOWS;_LIB;HAVE_STRUCT_TIMESPEC;PTW32_STATIC_LIB;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <DebugInformationFormat></DebugInformationFormat>
-      <PrecompiledHeader></PrecompiledHeader>
-
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Lib>
@@ -141,15 +131,15 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include;D:\Users\CGiron\Documents\Project\cgv-develop\libs;D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu;D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu;D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/plugins/examples;CGV_FORCE_STATIC;_DEBUG;CGV_FORCE_STATIC;_WINDOWS;_LIB;HAVE_STRUCT_TIMESPEC;PTW32_STATIC_LIB;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\glew;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\fltk\include;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\delaunay;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop;WIN32;INPUT_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop/plugins/examples;CGV_FORCE_STATIC;_DEBUG;CGV_FORCE_STATIC;_WINDOWS;_LIB;HAVE_STRUCT_TIMESPEC;PTW32_STATIC_LIB;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <PrecompiledHeader></PrecompiledHeader>
-
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Lib>
@@ -159,12 +149,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include;D:\Users\CGiron\Documents\Project\cgv-develop\libs;D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu;D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu;D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/plugins/examples;NDEBUG;_WINDOWS;_USRDLL;HAVE_STRUCT_TIMESPEC;FL_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\glew;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\fltk\include;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\delaunay;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop;WIN32;INPUT_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop/plugins/examples;NDEBUG;_WINDOWS;_USRDLL;HAVE_STRUCT_TIMESPEC;FL_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <DebugInformationFormat></DebugInformationFormat>
-      <PrecompiledHeader></PrecompiledHeader>
-
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
@@ -172,21 +163,21 @@
       <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ImportLibrary>D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include;D:\Users\CGiron\Documents\Project\cgv-develop\libs;D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu;D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu;D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/plugins/examples;_DEBUG;_WINDOWS;_USRDLL;HAVE_STRUCT_TIMESPEC;FL_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\glew;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\fltk\include;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\delaunay;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop;WIN32;INPUT_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop/plugins/examples;_DEBUG;_WINDOWS;_USRDLL;HAVE_STRUCT_TIMESPEC;FL_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <PrecompiledHeader></PrecompiledHeader>
-
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
@@ -194,18 +185,19 @@
       <AdditionalLibraryDirectories>$(CGV_DIR)\lib;$(CGV_BUILD)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <ImportLibrary>D:\Users\CGiron\Documents\Project\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
+      <ImportLibrary>D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\lib\$(TargetName).lib</ImportLibrary>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Exe|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include;D:\Users\CGiron\Documents\Project\cgv-develop\libs;D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu;D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu;D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/plugins/examples;CGV_FORCE_STATIC;NDEBUG;_CONSOLE;HAVE_STRUCT_TIMESPEC;PTW32_STATIC_LIB;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\glew;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\fltk\include;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\delaunay;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop;WIN32;INPUT_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop/plugins/examples;CGV_FORCE_STATIC;NDEBUG;_CONSOLE;HAVE_STRUCT_TIMESPEC;PTW32_STATIC_LIB;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <DebugInformationFormat></DebugInformationFormat>
-      <PrecompiledHeader></PrecompiledHeader>
-
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
@@ -221,15 +213,15 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Exe|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\CGiron\Documents\Project\cgv-develop\3rd\glew;D:\Users\CGiron\Documents\Project\cgv-develop\3rd\fltk\include;D:\Users\CGiron\Documents\Project\cgv-develop\libs;D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu;D:\Users\CGiron\Documents\Project\cgv-develop\libs\glsu;D:\Users\CGiron\Documents\Project\cgv-develop\libs\delaunay;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CGV_DIR=D:/Users/CGiron/Documents/Project/cgv-develop;WIN32;INPUT_DIR=D:/Users/CGiron/Documents/Project/cgv-develop/plugins/examples;CGV_FORCE_STATIC;_DEBUG;_CONSOLE;HAVE_STRUCT_TIMESPEC;PTW32_STATIC_LIB;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CGV_DIR);$(CGV_BUILD);D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\glew;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\3rd\fltk\include;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\glsu;D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\delaunay;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CGV_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop;WIN32;INPUT_DIR=D:/Users/JMendez/Documents/cgv-hdp-cr/cgv-hdp-cr/cgv-develop/plugins/examples;CGV_FORCE_STATIC;_DEBUG;_CONSOLE;HAVE_STRUCT_TIMESPEC;PTW32_STATIC_LIB;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <PrecompiledHeader></PrecompiledHeader>
-
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
@@ -244,101 +236,97 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\cgv_viewer\cgv_logo.png.cxx">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\cgv_viewer\cgv_logo.png.cxx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">true</ExcludedFromBuild>
-
     </ClCompile>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\apps\cgv_viewer\main.cxx">
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\apps\cgv_viewer\main.cxx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">true</ExcludedFromBuild>
-
     </ClCompile>
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\examples\alhambra.png.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\base_provider_test.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\browser_test.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\buffer_test.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\bump_mapper.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\examples\cartuja.png.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\cube_demo.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\depth_peeler_test.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\gl_delaunay_mesh_draw.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\gpu_test.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\gui_test.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\image_drawable.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\infinite_grid.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\mouse_tracker.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\n_rook_estimator.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\picker.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\random_sampler.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\renderer_tests.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\shader_test.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\shape.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\build\vs14_x64\examples\testimg.jpg.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\textured_shape.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\video_creator.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\video_drawable.cxx" />
-    <ClCompile Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\webserver_test.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\examples\alhambra.png.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\base_provider_test.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\browser_test.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\buffer_test.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\bump_mapper.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\examples\cartuja.png.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\cube_demo.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\depth_peeler_test.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\gl_delaunay_mesh_draw.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\gpu_test.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\gui_test.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\image_drawable.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\infinite_grid.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\mouse_tracker.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\n_rook_estimator.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\picker.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\random_sampler.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\renderer_tests.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\shader_test.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\shape.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\simple_cube.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\build\vs14_x64\examples\testimg.jpg.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\textured_shape.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\video_creator.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\video_drawable.cxx" />
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\webserver_test.cxx" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\bump_mapper.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\gl_delaunay_mesh_draw.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\mouse_tracker.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\picker.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\shape.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_1.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_2.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_3.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_4.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_5.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_6.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_7.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_8.h" />
-    <ClInclude Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\simple_cube_9.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\bump_mapper.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\gl_delaunay_mesh_draw.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\mouse_tracker.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\picker.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\shape.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\simple_cube_1.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\simple_cube_2.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\simple_cube_3.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\simple_cube_4.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\simple_cube_5.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\simple_cube_6.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\simple_cube_7.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\simple_cube_8.h" />
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\simple_cube_9.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\config.def" />
-    <None Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\examples.gui" />
+    <None Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\config.def" />
+    <None Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\examples.gui" />
   </ItemGroup>
   <ItemGroup>
-    <make_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\examples.pj">
+    <make_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\examples.pj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release Exe|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Exe|x64'">true</ExcludedFromBuild>
-
     </make_rule>
   </ItemGroup>
   <ItemGroup>
-    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\apps\cgv_viewer\cgv_logo.png">
+    <resources_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\apps\cgv_viewer\cgv_logo.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release Dll|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Dll|x64'">true</ExcludedFromBuild>
-
     </resources_rule>
-    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\alhambra.png" />
-    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\cartuja.png" />
-    <resources_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\testimg.jpg" />
+    <resources_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\alhambra.png" />
+    <resources_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\cartuja.png" />
+    <resources_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\testimg.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\bump_mapper.glfs" />
-    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\bump_mapper.glpr" />
-    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\bump_mapper.glvs" />
-    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\gpu_test.glfs" />
-    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\gpu_test.glpr" />
-    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\gpu_test.glvs" />
-    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\my_support_functions.glsl" />
-    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\shader_test.glfs" />
-    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\shader_test.glpr" />
-    <shader_rule Include="D:\Users\CGiron\Documents\Project\cgv-develop\plugins\examples\shader_test.glvs" />
+    <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\bump_mapper.glfs" />
+    <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\bump_mapper.glpr" />
+    <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\bump_mapper.glvs" />
+    <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\gpu_test.glfs" />
+    <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\gpu_test.glpr" />
+    <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\gpu_test.glvs" />
+    <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\my_support_functions.glsl" />
+    <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\shader_test.glfs" />
+    <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\shader_test.glpr" />
+    <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\plugins\examples\shader_test.glvs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cgv_utils\cgv_utils.vcxproj">
