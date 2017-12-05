@@ -14,7 +14,6 @@ static Mat imageToShow, tempMat;
 
 static string sourceDir,	//Directory of the source images
 			  maskDir,		//Directory of pre-existing masks or where they will be saved.
-			  binMaskDir,	//Directory of where the binary versions of the masks will be saved.
 			  fileExtension,
 			  tempDir;		//Temporal string for various usages.
 
@@ -292,6 +291,7 @@ void readConfigurationFile(string configFile) {
 	ifstream file;
 	file.open(configFile);
 
+	// Verify that the configuration file could be opened
 	if (!file) {
 		cerr << "Unable to read configuration file: " + configFile << endl;
 		exit(-7);
@@ -299,141 +299,154 @@ void readConfigurationFile(string configFile) {
 
 	int i = 0;
 	string curLine;
-	while (getline(file, curLine) && i < 6) {
+	while (getline(file, curLine) && i < 5) {
+		// Read source directory input
 		if (i == 0) {
 			sourceDir = curLine.substr(curLine.find(" = ") + 3);
 			if (sourceDir.back() != '/') {
 				sourceDir.push_back('/');
 			}
 		}
+		// Read directory for binary masks
 		else if (i == 1) {
 			maskDir = curLine.substr(curLine.find(" = ") + 3);
 			if (maskDir.back() != '/') {
 				maskDir.push_back('/');
 			}
 		}
+		// Read file extensions of the source files
 		else if (i == 2) {
-			binMaskDir = curLine.substr(curLine.find(" = " ) + 3);
-			if (binMaskDir.back() != '/') {
-				binMaskDir.push_back('/');
-			}
-		}
-		else if (i == 3) {
 			fileExtension = curLine.substr(curLine.find(" = ") + 3);
 		}
-		else if (i == 4) {
+		// Read the beginning index of the source files
+		else if (i == 3) {
 			indexBegin = stoi(curLine.substr(curLine.find(" = ") + 3));
 		}
-		else if (i == 5) {
+		// Read the finishing index of the source files
+		else if (i == 4) {
 			indexEnd = stoi(curLine.substr(curLine.find(" = ") + 3));
 		}
 
 		i++;
 	}
-	if (i < 6) {
+
+	// Verify that the configuration file could read all parameters expected 
+	if (i < 5) {
+		cerr << "The configuration file doesn't have enough parameters!" << endl;
 		exit(-8);
 	}
 }
 
-void readCurrentMask() {
-	Mat temp = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
-	if (!temp.empty()) {
-		temp = Mat();
-		gcapp.mask = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
-		gcapp.isInitialized = true;
-		cout << "source file: " + imgFiles[index] << endl;
-		cout << "mask file:   " + maskFiles[index] << endl;
-	}
+void printConfigurationValues() {
+	cout << endl;
+	cout << "Directory:\t" + sourceDir << endl;
+	cout << "Mask dir:\t" + maskDir << endl;
+
+	cout << "File Extension:\t" + fileExtension << endl;
+	cout << "Index Begin:\t" + to_string(indexBegin) << endl;
+	cout << "Index End:\t" + to_string(indexEnd) << endl;
 }
 
-Mat readCurrentImageAndMask() {
-	Mat image = imread(sourceDir + imgFiles[index], IMREAD_COLOR);// Set to 1 for RGB, with -1 set to RGB with alpha channel
+//Read the image based on the current index
+Mat readCurrentImage() {
+	Mat image = imread(sourceDir + imgFiles[index], IMREAD_COLOR);
 	if (image.empty()) {
-		cout << "\n Durn, couldn't read image filename " << imgFiles[index] << endl;
+		cout << endl << "Couldn't read image from file: " << imgFiles[index] << endl;
 		return Mat();
 	}
 
 	return image;
 }
 
+// Attempts to read a mask for the image based on the current index
+// If read correctly the mask will be transformed to GrabCut mask and used for the current image
+// If mask is empty then it is reported and the variable go will be used
+void readCurrentMask() {
+	cout << maskDir + maskFiles[index];
+	tempMat = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
+	if (!tempMat.empty()) {
+		cout << " - mask was read" << endl;
+		// Threshold converts all the 255s in the binary mask to 3s, which GrabCut reads as foreground
+		cv::threshold(tempMat, gcapp.mask, 250, 3, cv::THRESH_BINARY);
+		gcapp.isInitialized = true;
+		go = false;
+	}
+	else {
+		cout << " - Mask was empty" << endl;
+		go = true;
+	}
+	tempMat = Mat();
+}
+
+// Save the binary mask for the image based on the current index
 string saveCurrentMask() {
-	//Save GrabCut Mask
+	//Copy the grabCut mask
 	Mat tempMask = gcapp.getMask().clone();
-	string maskFile = "rgb" + to_string(currentImage) + ".bmp";
-
-	imwrite(maskDir + maskFile, tempMask);
-
-	cout << "Saved mask for image: " + to_string(currentImage) << endl << endl;
-
-	//Save Binary Mask
+	//Create a dummy of same size and type as the GrabCut mask
 	Mat binMask(tempMask.size(), tempMask.type());
-	string binFile = binMaskDir + "rgb" + to_string(currentImage) + ".bmp";
+
+	string maskFile = "rgb" + to_string(currentImage) + ".bmp";
+	
 	cv::threshold(tempMask, binMask, 2, 255, cv::THRESH_BINARY);
 
-	imwrite(binFile, binMask);
+	imwrite(maskDir + maskFile, binMask);
+
+	cout << "Saved mask for image: " + to_string(currentImage) << endl << endl;
 
 
 	return maskFile;
 }
 
-void resetCurrentImageValues() {
+
+// Read current image and mask, call showImage from gcapp
+void showCurrentImage() {
+	cout << endl << "Current Image: " + to_string(currentImage) << endl;
+	cout << "Index: " + to_string(index) << endl;
+
+	imageToShow = readCurrentImage();
+	readCurrentMask();
+	gcapp.showImage();
+}
+
+// Sets the current image to the one in the center of the directory and
+// the index to the previously calculated "middle" value
+void loadMiddleImage() {
 	currentImage = indexBegin + middle;
 	index = middle;
 }
 
-void checkFollowingMask() {
-	cout << maskDir + maskFiles[index] << endl;
-	Mat tempMask = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
-	if (tempMask.empty()) {
-		cout << "mask was empty" << endl;
-		go = true;
-		maskFiles[index] = saveCurrentMask();
+// Load and show first (middle) image
+void resetImage() {
+	if (index != middle) {
+		loadMiddleImage();
+		showCurrentImage();
 	}
 }
 
-void nextImage() {
+void loadNextImage() {
 	if (currentImage == indexEnd) {
 		cout << "Finished right side" << endl;
-		resetCurrentImageValues();
+		loadMiddleImage();
 	}
 	else {
 		currentImage++;
 		index++;
-		checkFollowingMask();
 	}
 }
 
-void previousImage() {
+void loadPreviousImage() {
 	if (currentImage == indexBegin) {
 		cout << "Finished left side" << endl;
-		resetCurrentImageValues();
+		loadMiddleImage();
 	}
 	else {
 		currentImage--;
 		index--;
-		checkFollowingMask();
 	}
 }
 
-void followingImage(bool next) {
-	maskFiles[index] = saveCurrentMask();
 
-	if (next) {
-		nextImage();
-	}
-	else {
-		previousImage();
-	}
-
-	cout << "Current Image: " + to_string(currentImage) << endl;
-	cout << "Index: " + to_string(index) + "\n" << endl;
-
-	//gcapp.mask = imread(maskFiles[index], 0);
-
-	imageToShow = readCurrentImageAndMask();
-	gcapp.showImage();
-}
-
+// Check if the mask of a given index exists
 bool maskExists(int i) {
 	cout << "Mask to check: " + maskDir + maskFiles[i] << endl;
 	Mat temp = imread(maskDir + maskFiles[i], IMREAD_GRAYSCALE);
@@ -445,49 +458,20 @@ bool maskExists(int i) {
 	}
 }
 
-void resetImage() {
-	/*
-	bool temp = false;
-	if (index > middle) {
-		temp = false;
-	}
-	if (index < middle) {
-		temp = true;
-	}
-	cout << "begin" << endl;
-	while (index != middle) {
-		followingImage(temp);
-	}
-	cout << "end" << endl;
-	*/
-	if (index != middle) {
-		resetCurrentImageValues();
-		imageToShow = readCurrentImageAndMask();
-		gcapp.showImage();
-	}
-	cout << "end" << endl;
-}
+
 
 int main(int argc, char** argv) {
 
-	//Input Error
+	//Input Error, no cofiguration file
 	if (argc <= 1) {
 		cout << "No configuration file in input!!!" << endl;
 		exit(-1);
 	}
 
 	readConfigurationFile(argv[1]);
+	printConfigurationValues();
 
-	cout << endl;
-	cout << "Directory:\t" + sourceDir << endl;
-	cout << "Mask dir:\t" + maskDir << endl;
-	cout << "Bin dir:\t" + binMaskDir << endl << endl;
-
-	cout << "File Extension:\t" + fileExtension << endl;
-	cout << "Index Begin:\t" + to_string(indexBegin) << endl;
-	cout << "Index End:\t" + to_string(indexEnd) << endl;
-
-
+	//Print program usage instructions
 	help();
 
 
@@ -497,7 +481,6 @@ int main(int argc, char** argv) {
 
 	imgFiles = new string[folderSize];
 	maskFiles = new string[folderSize];
-
 
 	for (int i = 0; i <= folderSize; i++) {
 		index = i - indexBegin;
@@ -510,7 +493,7 @@ int main(int argc, char** argv) {
 	middle = (indexEnd - indexBegin) / 2;
 	cout << "Middle: " + to_string(middle) << endl;
 
-	resetCurrentImageValues();
+	loadMiddleImage();
 
 	cout << "Current Image: " + to_string(currentImage) << endl;
 	cout << "Index: " + to_string(index) + "\n" << endl;
@@ -527,7 +510,7 @@ int main(int argc, char** argv) {
 	//on_mouse is an in between function that they (in openCV in general) to manage mouse interaction
 	//They just send the values to their own defined function gcapp.mouseClick
 
-	imageToShow = readCurrentImageAndMask();
+	imageToShow = readCurrentImage();
 	
 	if (imageToShow.empty()) {
 		cout << "First image empty!!!" << endl;
@@ -535,34 +518,30 @@ int main(int argc, char** argv) {
 	}
 
 	gcapp.setImageAndWinName(imageToShow, winName);
-
-	tempMat = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
-	if (!tempMat.empty()) {
-		gcapp.mask = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
-		gcapp.isInitialized = true;
-	}
-	tempMat = Mat();
 	
+	readCurrentMask();	
 	gcapp.showImage();
 
 	for (;;) {
 		char c = (char)waitKey(0);
 		switch (c) {
-		case '\x1b':
+		case '\x1b': {
 			cout << "Exiting ..." << endl;
 			goto exit_main;
-
-		case 'r':
-			cout << endl;
+		}
+		case 'r': {
+			cout << "Mask was reset for image: " + to_string(currentImage) << endl;
+			cout << "The saved mask will not be changed until a new iteration is ran." << endl;
 			gcapp.reset();
 			gcapp.showImage();
 			break;
+		}
 
 		case 'c':
 			comeBack1 = true;
 come_back1:
 			while (index > 0) {
-				followingImage(false);
+				loadPreviousImage();
 				if (go == true) {
 					go = false;
 					goto nextIter;
@@ -570,7 +549,7 @@ come_back1:
 			}
 			comeBack1 = false;
 
-			followingImage(false);
+			loadPreviousImage();
 			if (go == true) {
 				go = false;
 				goto nextIter;
@@ -579,7 +558,7 @@ come_back1:
 			comeBack2 = true;
 come_back2:
 			while (index < folderSize - 2) {
-				followingImage(true);
+				loadNextImage();
 				if (go == true) {
 					go = false;
 					goto nextIter;
@@ -587,7 +566,7 @@ come_back2:
 			}
 			comeBack2 = false;
 
-			followingImage(true);
+			loadNextImage();
 			if (go == true) {
 				go = false;
 				goto nextIter;
@@ -626,7 +605,7 @@ come_back2:
 			}
 			cout << "counter: " + to_string(counter) << endl;
 			while (counter >= 0) {
-				followingImage(false);
+				loadPreviousImage();
 				counter--;
 			}
 
@@ -647,7 +626,7 @@ come_back2:
 				//followingImage(true);
 			}
 			while (counter >= 0) {
-				followingImage(true);
+				loadNextImage();
 				counter--;
 			}
 			/*
@@ -660,31 +639,26 @@ come_back2:
 			*/
 			break;
 
-		case 'j':
-			followingImage(false);
+		case 'j': {
+			cout << "pressed j" << endl;
+			loadPreviousImage();
+			showCurrentImage();
 			if (go == true) {
 				go = false;
 				goto nextIter;
 			}
 			break;
-
-		case 'k':
-			followingImage(true);
+		}
+		case 'k': {
+			cout << "pressed k" << endl;
+			loadNextImage();
+			showCurrentImage();
 			if (go == true) {
 				go = false;
 				goto nextIter;
 			}
 			break;
-
-		case 'f':
-			for (int i = 0; i < folderSize; i++) {
-				tempDir = maskDir + "rgb" + to_string(i) + ".jpg";
-				cout << "Temp Dir: " + tempDir << endl;
-				//imwrite(tempDir, masks[i]);
-				cout << "Wrote this" << endl;
-			}
-			goto exit_main;
-			break;
+		}
 nextIter:
 		case 'n':
 			int iterCount = gcapp.getIterCount();
