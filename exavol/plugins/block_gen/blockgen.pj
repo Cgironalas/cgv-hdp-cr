@@ -1,0 +1,7 @@
+@=
+projectType="application";
+projectName="blockgen";
+projectGUID="03A5AA98-09C0-40CE-9A9A-8F1B60C0753D";
+addIncDirs=[INPUT_DIR."/../../libs"];
+addProjectDirs=[CGV_DIR."/3rd", CGV_DIR."/plugins", INPUT_DIR."/../../libs"];
+addProjectDeps=["cgv_utils", "cgv_data", "cgv_media", "vol_data", "cmi_io"];
