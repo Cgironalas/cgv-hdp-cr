@@ -481,17 +481,16 @@ int main(int argc, char** argv) {
 
 	imgFiles = new string[folderSize];
 	maskFiles = new string[folderSize];
+	
+	for (index = 0, currentImage = indexBegin; index < folderSize; index++, currentImage++) {
+		
+		imgFiles[index] = "rgb" + to_string(currentImage) + "." + fileExtension;
 
-	for (int i = 0; i <= folderSize; i++) {
-		index = i - indexBegin;
-
-		imgFiles[index] = "rgb" + to_string(i) + "." + fileExtension;
-
-		maskFiles[index] = "rgb" + to_string(i) + ".bmp";
+		maskFiles[index] = "rgb" + to_string(currentImage) + ".bmp";
 	}
 
 	middle = (indexEnd - indexBegin) / 2;
-	cout << "Middle: " + to_string(middle) << endl;
+	cout << "Middle: " + to_string(middle) << endl << endl << endl;
 
 	loadMiddleImage();
 
@@ -525,160 +524,199 @@ int main(int argc, char** argv) {
 	for (;;) {
 		char c = (char)waitKey(0);
 		switch (c) {
-		case '\x1b': {
-			cout << "Exiting ..." << endl;
-			goto exit_main;
-		}
-		case 'r': {
-			cout << "Mask was reset for image: " + to_string(currentImage) << endl;
-			cout << "The saved mask will not be changed until a new iteration is ran." << endl;
-			gcapp.reset();
-			gcapp.showImage();
-			break;
-		}
+			// Close GrabCut Window (exits program)
+			case '\x1b': {
+				cout << "Exiting ..." << endl;
+				goto exit_main;
+			}
 
-		case 'c':
-			comeBack1 = true;
+			// Run GrabCut through every image on both sides automatically
+			case 'c': {
+				cout << "Pressed c" << endl;
+				comeBack1 = true;
+
+				resetImage();
+				loadPreviousImage();
+				showCurrentImage();
+
+				cout << "Current index: " + to_string(index) << endl;
+				while (index >= indexBegin - 1 && index != middle) {
+					if (!maskExists(index)) {
+						goto nextIter;
+					}
 come_back1:
-			while (index > 0) {
-				loadPreviousImage();
-				if (go == true) {
-					go = false;
-					goto nextIter;
+					showCurrentImage();
+					loadPreviousImage();
+					cout << "Current index: " + to_string(index) << endl;
 				}
-			}
-			comeBack1 = false;
+				comeBack1 = false;
 
-			loadPreviousImage();
-			if (go == true) {
-				go = false;
-				goto nextIter;
-			}
+				showCurrentImage();
 
-			comeBack2 = true;
+				comeBack2 = true;
+				loadNextImage();
+				showCurrentImage();
+
+				cout << "Current index: " + to_string(index) << endl;
+				while (index <= indexEnd - 1 && index != middle) {
+					if (!maskExists(index)) {
+						goto nextIter;
+					}
 come_back2:
-			while (index < folderSize - 2) {
+					showCurrentImage();
+					loadNextImage();
+					cout << "Current index: " + to_string(index) << endl;
+				}
+				comeBack2 = false;
+
+				resetImage();
+				break;
+			}
+
+			// Show first image (middle of the dataset)
+			case 'f': {
+				resetImage();
+				break;
+			}
+
+			// Go to lowest image with a mask
+			case 'h': {
+				resetImage();
+				go = false;
+
+				for (; index >= indexBegin - 1; index--, currentImage--) {
+					if (!maskExists(index)) {
+						cout << "Breaks at image: " + to_string(currentImage) << endl;
+						go = true;
+						break;
+					}
+				}
+
+				if (!go) {
+					cout << "All images on the left side have masks!" << endl;
+				}
+
 				loadNextImage();
-				if (go == true) {
+				showCurrentImage();
+				go = false;
+
+				break;
+			}
+
+			// Go to the next lower image
+			case 'j': {
+				loadPreviousImage();
+				showCurrentImage();
+
+				if (go) {
 					go = false;
 					goto nextIter;
 				}
-			}
-			comeBack2 = false;
 
-			loadNextImage();
-			if (go == true) {
-				go = false;
-				goto nextIter;
-			}
-			break;
-
-		case 'h':
-			cout << "presed h" << endl;
-			resetImage();
-			/*
-			while (index > indexBegin - 1) {
-				tempMat = imread(maskDir + maskFiles[index], 0);
-				if (tempMat.empty()) {
-					followingImage(true);
-					break;
-				}
-				counter++;
-				followingImage(false);
-			}
-			if (index = 1) {
-				tempMat = imread(maskFiles[index], 0);
-				if (tempMat.empty()) {
-					followingImage(true);
-				}
-			}
-			*/
-
-			counter = 0;
-			for (int i = middle; i > 0; i--) {
-				cout << "Current Index: " + to_string(i) << endl;
-				if (maskExists(i)) {
-					cout << "Breaks at: " + to_string(i) << endl;
-					break;
-				}
-				counter++;
-			}
-			cout << "counter: " + to_string(counter) << endl;
-			while (counter >= 0) {
-				loadPreviousImage();
-				counter--;
+				break;
 			}
 
-			break;
-
-		case 'l':
-			cout << "pressed l" << endl;
-			resetImage();
-			cout << "dies before here" << endl;
-			counter = 0;
-			while (index < indexEnd - 1) {
-				tempMat = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
-				if (tempMat.empty()) {
-					//followingImage(false);
-					break;
-				}
-				counter++;
-				//followingImage(true);
-			}
-			while (counter >= 0) {
+			// Go to the next higher image
+			case 'k': {
 				loadNextImage();
-				counter--;
+				showCurrentImage();
+
+				if (go) {
+					go = false;
+					goto nextIter;
+				}
+
+				break;
 			}
-			/*
-			if (index = indexEnd - 2) {
+
+			// Go to highest image with a mask
+			case 'l': {
+				resetImage();
+				go = false;
+
+				for (; index < indexEnd; index++, currentImage++) {
+					if (!maskExists(index)) {
+						cout << "Breaks at image: " + to_string(currentImage) << endl;
+						go = true;
+						break;
+					}
+				}
+
+				if (!go) {
+					cout << "All images on the right side have masks!" << endl;
+				}
+
+				loadPreviousImage();
+				showCurrentImage();
+				go = false;
+
+				break;
+
+				/*
+				cout << "dies before here" << endl;
+				counter = 0;
+				while (index < indexEnd - 1) {
+					tempMat = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
+					if (tempMat.empty()) {
+						//followingImage(false);
+						break;
+					}
+					counter++;
+					//followingImage(true);
+				}
+				while (counter >= 0) {
+					loadNextImage();
+					counter--;
+				}
+				/*
+				if (index = indexEnd - 2) {
 				tempMat = imread(maskFiles[index], 0);
 				if (tempMat.empty()) {
-					followingImage(false);
+				followingImage(false);
+				}
+				}
+				*/
+				break;
+			}
+
+ nextIter:
+			// Run an iteration of GrabCut in the current image
+			case 'n': {
+				int iterCount = gcapp.getIterCount();
+				cout << "<" << iterCount << "... ";
+				int newIterCount = gcapp.nextIter();
+				if (newIterCount > iterCount) {
+					gcapp.showImage();
+					cout << iterCount << ">" << endl;
+					maskFiles[index] = saveCurrentMask();
+				}
+				else
+					cout << "rect must be determined>" << endl;
+
+				if (comeBack1) {
+					goto come_back1;
+				}
+				if (comeBack2) {
+					goto come_back2;
+				}
+				break;
+			}
+
+			// Reset current image GrabCut mask
+			case 'r': {
+				cout << "Mask was reset for image: " + to_string(currentImage) << endl
+					<< "The saved mask will not be changed until a new iteration is ran." << endl;
+				gcapp.reset();
+				gcapp.showImage();
+				break;
+			}
+			
+			// Generate vox file
+			case 'v': {
+				for (index = indexBegin; index <= indexEnd; index++) {
+					
 				}
 			}
-			*/
-			break;
-
-		case 'j': {
-			cout << "pressed j" << endl;
-			loadPreviousImage();
-			showCurrentImage();
-			if (go == true) {
-				go = false;
-				goto nextIter;
-			}
-			break;
-		}
-		case 'k': {
-			cout << "pressed k" << endl;
-			loadNextImage();
-			showCurrentImage();
-			if (go == true) {
-				go = false;
-				goto nextIter;
-			}
-			break;
-		}
-nextIter:
-		case 'n':
-			int iterCount = gcapp.getIterCount();
-			cout << "<" << iterCount << "... ";
-			int newIterCount = gcapp.nextIter();
-			if (newIterCount > iterCount) {
-				gcapp.showImage();
-				cout << iterCount << ">" << endl;
-				maskFiles[index] = saveCurrentMask();
-			}
-			else
-				cout << "rect must be determined>" << endl;
-
-			if (comeBack1) {
-				goto come_back1;
-			}
-			if (comeBack2) {
-				goto come_back2;
-			}
-			break;
 		}
 	}
 exit_main:
