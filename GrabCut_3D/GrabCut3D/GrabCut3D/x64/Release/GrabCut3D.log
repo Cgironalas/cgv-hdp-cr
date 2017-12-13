@@ -1,6 +1,5 @@
-﻿  Generating code
-  29 of 423 functions ( 6.9%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    9 functions had inline decision re-evaluated but remain unchanged
+﻿  Source.cpp
+  Generating code
+  All 459 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
-  GrabCut3D.vcxproj -> D:\Users\CGiron\Documents\Project\cgv-hdp-cr\GrabCut_3D\GrabCut3D\x64\Release\GrabCut3D.exe
+  GrabCut3D.vcxproj -> C:\Users\Carlos\Documents\Repos\cgv-hdp-cr\GrabCut_3D\GrabCut3D\x64\Release\GrabCut3D.exe

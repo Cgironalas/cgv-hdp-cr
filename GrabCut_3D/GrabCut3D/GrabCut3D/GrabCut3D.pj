@@ -1,0 +1,13 @@
+@=
+projectType="application_plugin";
+projectName="GrabCut3D";
+projectGUID="905D1BCF-F260-4297-9265-9378699DBCFF";
+addProjectDirs=[CGV_DIR."/libs", CGV_DIR."/plugins", CGV_DIR."/3rd"];
+addIncDirs=[CGV_DIR."/libs"];
+addProjectDeps=[
+	"cgv_utils", "cgv_type", "cgv_reflect", "cgv_data", "cgv_signal", "cgv_base", "cgv_media", "cgv_gui", "cgv_render","cgv_os",
+	"cgv_reflect_types",
+	"cgv_viewer",
+	"cg_fltk", "crg_stereo_view", "crg_light", "cmi_io", "cmv_avi", "crg_grid", "cgv_gl", "cg_icons", "glew", "plot"
+];
+addSharedDefines=["CGV_VOL_SLICER_EXPORTS"];
