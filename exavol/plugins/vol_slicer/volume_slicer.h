@@ -16,9 +16,9 @@
 #include "lib_begin.h"
 
 class CGV_API volume_slicer :
-	public cgv::base::node, 
-	public cgv::render::drawable, 
-	public cgv::gui::provider, 
+	public cgv::base::node,
+	public cgv::render::drawable,
+	public cgv::gui::provider,
 	public cgv::gui::event_handler
 {
 public:
@@ -46,6 +46,8 @@ protected:
 	ivec3 dimensions;
 	/// for each major direction the extent of the volume  
 	vec3 extent;
+	/// whether to use tri-linear texture interpolation
+	bool interpolate;
 public:
 	// read volume from sliced or single file representations
 	bool open_block_volume(const std::string& directory_name);

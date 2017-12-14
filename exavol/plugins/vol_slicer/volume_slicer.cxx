@@ -19,6 +19,7 @@ volume_slicer::volume_slicer() : cgv::base::node("volume_slicer")
 	slice_normal_tex = vec3(0, 0, 1);
 	dimensions = ivec3(1, 1, 1);
 	extent = vec3(1, 1, 1);
+	interpolate = false;
 	box_mat.set_ambient(cgv::media::illum::phong_material::color_type(0.8f, 0.8f, 0.8f, 1.0f));
 	box_mat.set_diffuse(cgv::media::illum::phong_material::color_type(0.6f, 0.6f, 0.6f, 1.0f));
 	box_mat.set_specular(cgv::media::illum::phong_material::color_type(0.0f, 0.0f, 0.0f, 1.0f));
@@ -43,7 +44,7 @@ void volume_slicer::auto_adjust_view()
 	if (ensure_view_ptr()) {
 		view_ptr->set_scene_extent(box3(-extent, extent));
 		view_ptr->set_default_view();
-		view_ptr->set_z_near(extent.length()/dimensions.length());
+		view_ptr->set_z_near(extent.length() / dimensions.length());
 		view_ptr->set_z_far(5.0f*extent.length());
 		std::cout << "z_near = " << view_ptr->get_z_near() << ", z_far=" << view_ptr->get_z_far() << std::endl;
 	}
@@ -52,7 +53,7 @@ void volume_slicer::auto_adjust_view()
 /// self reflection is used to publish standard member variables to the set and get mechanism
 bool volume_slicer::self_reflect(cgv::reflect::reflection_handler& rh)
 {
-	return 
+	return
 		rh.reflect_member("file_name", file_name) &&
 		rh.reflect_member("show_box", show_box);
 }
@@ -71,11 +72,11 @@ bool volume_slicer::handle(cgv::gui::event& e)
 	if (e.get_kind() == cgv::gui::EID_KEY) {
 		cgv::gui::key_event& ke = static_cast<cgv::gui::key_event&>(e);
 		switch (ke.get_key()) {
-		// view all when space key pressed
+			// view all when space key pressed
 		case cgv::gui::KEY_Space:
 			auto_adjust_view();
 			return true;
-		// handle key press events for 'X'-key
+			// handle key press events for 'X'-key
 		case 'X':
 			// we only want to use event if user holds CTRL and SHIFT
 			if (ke.get_modifiers() != cgv::gui::EventModifier(cgv::gui::EM_CTRL | cgv::gui::EM_SHIFT))
@@ -131,7 +132,7 @@ bool volume_slicer::handle(cgv::gui::event& e)
 				view_ptr->put_coordinate_system(view_x_world, view_y_world, view_z_world);
 				// compute drag vector in view coordinates in range [-1,1]²
 				// negate pixel y coordinates to make it point upward as the eye coordinate y-direction
-				double drag_x =  (double)me.get_dx() / get_context()->get_width();
+				double drag_x = (double)me.get_dx() / get_context()->get_width();
 				double drag_y = -(double)me.get_dy() / get_context()->get_height();
 				// ctrl-left button rotates plane normal
 				if (me.get_button_state() == cgv::gui::MB_LEFT_BUTTON) {
@@ -156,7 +157,7 @@ bool volume_slicer::handle(cgv::gui::event& e)
 					// update distance by scaling world size (y_extent_at_focus) to 
 					// texture coordinates (division by extent.length)
 					slice_distance_tex += (float)(10.0f*dot(slice_normal_tex, drag_world)*
-						view_ptr->get_y_extent_at_focus()/extent.length()/translation_sensitivity);
+						view_ptr->get_y_extent_at_focus() / extent.length() / translation_sensitivity);
 					// ensure that slice distance is in valid range
 					if (slice_distance_tex > 0.5f)
 						slice_distance_tex = 0.5f;
@@ -202,7 +203,7 @@ bool volume_slicer::open_volume(const std::string& _file_name)
 	if (ext == "SVX") {
 		success = read_from_sliced_volume(file_name, V);
 		if (success)
-			extent = vec3(float(V.get_dimensions()(0))/ V.get_dimensions()(2), float(V.get_dimensions()(1)) / V.get_dimensions()(2), 1);
+			extent = vec3(float(V.get_dimensions()(0)) / V.get_dimensions()(2), float(V.get_dimensions()(1)) / V.get_dimensions()(2), 1);
 	}
 	else {
 		volume_info info;
@@ -239,9 +240,9 @@ bool volume_slicer::open_volume(const std::string& _file_name)
 }
 
 ///
-std::string volume_slicer::get_type_name() const 
-{ 
-	return "volume_slicer"; 
+std::string volume_slicer::get_type_name() const
+{
+	return "volume_slicer";
 }
 // extend method of volume_drawable to find and set view
 bool volume_slicer::init(cgv::render::context& ctx)
@@ -261,11 +262,11 @@ void volume_slicer::init_frame(cgv::render::context& ctx)
 
 	/*
 	if (data_texture.is_created()) {
-		cgv::data::data_format df(170, 170, 170, cgv::type::info::TI_UINT8, cgv::data::CF_R);
-		cgv::data::data_view dv(&df);
-		cgv::type::uint8_type* ptr = dv.get_ptr<cgv::type::uint8_type>();
-		std::fill(ptr, ptr + 170 * 170 * 170, 50);
-		data_texture.replace(ctx, 100, 80, 60, dv, 0);
+	cgv::data::data_format df(170, 170, 170, cgv::type::info::TI_UINT8, cgv::data::CF_R);
+	cgv::data::data_view dv(&df);
+	cgv::type::uint8_type* ptr = dv.get_ptr<cgv::type::uint8_type>();
+	std::fill(ptr, ptr + 170 * 170 * 170, 50);
+	data_texture.replace(ctx, 100, 80, 60, dv, 0);
 	}*/
 }
 
@@ -278,7 +279,7 @@ void volume_slicer::draw(cgv::render::context& ctx)
 	// render box
 	if (show_box) {
 		// first draw wireframe
-		glColor4f(0,1,1,1);
+		glColor4f(0, 1, 1, 1);
 		glDisable(GL_CULL_FACE);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		ctx.tesselate_box(B, false);
@@ -307,7 +308,7 @@ void volume_slicer::draw(cgv::render::context& ctx)
 	x_tex *= 3.0f;
 	y_tex *= 3.0f;
 	// compute point on slice in texture coordinates 
-	vec3 c_tex = slice_distance_tex*slice_normal_tex+vec3(0.5f, 0.5f, 0.5f);
+	vec3 c_tex = slice_distance_tex*slice_normal_tex + vec3(0.5f, 0.5f, 0.5f);
 	// define clipping planes in texture coordinates
 	int i;
 	for (i = 0; i < 6; ++i) {
@@ -325,9 +326,11 @@ void volume_slicer::draw(cgv::render::context& ctx)
 	}
 	// disable culling
 	glDisable(GL_CULL_FACE);
-		// enable volume texture on texture unit 0
-	if (data_texture.is_created())
+	// enable volume texture on texture unit 0
+	if (data_texture.is_created()) {
+		data_texture.set_mag_filter(interpolate ? cgv::render::TF_LINEAR : cgv::render::TF_NEAREST);
 		data_texture.enable(ctx, 0);
+	}
 	// enable shader program and take volume texture from texture unit 0
 	if (tex_slice_prog.is_linked()) {
 		tex_slice_prog.enable(ctx);
@@ -341,7 +344,7 @@ void volume_slicer::draw(cgv::render::context& ctx)
 	tex_coords[3] = c_tex - y_tex;
 	// map texture coordinates of quad corners to positions in world coordinates
 	static std::vector<vec3> positions(size_t(4));
-	for (unsigned i=0; i<4; ++i)
+	for (unsigned i = 0; i<4; ++i)
 		positions[i] = extent*(tex_coords[i] - vec3(0.5f, 0.5f, 0.5f));
 	// draw quad using vertex array pointers which is a bit deprecated but still ok 
 	glVertexPointer(3, GL_FLOAT, 0, &positions.front());
@@ -355,7 +358,7 @@ void volume_slicer::draw(cgv::render::context& ctx)
 	// disable shader program
 	if (tex_slice_prog.is_linked())
 		tex_slice_prog.disable(ctx);
-		// disable 3d texture
+	// disable 3d texture
 	if (data_texture.is_created())
 		data_texture.disable(ctx);
 	// disable clipping planes
@@ -419,6 +422,7 @@ void volume_slicer::create_gui()
 		add_gui("box_extent", extent, "vector", "gui_type='wheel';options='align=\"B\";w=50;h=10;step=0.01;min=0;max=10;log=true';align=' '");
 		// start new row with regular spacing
 		align("\n");
+		add_member_control(this, "interpolate", interpolate, "toggle");
 		align("\b");
 		end_tree_node(dimensions);
 	}
