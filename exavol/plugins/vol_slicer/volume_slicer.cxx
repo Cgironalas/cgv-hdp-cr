@@ -15,7 +15,11 @@ volume_slicer::volume_slicer() : cgv::base::node("volume_slicer")
 	rotate_sensitivity = 1.0;
 	translation_sensitivity = 1.0;
 	show_box = true;
-	slice_distance_tex = 0;
+	show_voxel = true;
+	show_block = true;
+	show_surface = true;
+	show_surface_wireframe = false;
+	slice_center_distance_tex = 0;
 	slice_normal_tex = vec3(0, 0, 1);
 	dimensions = ivec3(1, 1, 1);
 	extent = vec3(1, 1, 1);
@@ -24,6 +28,24 @@ volume_slicer::volume_slicer() : cgv::base::node("volume_slicer")
 	box_mat.set_diffuse(cgv::media::illum::phong_material::color_type(0.6f, 0.6f, 0.6f, 1.0f));
 	box_mat.set_specular(cgv::media::illum::phong_material::color_type(0.0f, 0.0f, 0.0f, 1.0f));
 	box_mat.set_shininess(20.0f);
+
+	surface_mat.set_ambient(cgv::media::illum::phong_material::color_type(0.8f, 0.8f, 0.8f, 1.0f));
+	surface_mat.set_diffuse(cgv::media::illum::phong_material::color_type(0.6f, 0.6f, 0.6f, 1.0f));
+	surface_mat.set_specular(cgv::media::illum::phong_material::color_type(1.0f, 1.0f, 1.0f, 1.0f));
+	surface_mat.set_shininess(60.0f);
+#ifdef _DEBUG
+	down_sampling_factor = 32;
+#else
+	down_sampling_factor = 4;
+#endif
+	negate_normals = true;
+	iso_value = 0.5f;
+	sm_ptr = 0;
+
+	last_x = last_y = -1;
+	current_voxel = current_block = ivec3(0, 0, 0);
+	block_dimensions = ivec3(16, 16, 16);
+	overlap = ivec3(1, 1, 1);
 }
 
 bool volume_slicer::ensure_view_ptr()
@@ -64,6 +86,60 @@ cgv::math::fvec<T, 3> rotate(const cgv::math::fvec<T, 3>& v, const cgv::math::fv
 	cgv::math::fvec<T, 3> vn = dot(n, v)*n;
 	return vn + cos(a)*(v - vn) + sin(a)*cross(n, v);
 }
+
+/// return the point under the mouse pointer in world coordinates
+bool volume_slicer::get_picked_point(int x, int y, vec3& p_pick_world)
+{
+	// analyze the mouse location
+	cgv::render::context& ctx = *get_context();
+	cgv::render::context::mat_type* DPV_ptr, *DPV_other_ptr;
+	int x_other, y_other, vp_col_idx, vp_row_idx, vp_width, vp_height;
+	int eye_panel = view_ptr->get_DPVs(x, y, ctx.get_width(), ctx.get_height(), &DPV_ptr, &DPV_other_ptr, &x_other, &y_other, &vp_col_idx, &vp_row_idx, &vp_width, &vp_height);
+
+	// get the possibly two (if stereo is enabled) different device z-values
+	double z = ctx.get_z_D(x, y);
+	double z_other = ctx.get_z_D(x_other, y_other);
+	//  unproject to world coordinates with smaller (closer to eye) z-value one	
+	if (z <= z_other) {
+		if (DPV_ptr->ncols() != 4)
+			return false;
+		// use conversion to (double*) operator to map cgv::math::vec<double> to cgv::math::fvec<float,3>
+		p_pick_world = (double*)ctx.get_point_W(x, y, z, *DPV_ptr);
+	}
+	else {
+		if (DPV_other_ptr->ncols() != 4)
+			return false;
+		p_pick_world = (double*)ctx.get_point_W(x_other, y_other, z_other, *DPV_other_ptr);
+	}
+	return true;
+}
+
+///
+void volume_slicer::peek_voxel_values(int x, int y)
+{
+	//  unproject pixel position of mouse
+	volume::point_type p_pick_world;
+	if (!get_picked_point(x, y, p_pick_world))
+		return;
+
+	// construct string stream
+	std::stringstream ss;
+
+	// convert point to texture coordinates of instance and add point
+	box3 B(-0.5f*extent, 0.5f*extent);
+	if (B.inside(p_pick_world)) {
+		volume::point_type p_texture = texture_from_world_coordinates(p_pick_world);
+		volume::point_type p_voxel = voxel_from_texture_coordinates(p_texture);
+		current_voxel = p_voxel;
+		current_block = block_from_voxel_coordinates(p_voxel);
+		ss << p_texture << "\n" << p_voxel << "\n" << current_voxel;
+	}
+	voxel_value_info = ss.str();
+	last_x = x;
+	last_y = y;
+	post_redraw();
+}
+
 
 /// overload and implement this method to handle events
 bool volume_slicer::handle(cgv::gui::event& e)
@@ -112,6 +188,7 @@ bool volume_slicer::handle(cgv::gui::event& e)
 	// check for mouse event
 	if (e.get_kind() == cgv::gui::EID_MOUSE) {
 		cgv::gui::mouse_event& me = static_cast<cgv::gui::mouse_event&>(e);
+		peek_voxel_values(me.get_x(), me.get_y());
 		// we are interested only in mouse events with the Ctrl-modifier and no other modifier pressed
 		if (me.get_modifiers() != cgv::gui::EM_CTRL)
 			return false;
@@ -156,19 +233,20 @@ bool volume_slicer::handle(cgv::gui::event& e)
 					vec3 drag_world = drag_x*view_x_world + drag_y*view_y_world;
 					// update distance by scaling world size (y_extent_at_focus) to 
 					// texture coordinates (division by extent.length)
-					slice_distance_tex += (float)(10.0f*dot(slice_normal_tex, drag_world)*
+					slice_center_distance_tex += (float)(10.0f*dot(slice_normal_tex, drag_world)*
 						view_ptr->get_y_extent_at_focus() / extent.length() / translation_sensitivity);
 					// ensure that slice distance is in valid range
-					if (slice_distance_tex > 0.5f)
-						slice_distance_tex = 0.5f;
-					else if (slice_distance_tex < -0.5f)
-						slice_distance_tex = -0.5f;
+					if (slice_center_distance_tex > 0.5f)
+						slice_center_distance_tex = 0.5f;
+					else if (slice_center_distance_tex < -0.5f)
+						slice_center_distance_tex = -0.5f;
 					// ensure that user interface and rendering are up to date
-					update_member(&slice_distance_tex);
+					update_member(&slice_center_distance_tex);
 					post_redraw();
 					return true;
 				}
 				return false;
+
 			}
 		}
 	}
@@ -183,7 +261,7 @@ void volume_slicer::stream_help(std::ostream& os)
 /// stream statistical information about volume
 void volume_slicer::stream_stats(std::ostream& os)
 {
-	os << "volume_slicer: slice_normal=[" << slice_normal_tex << "], distance=" << slice_distance_tex << std::endl;
+	os << "volume_slicer: slice_normal=[" << slice_normal_tex << "], distance=" << slice_center_distance_tex << std::endl;
 }
 // read volume from sliced or single file representations
 bool volume_slicer::open_block_volume(const std::string& directory_name)
@@ -194,9 +272,6 @@ bool volume_slicer::open_block_volume(const std::string& directory_name)
 /// read regular volume file
 bool volume_slicer::open_volume(const std::string& _file_name)
 {
-	// volume data structure is only used to load data into 3d texture
-	volume V;
-
 	// try to read volume from slice based or regular volume file 
 	bool success = false;
 	std::string ext = cgv::utils::to_upper(cgv::utils::file::get_extension(_file_name));
@@ -239,6 +314,59 @@ bool volume_slicer::open_volume(const std::string& _file_name)
 	return success;
 }
 
+
+/// convert world to texture coordinates
+volume_slicer::vec3 volume_slicer::texture_from_world_coordinates(const vec3& p_world) const
+{
+	vec3 p_texture = (p_world + 0.5f*extent) / extent;
+	return p_texture;
+}
+/// convert texture to voxel coordinates
+volume_slicer::vec3 volume_slicer::voxel_from_texture_coordinates(const vec3& p_texture) const
+{
+	vec3 p_voxel = p_texture * dimensions;
+	return p_voxel;
+}
+
+/// convert texture to world coordinates
+volume_slicer::vec3 volume_slicer::world_from_texture_coordinates(const vec3& p_texture) const
+{
+	vec3 p_world = p_texture * extent - 0.5f*extent;
+	return p_world;
+}
+
+/// convert texture to world coordinates
+volume_slicer::vec3 volume_slicer::world_from_texture_normals(const vec3& n_texture) const
+{
+	vec3 n_world = n_texture / extent;
+	n_world.normalize();
+	return n_world;
+}
+
+/// convert voxel to texture coordinates
+volume_slicer::vec3 volume_slicer::texture_from_voxel_coordinates(const vec3& p_voxel) const
+{
+	vec3 p_texture = p_voxel / dimensions;
+	return p_texture;
+}
+
+/// convert voxel to block coordinates
+volume_slicer::vec3 volume_slicer::block_from_voxel_coordinates(const vec3& p_voxel) const
+{
+	vec3 offset = overlap;
+	offset *= 0.5f;
+	vec3 p_block = (p_voxel - offset) / block_dimensions;
+	return p_block;
+}
+/// convert voxel to block coordinates
+volume_slicer::vec3 volume_slicer::voxel_from_block_coordinates(const vec3& p_block) const
+{
+	vec3 offset = overlap;
+	offset *= 0.5f;
+	vec3 p_voxel = p_block * block_dimensions + offset;
+	return p_voxel;
+}
+
 ///
 std::string volume_slicer::get_type_name() const
 {
@@ -247,6 +375,8 @@ std::string volume_slicer::get_type_name() const
 // extend method of volume_drawable to find and set view
 bool volume_slicer::init(cgv::render::context& ctx)
 {
+	// generate a font for voxel labeling
+	ctx.enable_font_face(cgv::media::font::find_font("Arial")->get_font_face(cgv::media::font::FFA_BOLD), 20);
 	// ensure white background color
 	ctx.set_bg_clr_idx(4);
 	return true;
@@ -270,31 +400,289 @@ void volume_slicer::init_frame(cgv::render::context& ctx)
 	}*/
 }
 
+void volume_slicer::extract_surface()
+{
+	clear_surface();
+	box3 box(-0.5f*extent, 0.5f*extent);
+	cgv::media::mesh::marching_cubes<float, float> mc(*this, this);
+	sm_ptr = &mc;
+	mc.extract(iso_value, box, dimensions(0) / down_sampling_factor, dimensions(1) / down_sampling_factor, dimensions(2) / down_sampling_factor,
+		dimensions(0)*dimensions(1)*dimensions(2) > 10000 * down_sampling_factor*down_sampling_factor*down_sampling_factor);
+	sm_ptr = 0;
+	std::cout << "iso_surface has " << positions.size() << " vertices and " << corner_indices.size() / 3 << " triangles" << std::endl;
+	post_redraw();
+}
+
+/// remove all elements from surface
+void volume_slicer::clear_surface()
+{
+	positions.clear();
+	normals.clear();
+	texture_coords.clear();
+	corner_indices.clear();
+	post_redraw();
+}
+
+/// return the value of a given voxel scaled to [0,1]
+float volume_slicer::get_voxel_value(const ivec3& voxel) const
+{
+	switch (V.get_component_type()) {
+	case cgv::type::info::TI_UINT8:
+		return float(*V.get_voxel_ptr<cgv::type::uint8_type>(voxel(0), voxel(1), voxel(2))) / 255;
+	case cgv::type::info::TI_UINT16:
+		return float(*V.get_voxel_ptr<cgv::type::uint8_type>(voxel(0), voxel(1), voxel(2))) / 65535;
+	}
+	return 0;
+}
+
+/// interface for evaluation of the multivariate function
+float volume_slicer::evaluate(const pnt_type& p) const
+{
+	// convert to voxel coordinates
+	vec3 p_voxel = voxel_from_texture_coordinates(texture_from_world_coordinates(&p(0)));
+	// quantize
+	ivec3 voxel = p_voxel;
+	// check if voxel is valid
+	if (voxel(0) < 0 || voxel(1) < 0 || voxel(2) < 0)
+		return 0.0f;
+	if (voxel(0) >= dimensions(0) - 1 || voxel(1) >= dimensions(1) - 1 || voxel(2) >= dimensions(2) - 1)
+		return 0.0f;
+	// compute fractional part of voxel location needed for trilinear interpolation
+	vec3 frac = voxel;
+	frac = p_voxel - frac;
+
+	// collect eight nearest voxels
+	float v000 = get_voxel_value(voxel);
+	float v100 = get_voxel_value(voxel + ivec3(1, 0, 0));
+	float v010 = get_voxel_value(voxel + ivec3(0, 1, 0));
+	float v110 = get_voxel_value(voxel + ivec3(1, 1, 0));
+	float v001 = get_voxel_value(voxel + ivec3(0, 0, 1));
+	float v101 = get_voxel_value(voxel + ivec3(1, 0, 1));
+	float v011 = get_voxel_value(voxel + ivec3(0, 1, 1));
+	float v111 = get_voxel_value(voxel + ivec3(1, 1, 1));
+
+	// trilinear interpolation
+	float v00 = (1 - frac(2))*v000 + frac(2)*v001;
+	float v10 = (1 - frac(2))*v100 + frac(2)*v101;
+	float v01 = (1 - frac(2))*v010 + frac(2)*v011;
+	float v11 = (1 - frac(2))*v110 + frac(2)*v111;
+	float v0 = (1 - frac(1))*v00 + frac(1)*v01;
+	float v1 = (1 - frac(1))*v10 + frac(1)*v11;
+	return (1 - frac(0))*v0 + frac(0)*v1;
+}
+
+/// called when a new vertex is generated
+void volume_slicer::new_vertex(unsigned int vertex_index)
+{
+	positions.push_back(sm_ptr->vertex_location(vertex_index));
+	normals.push_back(sm_ptr->vertex_normal(vertex_index));
+	texture_coords.push_back(texture_from_world_coordinates(sm_ptr->vertex_location(vertex_index)));
+}
+/// announces a new polygon defines by the vertex indices stored in the given vector
+void volume_slicer::new_polygon(const std::vector<unsigned int>& vertex_indices)
+{
+	// add corner indices and compute face normal
+	vec3 face_nml(0, 0, 0);
+	unsigned i;
+	for (i = 0; i < vertex_indices.size(); ++i) {
+		corner_indices.push_back(vertex_indices[i]);
+		face_nml += cross(positions[vertex_indices[i]], positions[vertex_indices[(i + 1) % vertex_indices.size()]]);
+	}
+	face_nml.normalize();
+	// distribute face normal to vertex normals
+	for (i = 0; i < vertex_indices.size(); ++i)
+		normals[vertex_indices[i]] += face_nml;
+}
+
+/// drop the currently first vertex that has the given global vertex index
+void volume_slicer::before_drop_vertex(unsigned int vertex_index)
+{
+	normals[vertex_index].normalize();
+	if (negate_normals)
+		normals[vertex_index] = -normals[vertex_index];
+}
+
+///
+void volume_slicer::draw_box(cgv::render::context& ctx, const box3& B, const cgv::media::illum::phong_material& material)
+{
+	// draw backfaces next
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, 1);
+	ctx.enable_material(material);
+	ctx.tesselate_box(B, true);
+	ctx.disable_material(material);
+	glCullFace(GL_BACK);
+	glDisable(GL_CULL_FACE);
+}
+
+///
+void volume_slicer::draw_wire_box(cgv::render::context& ctx, const box3& B, const vec3& color)
+{
+	glColor3fv(color);
+	glDisable(GL_CULL_FACE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	ctx.tesselate_box(B, false);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+/// draw a voxel with a wire frame box
+void volume_slicer::draw_voxel(cgv::render::context& ctx, const ivec3& voxel, const vec3& color)
+{
+	box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates(voxel)),
+		world_from_texture_coordinates(texture_from_voxel_coordinates(voxel + ivec3(1, 1, 1))));
+	draw_wire_box(ctx, B, color);
+}
+
+/// computes the distance taking into account the 
+float volume_slicer::compute_distance_to_slice_tex(const vec3& p) const
+{
+	return cgv::math::dot(p - vec3(0.5f, 0.5f, 0.5f), slice_normal_tex) - slice_center_distance_tex;
+}
+
+bool volume_slicer::is_block_intersected(const box3& B_tex, bool debug)
+{
+	// intersection is calculated by analyzing the dot product of the corners and the normal of the slice
+	// if all results share the same sign, it's not interesected. 
+
+	float dist_corner;
+	bool sign;
+	bool first_time = true;
+
+	// iterate over all the block's corners
+	if (debug) { std::cout << "cube" << std::endl; }
+	for (unsigned i = 0; i < 8; i++)
+	{
+		dist_corner = compute_distance_to_slice_tex(B_tex.get_corner(i));
+		if (debug) { std::cout << dist_corner << std::endl; }
+		if (first_time) {
+			sign = dist_corner < 0;
+			if (debug) { std::cout << sign << std::endl; }
+			first_time = false;
+		} else {
+			if ((dist_corner < 0) != sign) {
+				if (debug) { std::cout << "cube end cool" << std::endl; }
+				return true;
+			}
+		}
+	}
+	if (debug) { std::cout << "cube end not cool" << std::endl; }
+	return false;
+}
+
+/// draw a block with a wire frame box
+void volume_slicer::draw_block(cgv::render::context& ctx, const ivec3& block, const vec3& color, const vec3& overlap_color)
+{
+	box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block))),
+		world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1)))));
+	draw_wire_box(ctx, B, color);
+
+	vec3 offset = overlap;
+	offset *= 0.5f;
+	box3 B_overlap(
+		world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block) - offset)),
+		world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1)) + offset)));
+	draw_wire_box(ctx, B_overlap, overlap_color);
+
+	//texture coordinates
+	box3 B_tex(texture_from_voxel_coordinates(voxel_from_block_coordinates(block)),
+		texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1))));
+
+	/*if (is_block_intersected(B_tex, true)) {
+		draw_wire_box(ctx, B, color);
+		draw_wire_box(ctx, B_overlap, overlap_color);
+	}*/
+}
+
+void volume_slicer::draw_blocks_in_plane(cgv::render::context& ctx, const vec3& color, const vec3& overlap_color) {
+	/*
+	/// define data format of how to store block in CPU memory
+	cgv::data::data_format df(17, 17, 17, cgv::type::info::TI_UINT8, cgv::data::CF_RGB);
+	/// construct memory to hold block with given format
+	cgv::data::data_view dv(&df);
+	/// read block from binary file
+
+	//fp needs to be the place where I'll get the block form the file,
+	if (fread(dv.get_ptr<cgv::type::info::TI_UINT8>(), df.get_entry_size(), df.get_nr_entries(), fp) == df.get_nr_entries()) {
+	/// transfer block to GPU texture memory
+	block_texture.replace(ctx, block_min_voxel(0), block_min_voxel(1), block_min_voxel(2), dv);
+	}
+	*/
+
+
+	//Make a for over the corners to get all distances 
+	/* float dist_corner = dot(B_tex.get_corner(), slice_normal_tex) + -slice_center_distance_tex;
+	texture_from_world_coordinates
+	B.get_min_pnt()
+	*/
+	ivec3 nr_blocks(unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), unsigned(ceil(float(dimensions(2)) / block_dimensions(2))));
+	
+	for (int z = 0; z < nr_blocks(2); z++) {
+		for (int y = 0; y < nr_blocks(1); y++) {
+			for (int x = 0; x < nr_blocks(0); x++) {
+				ivec3 block = ivec3(x, y, z);
+
+				//world coordinates
+				box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block))),
+					world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1)))));
+				vec3 offset = overlap;
+				offset *= 0.5f;
+				box3 B_overlap(world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block) - offset)),
+					world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1)) + offset)));
+				
+				//texture coordinates
+				box3 B_tex(texture_from_voxel_coordinates(voxel_from_block_coordinates(block)),
+					texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1))));
+
+				if (is_block_intersected(B_tex, false)) {
+					draw_wire_box(ctx, B, color);
+					draw_wire_box(ctx, B_overlap, overlap_color);
+				}
+			}
+		}
+	}	
+}
+
+/// draw a block with a wire frame box
+void volume_slicer::draw_surface(cgv::render::context& ctx)
+{
+	if (corner_indices.empty())
+		return;
+	if (show_surface_wireframe) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	glDisable(GL_COLOR_MATERIAL);
+	ctx.enable_material(surface_mat);
+	glVertexPointer(3, GL_FLOAT, 0, &positions[0]);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glNormalPointer(GL_FLOAT, 0, &normals[0]);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glDrawElements(GL_TRIANGLES, corner_indices.size(), GL_UNSIGNED_INT, &corner_indices[0]);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	ctx.disable_material(surface_mat);
+	if (show_surface_wireframe) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+}
+
 ///
 void volume_slicer::draw(cgv::render::context& ctx)
 {
 	// compute axis aligned 3d box of volume
 	box3 B(-0.5f*extent, 0.5f*extent);
-
-	// render box
 	if (show_box) {
-		// first draw wireframe
-		glColor4f(0, 1, 1, 1);
-		glDisable(GL_CULL_FACE);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		ctx.tesselate_box(B, false);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-		// draw backfaces next
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_FRONT);
-		glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, 1);
-		ctx.enable_material(box_mat);
-		ctx.tesselate_box(B, true);
-		ctx.disable_material(box_mat);
-		glCullFace(GL_BACK);
-		glDisable(GL_CULL_FACE);
+		draw_wire_box(ctx, B, vec3(0, 1, 1));
+		draw_box(ctx, B, box_mat);
 	}
+	if (show_voxel)
+		draw_voxel(ctx, current_voxel, vec3(1, 0, 0));
+	if (show_block) {
+		draw_block(ctx, current_block, vec3(1, 0.5, 0), vec3(0, 1, 0));
+		draw_blocks_in_plane(ctx, vec3(1, 0, 1), vec3(0, 0, 1));
+	}
+	if (show_surface)
+		draw_surface(ctx);
 
 	// render slice
 	// compute two directions x/y_tex orthogonal to normal direction
@@ -308,7 +696,7 @@ void volume_slicer::draw(cgv::render::context& ctx)
 	x_tex *= 3.0f;
 	y_tex *= 3.0f;
 	// compute point on slice in texture coordinates 
-	vec3 c_tex = slice_distance_tex*slice_normal_tex + vec3(0.5f, 0.5f, 0.5f);
+	vec3 c_tex = slice_center_distance_tex*slice_normal_tex + vec3(0.5f, 0.5f, 0.5f);
 	// define clipping planes in texture coordinates
 	int i;
 	for (i = 0; i < 6; ++i) {
@@ -366,6 +754,30 @@ void volume_slicer::draw(cgv::render::context& ctx)
 		glDisable(GL_CLIP_PLANE0 + i);
 }
 
+/// draw textual information here
+void volume_slicer::after_finish(cgv::render::context& ctx)
+{
+	if (!voxel_value_info.empty()) {
+		glDisable(GL_LIGHTING);
+		glDisable(GL_DEPTH_TEST);
+		ctx.push_pixel_coords();
+		float f = (float)last_x / ctx.get_width();
+		glColor3f(1, 1, 0.3f);
+		ctx.set_cursor(last_x - (int)(f*ctx.get_current_font_face()->measure_text_width(voxel_value_info, ctx.get_current_font_size())), last_y - 4);
+		ctx.output_stream() << voxel_value_info.c_str();
+		ctx.output_stream().flush();
+
+		glColor3f(0.2f, 0.2f, 1);
+		ctx.set_cursor(last_x + 2 - (int)(f*ctx.get_current_font_face()->measure_text_width(voxel_value_info, ctx.get_current_font_size())), last_y - 2);
+		ctx.output_stream() << voxel_value_info.c_str();
+		ctx.output_stream().flush();
+
+		ctx.pop_pixel_coords();
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_LIGHTING);
+	}
+}
+
 /// called to destruct the rendering objects
 void volume_slicer::clear(cgv::render::context& ctx)
 {
@@ -387,19 +799,19 @@ void volume_slicer::create_gui()
 	// font size of level=2 is larger than other gui fonts
 	add_decorator("volume slicer", "heading", "level=2");
 	// begin a gui node that can be opened and closed with heading "Slicing" of next level (3)
-	// use member slice_distance_tex to hash the node status and open node initially (true in 3rd argument)
-	if (begin_tree_node("Slicing", slice_distance_tex, true, "level=3")) {
+	// use member slice_center_distance_tex to hash the node status and open node initially (true in 3rd argument)
+	if (begin_tree_node("Slicing", slice_center_distance_tex, true, "level=3")) {
 		// tabify gui
 		align("\a");
-		// add value_slider control for slice_distance_tex member specifying range [-1,1]
-		add_member_control(this, "slice_distance_tex", slice_distance_tex, "value_slider", "min=-1;max=1;step=0.0001;ticks=true");
+		// add value_slider control for slice_center_distance_tex member specifying range [-1,1]
+		add_member_control(this, "slice_center_distance_tex", slice_center_distance_tex, "value_slider", "min=-1;max=1;step=0.0001;ticks=true");
 		// add a compount gui of type "direction" for the vector valued member slice_normal_tex
 		// the direction gui ensures that the slice_normal_tex is of length one
 		add_gui("slice_normal_tex", slice_normal_tex, "direction");
 		// untabify gui
 		align("\b");
 		// end gui node definition specifying the same member used for hashing the node status 
-		end_tree_node(slice_distance_tex);
+		end_tree_node(slice_center_distance_tex);
 	}
 	// start tree node to interact with volume
 	if (begin_tree_node("Volume", dimensions, false, "level=3")) {
@@ -426,10 +838,37 @@ void volume_slicer::create_gui()
 		align("\b");
 		end_tree_node(dimensions);
 	}
+	// start tree node to interact with volume
+	if (begin_tree_node("Blocks", block_dimensions, false, "level=3")) {
+		align("\a");
+		// w=50 specifies the width of each component view in 50 pixels
+		add_gui("block_dimensions", block_dimensions, "vector", "main_label='first';align=' ';gui_type='value_input';options='w=50;min=1;max=1024;step=1'"); align("\n");
+		// w=50 specifies the width of each component view in 50 pixels
+		add_gui("overlap", overlap, "vector", "main_label='first';align=' ';gui_type='value_input';options='w=50;min=0;max=1;step=1'"); align("\n");
+		align("\b");
+		end_tree_node(block_dimensions);
+	}
+	// start tree node to interact with volume
+	if (begin_tree_node("Iso Surface", down_sampling_factor, false, "level=3")) {
+		align("\a");
+		// w=50 specifies the width of each component view in 50 pixels
+		connect_copy(add_button("extract")->click, cgv::signal::rebind(this, &volume_slicer::extract_surface));
+		add_member_control(this, "iso_value", iso_value, "value_slider", "min=0;max=1;ticks=true");
+		add_member_control(this, "negate_normals", negate_normals, "toggle");
+		add_member_control(this, "down_sampling_factor", down_sampling_factor, "value_slider", "min=1;max=32;ticks=true;log=true");
+		connect_copy(add_button("clear")->click, cgv::signal::rebind(this, &volume_slicer::clear_surface));
+		align("\b");
+		end_tree_node(down_sampling_factor);
+	}
 	if (begin_tree_node("Rendering", show_box, false, "level=3")) {
 		align("\a");
 		add_member_control(this, "show_box", show_box, "check");
+		add_member_control(this, "show_voxel", show_voxel, "check");
+		add_member_control(this, "show_block", show_block, "check");
 		add_gui("box_mat", box_mat);
+		add_member_control(this, "show_surface", show_surface, "check");
+		add_member_control(this, "show_surface_wireframe", show_surface_wireframe, "check");
+		add_gui("surface_mat", surface_mat);
 		align("\b");
 		end_tree_node(show_box);
 	}
