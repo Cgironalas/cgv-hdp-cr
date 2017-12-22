@@ -174,8 +174,10 @@ public:
 	/// draw a voxel with a wire frame box
 	void draw_voxel(cgv::render::context& ctx, const ivec3& voxel, const vec3& color);
 	/// draw a block with a wire frame box
-	void draw_block(cgv::render::context& ctx, const ivec3& block, const vec3& color, const vec3& overlap_color);
-	/// draws all blocks that intersect the plane
+	void draw_block(cgv::render::context& ctx, const ivec3& block, const vec3& color, const vec3& overlap_color, bool write_tiff);
+	/// computes intersected blocks in the vector
+	void update_intersected_blocks(cgv::render::context& ctx);
+	/// draws all blocks that intersect the plane 
 	void draw_blocks_in_plane(cgv::render::context& ctx, const vec3& color, const vec3& overlap_color);
 	/// called to draw the frame
 	void draw(cgv::render::context& ctx);
@@ -212,6 +214,10 @@ private:
 	void peek_voxel_values(int x, int y);
 	/// determine if a block is intersected by the plane
 	bool is_block_intersected(const box3& B, bool debug);
+
+	bool retrieve_block(const std::string& input_path, const std::string& output_path, ivec3& voxel_at);
+
+	bool write_tiff_block(const std::string& file_name, const char* data_ptr, const std::string& options);
 	
 public:
 	/// adjusts view to bounding box of all instances

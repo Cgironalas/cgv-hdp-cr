@@ -8,6 +8,11 @@
 #include <cgv/media/image/image_reader.h>
 #include <cgv/media/image/image_proc.h>
 #include <vol_data/volume_io.h>
+#include <fstream>
+
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
+
 
 /// structure to hold the information needed to build a hierarchy of blocks
 struct block_generation_info : public volume_info
@@ -231,7 +236,7 @@ bool build_blocks_from_directory(const std::string& input_path, const std::strin
 	// iterate over slices once
 	unsigned block_z = 0;
 	unsigned k = 0;
-	int written_consecutive = 0;
+	long double written_consecutive = 0;
 	for (unsigned z = 0; z < file_names.size(); ++z) {
 		std::cout << "read slice " << z << ": <" << file_names[z] << ">" << std::endl;
 		std::vector<char> data;
@@ -301,12 +306,14 @@ bool build_blocks_from_directory(const std::string& input_path, const std::strin
 					int bi = j * nr_blocks(0) + i;
 					char* block_begin_ptr = &block_data[bi * block_size];
 					
-					if (written_consecutive < 15 && written_consecutive > 10) {
+					written_consecutive += 1;
+
+					//Test tiff writing
+					if (written_consecutive < 15) {
 						std::string name = output_path + "/blocks/tiff_" + std::to_string(i) + "_" + std::to_string(j) + "_" + std::to_string(z);
 						std::cout << name << std::endl;
 						//std::cin.get();
 						write_tiff_block(name, bgi, block_begin_ptr, "");
-						
 					}
 					
 					char* block_overlap_ptr = &block_data[bi * block_size + bgi.block_dimensions(2) * block_slice_size];
@@ -317,8 +324,10 @@ bool build_blocks_from_directory(const std::string& input_path, const std::strin
 			block_z = bgi.overlap(2);
 			k += 1;
 		}
-		written_consecutive += 1;
 	}
+
+	std::cout << std::fixed << "total blocks: " << written_consecutive << std::endl;
+	std::cout << std::fixed << "nr_blocks: " << nr_blocks(0) << ", " << nr_blocks(1) << ", " << nr_blocks(2) << std::endl;
 	return true;
 }
 
@@ -326,8 +335,10 @@ bool retrieve_block(const block_generation_info& bgi, const std::string& input_p
 {
 	// compute number of blocks on base levels
 	volume::dimension_type nr_blocks(unsigned(ceil(float(bgi.dimensions(0)) / bgi.block_dimensions(0))), unsigned(ceil(float(bgi.dimensions(1)) / bgi.block_dimensions(1))), unsigned(ceil(float(bgi.dimensions(2)) / bgi.block_dimensions(2))));
-	volume::dimension_type block(unsigned(ceil(float(voxel_at(0)) / bgi.dimensions(0))), unsigned(ceil(float(voxel_at(1)) / bgi.dimensions(1))), unsigned(ceil(float(voxel_at(2)) / bgi.dimensions(2))));
+	volume::dimension_type block(unsigned(ceil(float(voxel_at(0)) / bgi.block_dimensions(0))), unsigned(ceil(float(voxel_at(1)) / bgi.block_dimensions(1))), unsigned(ceil(float(voxel_at(2)) / bgi.block_dimensions(2))));
 	size_t block_size = bgi.get_block_size();
+
+	std::cout << std::fixed << "0: " << unsigned(ceil(float(voxel_at(0)) / bgi.block_dimensions(0))) << std::endl;
 
 	std::stringstream ss;
 	ss << input_path << "/level_00_blockslice_" << std::setw(3) << std::setfill('0') << block(2) << ".bvx";
@@ -346,6 +357,49 @@ bool retrieve_block(const block_generation_info& bgi, const std::string& input_p
 
 	return write_tiff_block(output_path + "/slice_block_" + std::to_string(block(0)) + "_" + std::to_string(block(1)) + "_" + std::to_string(block(2)), bgi, block_ptr, "");
 }
+
+bool write_vox(const std::string& input_path, const std::string& output_path, const block_generation_info& bgi) {
+	std::fstream vox_file = std::fstream(output_path + "/result.bin", std::ios::out | std::ios::binary);
+
+	// collect input files
+	std::vector<std::string> file_names;
+	void* handle = cgv::utils::file::find_first(input_path + "/*.*");
+	while (handle) {
+		if (!cgv::utils::file::find_directory(handle))
+			file_names.push_back(cgv::utils::file::find_name(handle));
+		handle = cgv::utils::file::find_next(handle);
+	}
+
+	if (file_names.empty()) {
+		std::cerr << "did not find files in directory <" << input_path << ">" << std::endl;
+		return false;
+	}
+
+	for (int z = 0; z < file_names.size(); z++) {
+		std::cout << "read slice " << z << ": <" << file_names[z] << ">" << std::endl;
+
+		cv::Mat img = cv::imread(input_path + "/" + file_names[z], cv::IMREAD_COLOR);
+		uchar* data = img.data;
+		int cn = img.channels();
+
+		for (int y = 0; y < img.rows; y++) {
+			for (int x = 0; x < img.cols; x++) {
+				unsigned char *pixel = img.ptr(y,x);
+		
+				if (vox_file.is_open()) {
+					vox_file.write((char *)&data[y*img.cols*cn + x*cn + 2], 1);
+					vox_file.write((char *)&data[y*img.cols*cn + x*cn + 1], 1);
+					vox_file.write((char *)&data[y*img.cols*cn + x*cn + 0], 1);
+				}
+			}
+		}
+
+		std::cout << "Columns: " << img.cols << " - Rows: " << img.rows << "." << std::endl;
+	}
+	vox_file.close();
+	return true;
+}
+
 
 /*
 bool create_levels(const std::string& path, unsigned nr_levels, const block_generation_info& bgi)
@@ -796,23 +850,19 @@ bool subsample_directory(const std::string& input_path, const std::string& outpu
 	return true;
 }
 
-
-
-
-
 //Testing:
 void init_to_visible_human_male_png(block_generation_info& bgi)
 {
-	int width = 2048;
-	int height = 1216;
-	int amount = 377;
+	int width = 4096;
+	int height = 2700;
+	int amount = 774;
 
 	bgi.type_id = cgv::type::info::TI_UINT8;
 	bgi.components = cgv::data::CF_RGB;
 	bgi.dimensions.set(width, height, amount);
 	bgi.extent.set(width * 0.114f, height * 0.114f, amount * 1.0f);
 
-	bgi.block_dimensions.set(16, 16, 13);
+	bgi.block_dimensions.set(16, 16, 16);
 	bgi.overlap.set(1, 1, 1);
 	bgi.subsampling_factor.set(2, 2, 2);
 	bgi.subsampling_offset.set(0, 0, 3);
@@ -841,14 +891,22 @@ int main(int argc, char** argv)
 	// single resolution approach
 	build_level_infos(visible_human);
 
-	std::string input_path = "E:/data/visual_human/male/PNG_format/head";
-	std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/block16/head";
+	std::string bk = "E:/data/visual_human/male/PNG_format/head";
+	std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged";
+	std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices";
 
-	if (build_blocks_from_directory(input_path, output_path, visible_human)) { std::cout << "success" << std::endl; }
+
+	// Generate the blocks in slice
+	//if (build_blocks_from_directory(input_path, output_path, visible_human)) { std::cout << "success" << std::endl; }
+	//else { std::cout << "failed" << std::endl; }
+
+	// Test retrieve block from block slices
+    if (retrieve_block(visible_human, output_path, "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices/blocks", cgv::math::fvec<double, 3>(32,0,0.0))) { std::cout << "success" << std::endl; }
 	else { std::cout << "failed" << std::endl; }
 
-	if (retrieve_block(visible_human, output_path, "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/block16/head/blocks/read_slice", cgv::math::fvec<double, 3>(16.0,16.0,0.0))) { std::cout << "success" << std::endl; }
-	else { std::cout << "failed" << std::endl; }
+	// Generate vox
+	//if (write_vox(input_path, output_path, visible_human)) { std::cout << "success" << std::endl; }
+	//else { std::cout << "failed" << std::endl; }
 
 	std::cin.get();
 	return 1;

@@ -7,6 +7,8 @@
 #include <cgv_gl/gl/gl.h>
 #include <cgv/gui/key_event.h>
 #include <cgv/gui/mouse_event.h>
+#include <cgv/media/image/image_writer.h>
+
 
 /// standard constructor
 volume_slicer::volume_slicer() : cgv::base::node("volume_slicer")
@@ -46,6 +48,7 @@ volume_slicer::volume_slicer() : cgv::base::node("volume_slicer")
 	current_voxel = current_block = ivec3(0, 0, 0);
 	block_dimensions = ivec3(16, 16, 16);
 	overlap = ivec3(1, 1, 1);
+
 }
 
 bool volume_slicer::ensure_view_ptr()
@@ -140,6 +143,56 @@ void volume_slicer::peek_voxel_values(int x, int y)
 	post_redraw();
 }
 
+bool volume_slicer::retrieve_block(const std::string& input_path, const std::string& output_path, ivec3& voxel_at)
+{
+	ivec3 nr_blocks(
+		unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), 
+		unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), 
+		unsigned(ceil(float(dimensions(2)) / block_dimensions(2))));
+	ivec3 block(
+		unsigned(ceil(float(voxel_at(0)) / block_dimensions(0))),
+		unsigned(ceil(float(voxel_at(1)) / block_dimensions(1))),
+		unsigned(ceil(float(voxel_at(2)) / block_dimensions(2))));
+	size_t block_size = (block_dimensions(1) + overlap(1))*((block_dimensions(0) + overlap(0))*cgv::data::component_format(cgv::type::info::TI_UINT8, cgv::data::CF_RGB).get_entry_size()) * (block_dimensions(2) + overlap(2));
+
+	std::stringstream ss;
+	ss << input_path << "/level_00_blockslice_" << std::setw(3) << std::setfill('0') << block(2) << ".bvx";
+
+	// compute block index and pointer to block data
+	unsigned bi = block(1) * nr_blocks(0) + block(0);
+	char* block_ptr = new char[block_size];
+
+	// read only the block
+	FILE* fp = fopen(ss.str().c_str(), "rb");
+	fseek(fp, bi * block_size, SEEK_SET);
+	if (fread(block_ptr, block_size, 1, fp) == 1)
+		fclose(fp);
+	else
+		return false;
+
+	return write_tiff_block(output_path + "/block_at_" + std::to_string(block(0)) + "_" + std::to_string(block(1)) + "_" + std::to_string(block(2)), block_ptr, "");
+}
+
+//! write a block located at \c data_ptr to a tiff file
+bool volume_slicer::write_tiff_block(const std::string& file_name, const char* data_ptr, const std::string& options)
+{
+	// setup output format 
+	cgv::data::data_format df;
+	df.set_component_format(cgv::data::component_format(cgv::type::info::TI_UINT8, cgv::data::CF_RGB));
+	df.set_width(block_dimensions(0) + 1);
+	df.set_height(block_dimensions(1) + 1);
+	cgv::media::image::image_writer iw(file_name + ".tif");
+	iw.multi_set(options);
+	size_t slice_size = df.get_nr_bytes();
+	for (unsigned i = 0; i<(unsigned)(block_dimensions(2) + overlap(2)); ++i) {
+		cgv::data::const_data_view dv(&df, data_ptr + slice_size*i);
+		if (!iw.write_image(dv)) {
+			std::cerr << "could not write slice " << i << " to tiff file " << file_name << std::endl;
+			return false;
+		}
+	}
+	return iw.close();
+}
 
 /// overload and implement this method to handle events
 bool volume_slicer::handle(cgv::gui::event& e)
@@ -188,14 +241,22 @@ bool volume_slicer::handle(cgv::gui::event& e)
 	// check for mouse event
 	if (e.get_kind() == cgv::gui::EID_MOUSE) {
 		cgv::gui::mouse_event& me = static_cast<cgv::gui::mouse_event&>(e);
+
 		peek_voxel_values(me.get_x(), me.get_y());
+		
 		// we are interested only in mouse events with the Ctrl-modifier and no other modifier pressed
 		if (me.get_modifiers() != cgv::gui::EM_CTRL)
 			return false;
-
+	
 		switch (me.get_action()) {
-		case cgv::gui::MA_PRESS:
+			
+		case cgv::gui::MA_RELEASE:
 			// support drag and drop for left and right button
+			if (me.get_button() == cgv::gui::MB_RIGHT_BUTTON) {
+				
+			}
+			break;
+		case cgv::gui::MA_PRESS:
 			if (me.get_button() == cgv::gui::MB_LEFT_BUTTON || me.get_button() == cgv::gui::MB_RIGHT_BUTTON)
 				return true;
 			else
@@ -379,6 +440,7 @@ bool volume_slicer::init(cgv::render::context& ctx)
 	ctx.enable_font_face(cgv::media::font::find_font("Arial")->get_font_face(cgv::media::font::FFA_BOLD), 20);
 	// ensure white background color
 	ctx.set_bg_clr_idx(4);
+
 	return true;
 }
 
@@ -571,7 +633,7 @@ bool volume_slicer::is_block_intersected(const box3& B_tex, bool debug)
 }
 
 /// draw a block with a wire frame box
-void volume_slicer::draw_block(cgv::render::context& ctx, const ivec3& block, const vec3& color, const vec3& overlap_color)
+void volume_slicer::draw_block(cgv::render::context& ctx, const ivec3& block, const vec3& color, const vec3& overlap_color, bool write_tiff)
 {
 	box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block))),
 		world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1)))));
@@ -588,59 +650,52 @@ void volume_slicer::draw_block(cgv::render::context& ctx, const ivec3& block, co
 	box3 B_tex(texture_from_voxel_coordinates(voxel_from_block_coordinates(block)),
 		texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1))));
 
-	/*if (is_block_intersected(B_tex, true)) {
+	if (is_block_intersected(B_tex, false)) {
 		draw_wire_box(ctx, B, color);
 		draw_wire_box(ctx, B_overlap, overlap_color);
-	}*/
+
+		if (write_tiff) {
+			std::cout << "Trying to get block at:" << std::endl;
+
+			std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices";
+			std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices/blocks";
+
+			if (retrieve_block(input_path, output_path, current_voxel))
+				std::cout << "successfully retrieved and wrote block in tiff format" << std::endl;
+			else
+				std::cout << "failed to retrieve block from block slices" << std::endl;
+		}
+		
+	}
 }
 
-void volume_slicer::draw_blocks_in_plane(cgv::render::context& ctx, const vec3& color, const vec3& overlap_color) {
-	/*
-	/// define data format of how to store block in CPU memory
-	cgv::data::data_format df(17, 17, 17, cgv::type::info::TI_UINT8, cgv::data::CF_RGB);
-	/// construct memory to hold block with given format
-	cgv::data::data_view dv(&df);
-	/// read block from binary file
-
-	//fp needs to be the place where I'll get the block form the file,
-	if (fread(dv.get_ptr<cgv::type::info::TI_UINT8>(), df.get_entry_size(), df.get_nr_entries(), fp) == df.get_nr_entries()) {
-	/// transfer block to GPU texture memory
-	block_texture.replace(ctx, block_min_voxel(0), block_min_voxel(1), block_min_voxel(2), dv);
-	}
-	*/
-
-
-	//Make a for over the corners to get all distances 
-	/* float dist_corner = dot(B_tex.get_corner(), slice_normal_tex) + -slice_center_distance_tex;
-	texture_from_world_coordinates
-	B.get_min_pnt()
-	*/
-	ivec3 nr_blocks(unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), unsigned(ceil(float(dimensions(2)) / block_dimensions(2))));
+void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 	
+	ivec3 nr_blocks(unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), unsigned(ceil(float(dimensions(2)) / block_dimensions(2))));
+	intersected_blocks.clear();
+
 	for (int z = 0; z < nr_blocks(2); z++) {
 		for (int y = 0; y < nr_blocks(1); y++) {
 			for (int x = 0; x < nr_blocks(0); x++) {
 				ivec3 block = ivec3(x, y, z);
 
-				//world coordinates
-				box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block))),
-					world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1)))));
-				vec3 offset = overlap;
-				offset *= 0.5f;
-				box3 B_overlap(world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block) - offset)),
-					world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1)) + offset)));
-				
 				//texture coordinates
 				box3 B_tex(texture_from_voxel_coordinates(voxel_from_block_coordinates(block)),
 					texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1))));
 
 				if (is_block_intersected(B_tex, false)) {
-					draw_wire_box(ctx, B, color);
-					draw_wire_box(ctx, B_overlap, overlap_color);
+					intersected_blocks.push_back(block);
 				}
 			}
 		}
-	}	
+	}
+}
+
+void volume_slicer::draw_blocks_in_plane(cgv::render::context& ctx, const vec3& color, const vec3& overlap_color) {
+	update_intersected_blocks(ctx);
+	for (int i = 0; i < intersected_blocks.size(); i++) {
+		draw_block(ctx, intersected_blocks[i], color, overlap_color, false);
+	}
 }
 
 /// draw a block with a wire frame box
@@ -678,7 +733,7 @@ void volume_slicer::draw(cgv::render::context& ctx)
 	if (show_voxel)
 		draw_voxel(ctx, current_voxel, vec3(1, 0, 0));
 	if (show_block) {
-		draw_block(ctx, current_block, vec3(1, 0.5, 0), vec3(0, 1, 0));
+		draw_block(ctx, current_block, vec3(1, 0.5, 0), vec3(0, 1, 0), true);
 		draw_blocks_in_plane(ctx, vec3(1, 0, 1), vec3(0, 0, 1));
 	}
 	if (show_surface)
