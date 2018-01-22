@@ -46,7 +46,7 @@ volume_slicer::volume_slicer() : cgv::base::node("volume_slicer")
 
 	last_x = last_y = -1;
 	current_voxel = current_block = ivec3(0, 0, 0);
-	block_dimensions = ivec3(16, 16, 16);
+	block_dimensions = ivec3(2, 2, 16);
 	overlap = ivec3(1, 1, 1);
 
 }
@@ -145,6 +145,9 @@ void volume_slicer::peek_voxel_values(int x, int y)
 
 bool volume_slicer::retrieve_block(const std::string& input_path, const std::string& output_path, ivec3& voxel_at)
 {
+	///REMOVE
+	return true;
+
 	ivec3 nr_blocks(
 		unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), 
 		unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), 
@@ -155,6 +158,8 @@ bool volume_slicer::retrieve_block(const std::string& input_path, const std::str
 		unsigned(ceil(float(voxel_at(2)) / block_dimensions(2))));
 	size_t block_size = (block_dimensions(1) + overlap(1))*((block_dimensions(0) + overlap(0))*cgv::data::component_format(cgv::type::info::TI_UINT8, cgv::data::CF_RGB).get_entry_size()) * (block_dimensions(2) + overlap(2));
 
+	std::cout << "Trying to get block at: " << block(0) <<  ", " <<  block(1) << ", " << block(2) << ", " << std::endl;
+
 	std::stringstream ss;
 	ss << input_path << "/level_00_blockslice_" << std::setw(3) << std::setfill('0') << block(2) << ".bvx";
 
@@ -162,9 +167,14 @@ bool volume_slicer::retrieve_block(const std::string& input_path, const std::str
 	unsigned bi = block(1) * nr_blocks(0) + block(0);
 	char* block_ptr = new char[block_size];
 
+	// Not tested: throws exception at fread in some points 
+	// Read block from dataset and write tiff from block slices
 	// read only the block
+
 	FILE* fp = fopen(ss.str().c_str(), "rb");
 	fseek(fp, bi * block_size, SEEK_SET);
+	
+
 	if (fread(block_ptr, block_size, 1, fp) == 1)
 		fclose(fp);
 	else
@@ -602,7 +612,7 @@ float volume_slicer::compute_distance_to_slice_tex(const vec3& p) const
 	return cgv::math::dot(p - vec3(0.5f, 0.5f, 0.5f), slice_normal_tex) - slice_center_distance_tex;
 }
 
-bool volume_slicer::is_block_intersected(const box3& B_tex, bool debug)
+bool volume_slicer::is_block_intersected(const box3& B_tex) 
 {
 	// intersection is calculated by analyzing the dot product of the corners and the normal of the slice
 	// if all results share the same sign, it's not interesected. 
@@ -612,24 +622,29 @@ bool volume_slicer::is_block_intersected(const box3& B_tex, bool debug)
 	bool first_time = true;
 
 	// iterate over all the block's corners
-	if (debug) { std::cout << "cube" << std::endl; }
 	for (unsigned i = 0; i < 8; i++)
 	{
 		dist_corner = compute_distance_to_slice_tex(B_tex.get_corner(i));
-		if (debug) { std::cout << dist_corner << std::endl; }
 		if (first_time) {
 			sign = dist_corner < 0;
-			if (debug) { std::cout << sign << std::endl; }
 			first_time = false;
 		} else {
 			if ((dist_corner < 0) != sign) {
-				if (debug) { std::cout << "cube end cool" << std::endl; }
 				return true;
 			}
 		}
 	}
-	if (debug) { std::cout << "cube end not cool" << std::endl; }
 	return false;
+}
+
+float volume_slicer::block_distance(const box3& B_tex) 
+{
+	float dist_corner =0;
+	// iterate over all the block's corners, adding the distance value
+	for (unsigned i = 0; i < 8; i++){
+		dist_corner += compute_distance_to_slice_tex(B_tex.get_corner(i));
+	}
+	return dist_corner;
 }
 
 /// draw a block with a wire frame box
@@ -650,13 +665,11 @@ void volume_slicer::draw_block(cgv::render::context& ctx, const ivec3& block, co
 	box3 B_tex(texture_from_voxel_coordinates(voxel_from_block_coordinates(block)),
 		texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1))));
 
-	if (is_block_intersected(B_tex, false)) {
+	if (is_block_intersected(B_tex)) {
 		draw_wire_box(ctx, B, color);
 		draw_wire_box(ctx, B_overlap, overlap_color);
 
 		if (write_tiff) {
-			std::cout << "Trying to get block at:" << std::endl;
-
 			std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices";
 			std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices/blocks";
 
@@ -664,9 +677,14 @@ void volume_slicer::draw_block(cgv::render::context& ctx, const ivec3& block, co
 				std::cout << "successfully retrieved and wrote block in tiff format" << std::endl;
 			else
 				std::cout << "failed to retrieve block from block slices" << std::endl;
+			
 		}
-		
 	}
+}
+
+static bool abs_compare(float a, float b)
+{
+	return (std::abs(a) < std::abs(b));
 }
 
 void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
@@ -674,25 +692,78 @@ void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 	ivec3 nr_blocks(unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), unsigned(ceil(float(dimensions(2)) / block_dimensions(2))));
 	intersected_blocks.clear();
 
-	for (int z = 0; z < nr_blocks(2); z++) {
-		for (int y = 0; y < nr_blocks(1); y++) {
-			for (int x = 0; x < nr_blocks(0); x++) {
-				ivec3 block = ivec3(x, y, z);
+	int max_ind = std::distance(std::begin(slice_normal_tex), std::max_element(std::begin(slice_normal_tex), std::end(slice_normal_tex), abs_compare));
+	
+	std::vector<int> projected_dimensions_indices(2);
+	std::size_t n(0);
+
+	std::generate(projected_dimensions_indices.begin(), projected_dimensions_indices.end(),
+	[&]{
+		if (n == max_ind) { n++; }
+		return n++; 
+	});
+
+	std::cout <<max_ind << std::endl;
+
+	for (int projected_dim0 = 0; projected_dim0 < nr_blocks(projected_dimensions_indices.at(0)); projected_dim0++) {
+		for (int projected_dim1 = 0; projected_dim1 < nr_blocks(projected_dimensions_indices.at(1)); projected_dim1++) {
+			
+			int l = 0, r = nr_blocks(max_ind);
+			while (l <= r) {
+
+				int m = l + (r - l) / 2;
+			
+				ivec3 block = get_box_indices_from_projection(max_ind, m, projected_dim0, projected_dim1);
 
 				//texture coordinates
 				box3 B_tex(texture_from_voxel_coordinates(voxel_from_block_coordinates(block)),
 					texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1))));
 
-				if (is_block_intersected(B_tex, false)) {
+
+				if (is_block_intersected(B_tex)) {
 					intersected_blocks.push_back(block);
 				}
+				
+				//if the deleted dimension is negative distance value should be inverted
+				bool question = slice_normal_tex(max_ind) > 0 ? block_distance(B_tex) < 0 : block_distance(B_tex) > 0;
+
+				if (question)
+					l = m + 1;
+				else
+					r = m - 1;
+					
+			
 			}
 		}
 	}
 }
 
+volume_slicer::ivec3 volume_slicer::get_box_indices_from_projection(int max_ind, int var_dim, int dim0, int dim1) {
+	int x, y, z;
+	switch (max_ind) {
+		case 0: {
+			x = var_dim;
+			y = dim0;
+			z = dim1;
+			break;
+		}
+		case 1: {
+			x = dim0;
+			y = var_dim;
+			z = dim1;
+			break;
+		}
+		case 2: {
+			x = dim0;
+			y = dim1;
+			z = var_dim;
+			break;
+		}
+	}
+	return ivec3(x,y,z);
+}
+
 void volume_slicer::draw_blocks_in_plane(cgv::render::context& ctx, const vec3& color, const vec3& overlap_color) {
-	update_intersected_blocks(ctx);
 	for (int i = 0; i < intersected_blocks.size(); i++) {
 		draw_block(ctx, intersected_blocks[i], color, overlap_color, false);
 	}
@@ -732,6 +803,7 @@ void volume_slicer::draw(cgv::render::context& ctx)
 	}
 	if (show_voxel)
 		draw_voxel(ctx, current_voxel, vec3(1, 0, 0));
+	update_intersected_blocks(ctx);
 	if (show_block) {
 		draw_block(ctx, current_block, vec3(1, 0.5, 0), vec3(0, 1, 0), true);
 		draw_blocks_in_plane(ctx, vec3(1, 0, 1), vec3(0, 0, 1));

@@ -213,7 +213,11 @@ private:
 	/// determine voxel location of mouse pointer
 	void peek_voxel_values(int x, int y);
 	/// determine if a block is intersected by the plane
-	bool is_block_intersected(const box3& B, bool debug);
+	bool is_block_intersected(const box3& B);
+
+	float block_distance(const box3& B);
+
+	ivec3 get_box_indices_from_projection(int max_ind, int var_dim, int dim0, int dim1);
 
 	bool retrieve_block(const std::string& input_path, const std::string& output_path, ivec3& voxel_at);
 
