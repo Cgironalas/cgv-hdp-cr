@@ -26,6 +26,9 @@ static string *imgFiles,	// names of all the images from sourceDir
 
 static int index, currentImage, folderSize, indexBegin, middle, indexEnd, firstMask, lastMask, counter, rows, columns;
 
+static unsigned char *matPixel;
+static unsigned char *maskPixel;
+
 
 static void help() {
 	cout << "\nSelect a rectangular area around the object you want to segment\n" <<
@@ -455,7 +458,7 @@ void loadPreviousImage() {
 
 // Check if the mask of a given index exists
 bool maskExists(int i) {
-	cout << "Mask to check: " + maskDir + maskFiles[i] << endl;
+	//cout << "Mask to check: " + maskDir + maskFiles[i] << endl;
 	Mat temp = imread(maskDir + maskFiles[i], IMREAD_GRAYSCALE);
 	if (!temp.empty()) {
 		return true;
@@ -472,6 +475,82 @@ std::string hexStr(unsigned char *data, int len)
 	for (int i = 0; i < len; ++i)
 		ss << std::setw(2) << std::setfill('0') << (int)data[i];
 	return ss.str();
+}
+
+void writeMatToVox(Mat pMat, Mat pMask) {
+
+}
+
+void generateVox() {
+	cout << "Vox is being generated." << endl;
+	fstream dataVox = fstream("data.bin", std::ios::out | std::ios::binary);
+	fstream maskVox = fstream("mask.bin", std::ios::out | std::ios::binary);
+	Mat tempMat;
+	Mat tempMask;
+	int current, maskCounter, dataCounter;
+	maskCounter = 0;
+	dataCounter = 0;
+	for (current = folderSize - 1; current >= 0; current--) {
+		dataCounter++;
+		cout << "Index: " + to_string(current) << endl;
+		tempMask = imread(maskDir + maskFiles[current], IMREAD_GRAYSCALE);
+		//cout << "Read mask" << endl;
+		tempMat = imread(sourceDir + imgFiles[current], IMREAD_COLOR);
+		//cout << "Read source" << endl;
+		if (!tempMask.empty()) {
+			maskCounter++;
+			for (int i = 0; i < tempMat.rows; i++) {
+				for (int j = 0; j < tempMat.cols; j++) {
+					matPixel = tempMat.ptr(i, j);
+					maskPixel = tempMask.ptr(i, j);
+
+					if (dataVox.is_open()) {
+
+						ostringstream r, g, b;
+						b << hex << std::setw(2) << std::setfill('0') << (int)maskPixel[0];
+						g << hex << std::setw(2) << std::setfill('0') << (int)maskPixel[1];
+						r << hex << std::setw(2) << std::setfill('0') << (int)maskPixel[2];
+
+						if (b.str() == "00" && g.str() == "00" && r.str() == "00") {
+							dataVox.write((char *)&maskPixel[2], 1);
+							dataVox.write((char *)&maskPixel[1], 1);
+							dataVox.write((char *)&maskPixel[0], 1);
+						}
+						else {
+							dataVox.write((char *)&matPixel[2], 1);
+							dataVox.write((char *)&matPixel[1], 1);
+							dataVox.write((char *)&matPixel[0], 1);
+						}
+					}
+
+					if (maskVox.is_open()) {
+						maskVox.write((char *)&maskPixel[2], 1);
+						maskVox.write((char *)&maskPixel[1], 1);
+						maskVox.write((char *)&maskPixel[0], 1);
+					}
+				}
+			}
+			//cout << "Columns: " + to_string(tempMat.cols) + " - Rows: " + to_string(tempMat.rows) + "." << endl;
+		}
+		else {
+			for (int i = 0; i < tempMat.rows; i++) {
+				for (int j = 0; j < tempMat.cols; j++) {
+					matPixel = tempMat.ptr(i, j);
+
+					if (dataVox.is_open()) {
+						dataVox.write((char *)&matPixel[2], 1);
+						dataVox.write((char *)&matPixel[1], 1);
+						dataVox.write((char *)&matPixel[0], 1);
+					}
+				}
+			}
+
+		}
+	}
+	dataVox.close();
+	maskVox.close();
+	cout << "Finished generating vox!" << endl;
+	cout << "masks read: " << to_string(maskCounter) << " - Images read: " << to_string(dataCounter) << endl;
 }
 
 
@@ -513,16 +592,20 @@ int main(int argc, char** argv) {
 	cout << "Index: " + to_string(index) + "\n" << endl;
 
 
-	const string winName = "image";
+	const string winName = "GrabCut";
+	const string imageWin = "source";
 
 	namedWindow(winName, WINDOW_AUTOSIZE);
 	//Creates a window with name 'image', possible flags:
 	//WINDOW_AUTOSIZE (get size of image, cannot be resized)
 	//WINDOW_OPENGL (opengl compatible window)
 
+	//namedWindow(imageWin, WINDOW_AUTOSIZE);
+
 	setMouseCallback(winName, on_mouse, 0);
 	//on_mouse is an in between function that they (in openCV in general) to manage mouse interaction
 	//They just send the values to their own defined function gcapp.mouseClick
+	//setMouseCallback(imageWin, on_mouse, 0);
 
 	imageToShow = readCurrentImage();
 
@@ -545,7 +628,7 @@ int main(int argc, char** argv) {
 			goto exit_main;
 		}
 
-					 // Run GrabCut through every image on both sides automatically
+					// Run GrabCut through every image on both sides automatically
 		case 'c': {
 			cout << "Pressed c" << endl;
 			comeBack1 = true;
@@ -588,13 +671,13 @@ int main(int argc, char** argv) {
 			break;
 		}
 
-				  // Show first image (middle of the dataset)
+					// Show first image (middle of the dataset)
 		case 'f': {
 			resetImage();
 			break;
 		}
 
-				  // Go to lowest image with a mask
+					// Go to lowest image with a mask
 		case 'h': {
 			resetImage();
 			go = false;
@@ -618,7 +701,7 @@ int main(int argc, char** argv) {
 			break;
 		}
 
-				  // Go to the next lower image
+					// Go to the next lower image
 		case 'j': {
 			loadPreviousImage();
 			showCurrentImage();
@@ -631,7 +714,7 @@ int main(int argc, char** argv) {
 			break;
 		}
 
-				  // Go to the next higher image
+					// Go to the next higher image
 		case 'k': {
 			loadNextImage();
 			showCurrentImage();
@@ -644,7 +727,7 @@ int main(int argc, char** argv) {
 			break;
 		}
 
-				  // Go to highest image with a mask
+					// Go to highest image with a mask
 		case 'l': {
 			resetImage();
 			go = false;
@@ -665,32 +748,6 @@ int main(int argc, char** argv) {
 			showCurrentImage();
 			go = false;
 
-			break;
-
-			/*
-			cout << "dies before here" << endl;
-			counter = 0;
-			while (index < indexEnd - 1) {
-			tempMat = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
-			if (tempMat.empty()) {
-			//followingImage(false);
-			break;
-			}
-			counter++;
-			//followingImage(true);
-			}
-			while (counter >= 0) {
-			loadNextImage();
-			counter--;
-			}
-			/*
-			if (index = indexEnd - 2) {
-			tempMat = imread(maskFiles[index], 0);
-			if (tempMat.empty()) {
-			followingImage(false);
-			}
-			}
-			*/
 			break;
 		}
 
@@ -728,53 +785,7 @@ int main(int argc, char** argv) {
 
 				  // Generate vox file
 		case 'v': {
-			std::fstream voxFile = std::fstream("mask.vox", std::ios::out | std::ios::binary);
-			for (index = indexEnd - 1; index >= indexBegin - 1; index--) {
-				tempMat = imread(sourceDir + imgFiles[index], IMREAD_COLOR);
-				tempMask = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
-
-				if (tempMat.empty() || tempMask.empty()) {
-					cout << "Image for index " + to_string(index) + " doesn't have mask." << endl;
-					continue;
-				}
-
-									
-				for (int i = 0; i < tempMat.rows; i++) {
-					for (int j = 0; j < tempMat.cols; j++) {
-						unsigned char *matPixel = tempMat.ptr(i, j);
-						unsigned char *maskPixel = tempMask.ptr(i, j);
-						/*
-						cout << endl << "Pixel values: ";
-						ostringstream oss;
-						oss << hex << std::setw(2) << std::setfill('0') << (int)p[0] << " ";
-						oss << hex << std::setw(2) << std::setfill('0') << (int)p[1] << " ";
-						oss << hex << std::setw(2) << std::setfill('0') << (int)p[2];
-						cout << oss.str() << endl;
-						*/
-
-						if (voxFile.is_open()) {
-
-							ostringstream r, g, b;
-							b << hex << std::setw(2) << std::setfill('0') << (int)maskPixel[0];
-							g << hex << std::setw(2) << std::setfill('0') << (int)maskPixel[1];
-							r << hex << std::setw(2) << std::setfill('0') << (int)maskPixel[2];
-							
-							if (b.str() =="00" && g.str() == "00" && r.str() == "00") {
-								voxFile.write((char *)&maskPixel[2], 1);
-								voxFile.write((char *)&maskPixel[1], 1);
-								voxFile.write((char *)&maskPixel[0], 1);
-							}
-							else {
-								voxFile.write((char *)&matPixel[2], 1);
-								voxFile.write((char *)&matPixel[1], 1);
-								voxFile.write((char *)&matPixel[0], 1);
-							}
-						}
-					}
-				}
-				cout << "Columns: " + to_string(tempMat.cols) + " - Rows: " + to_string(tempMat.rows) + "." << endl;
-			}
-			voxFile.close();
+			generateVox();
 		}
 		}
 	}
