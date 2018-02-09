@@ -3,21 +3,37 @@
 #include <string>
 #include <vector>
 #include <cgv/reflect/reflect_enum.h>
-
 #include <cgv/base/node.h>
 #include <cgv/render/drawable.h>
 #include <cgv/gui/provider.h>
 #include <cgv/gui/event_handler.h>
-
 #include <cgv/render/texture.h>
 #include <cgv/render/shader_program.h>
 #include <cgv_gl/gl/gl_view.h>
 #include <cgv/media/mesh/marching_cubes.h>
-
 #include <vol_data/volume.h>
-
+#include <unordered_map>
+#include <mutex>
 #include "lib_begin.h"
 
+
+template <typename Container> // we can make this generic for any container [1]
+struct container_hash {
+	std::size_t operator()(Container const& c) const {
+		std::size_t h = 0;
+		hash_combine(h, c[0], c[1], c[2]);
+		return h;
+	}
+};
+
+inline void hash_combine(std::size_t& seed) { }
+
+template <typename T, typename... Rest>
+inline void hash_combine(std::size_t& seed, const T& v, Rest... rest) {
+	std::hash<T> hasher;
+	seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+	hash_combine(seed, rest...);
+}
 
 
 class CGV_API volume_slicer :
@@ -174,7 +190,7 @@ public:
 	/// draw a voxel with a wire frame box
 	void draw_voxel(cgv::render::context& ctx, const ivec3& voxel, const vec3& color);
 	/// draw a block with a wire frame box
-	void draw_block(cgv::render::context& ctx, const ivec3& block, const vec3& color, const vec3& overlap_color, bool write_tiff);
+	void draw_block(cgv::render::context& ctx, const ivec3& block, const vec3& color, const vec3& overlap_color);
 	/// computes intersected blocks in the vector
 	void update_intersected_blocks(cgv::render::context& ctx);
 	/// draws all blocks that intersect the plane 
@@ -207,7 +223,10 @@ private:
 	/// store current block
 	ivec3 current_block;
 	/// store the intersected blocks
-	std::vector<ivec3> intersected_blocks;
+	std::mutex intersected_blocks_lock;
+	std::vector<ivec3>  intersected_blocks;
+	std::unordered_map<ivec3, int, container_hash<ivec3>> retrieve_intersected_blocks;
+
 	/// return the point under the mouse pointer in world coordinates
 	bool get_picked_point(int x, int y, vec3& p_pick_world);
 	/// determine voxel location of mouse pointer
@@ -215,11 +234,17 @@ private:
 	/// determine if a block is intersected by the plane
 	bool is_block_intersected(const box3& B);
 
+	void propagate(ivec3 block, int dir, int max_ind, ivec3 p_dim, ivec3 b_dim);
+
 	float block_distance(const box3& B);
 
-	ivec3 get_box_indices_from_projection(int max_ind, int var_dim, int dim0, int dim1);
+	vec3 replace_max_dim(int max_ind, float var_dim, float dim0, float dim1);
 
-	bool retrieve_block(const std::string& input_path, const std::string& output_path, ivec3& voxel_at);
+	bool retrieve_block(const std::string& input_path, const std::string& output_path, ivec3& block, const ivec3 nr_blocks, const size_t block_size);
+
+	void retrieve_blocks_in_plane();
+
+	bool retrieve_block_from_voxel(const std::string& input_path, const std::string& output_path, ivec3& voxel_at);
 
 	bool write_tiff_block(const std::string& file_name, const char* data_ptr, const std::string& options);
 	
