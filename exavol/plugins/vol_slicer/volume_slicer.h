@@ -15,9 +15,10 @@
 #include <unordered_map>
 #include <mutex>
 #include "lib_begin.h"
+#include "cache_manager.h"
 
 
-template <typename Container> // we can make this generic for any container [1]
+template <typename Container> 
 struct container_hash {
 	std::size_t operator()(Container const& c) const {
 		std::size_t h = 0;
@@ -25,8 +26,6 @@ struct container_hash {
 		return h;
 	}
 };
-
-inline void hash_combine(std::size_t& seed) { }
 
 template <typename T, typename... Rest>
 inline void hash_combine(std::size_t& seed, const T& v, Rest... rest) {
@@ -222,10 +221,13 @@ private:
 	ivec3 current_voxel;
 	/// store current block
 	ivec3 current_block;
+
 	/// store the intersected blocks
-	std::mutex intersected_blocks_lock;
-	std::vector<ivec3>  intersected_blocks;
+	std::vector<ivec3> intersected_blocks;
 	std::unordered_map<ivec3, int, container_hash<ivec3>> retrieve_intersected_blocks;
+	
+	//structure to manage block loading with threads
+	cache_manager threaded_cache_manager;
 
 	/// return the point under the mouse pointer in world coordinates
 	bool get_picked_point(int x, int y, vec3& p_pick_world);
@@ -243,8 +245,6 @@ private:
 	bool retrieve_block(const std::string& input_path, const std::string& output_path, ivec3& block, const ivec3 nr_blocks, const size_t block_size);
 
 	void retrieve_blocks_in_plane();
-
-	bool retrieve_block_from_voxel(const std::string& input_path, const std::string& output_path, ivec3& voxel_at);
 
 	bool write_tiff_block(const std::string& file_name, const char* data_ptr, const std::string& options);
 	

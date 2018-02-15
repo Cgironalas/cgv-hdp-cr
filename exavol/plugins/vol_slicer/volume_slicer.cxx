@@ -402,6 +402,8 @@ void volume_slicer::init_frame(cgv::render::context& ctx)
 	if (!tex_slice_prog.is_created())
 		tex_slice_prog.build_program(ctx, "tex_slicer.glpr", true);
 
+	//std::cout << "this is a test" << std::endl;
+
 	// upload more texture data for block based volumes
 
 	/*
@@ -589,15 +591,15 @@ float volume_slicer::block_distance(const box3& B_tex)
 
 static bool abs_compare(float a, float b){ return (std::abs(a) < std::abs(b)); }
 
-
 //binary search approach
 void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 
 	intersected_blocks.clear();
 	ivec3 nr_blocks(unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), unsigned(ceil(float(dimensions(2)) / block_dimensions(2))));
 
-	vec3 world_slice_normal = (slice_normal_tex);
+	vec3 world_slice_normal = world_from_texture_normals(slice_normal_tex);
 	int max_ind = std::distance(std::begin(world_slice_normal), std::max_element(std::begin(world_slice_normal), std::end(world_slice_normal), abs_compare));
+	//std::cout << max_ind << std::endl;
 
 	std::vector<int> projected_dimensions_indices(2);
 	std::size_t n(0);
@@ -759,99 +761,6 @@ void volume_slicer::draw_blocks_in_plane(cgv::render::context& ctx, const vec3& 
 	}
 }
 
-bool volume_slicer::retrieve_block(const std::string& input_path, const std::string& output_path, ivec3& block, const ivec3 nr_blocks, const size_t block_size) {
-	
-	std::cout << "Trying to get block at: " << block(0) << ", " << block(1) << ", " << block(2) << ", " << std::endl;
-	
-	std::stringstream ss;
-	ss << input_path << "/level_00_blockslice_" << std::setw(3) << std::setfill('0') << block(2) << ".bvx";
-
-	// compute block index and pointer to block data
-	unsigned bi = block(1) * nr_blocks(0) + block(0);
-	char* block_ptr = new char[block_size];
-
-	// throws exception at fread in some points 
-	FILE* fp = fopen(ss.str().c_str(), "rb");
-	fseek(fp, bi * block_size, SEEK_SET);
-	try {
-
-		if (fread(block_ptr, block_size, 1, fp) == 1) {
-			fclose(fp);
-			return true;
-		}
-		else
-			return false;
-
-		return write_tiff_block(output_path + "/block_at_" + std::to_string(block(0)) + "_" + std::to_string(block(1)) + "_" + std::to_string(block(2)), block_ptr, "");
-
-	}
-	catch (const std::exception& e) {
-		std::cout << "Exception thrown: " << e.what() << std::endl;
-		return false;
-	}
-
-}
-
-void volume_slicer::retrieve_blocks_in_plane() {
-
-	/*
-	for (auto it : intersected_blocks) {
-		retrieve_intersected_blocks[it] = std::max(retrieve_intersected_blocks[it],2);
-	}
-
-	intersected_blocks[block] = 1;
-
-	for (auto it : intersected_blocks) {
-	if (intersected_blocks[it.first] == 0)
-	intersected_blocks.erase(it.first);
-	}
-	*/
-
-	
-	//while (true) {
-	intersected_blocks_lock.lock();
-	
-	if (intersected_blocks.empty()) {
-		intersected_blocks_lock.unlock();
-	} else {
-		std::vector<ivec3> blocks_to_retrieve = intersected_blocks;
-		intersected_blocks_lock.unlock();
-
-		ivec3 nr_blocks(unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), unsigned(ceil(float(dimensions(2)) / block_dimensions(2))));
-		size_t block_size = (block_dimensions(1) + overlap(1))*((block_dimensions(0) + overlap(0))*cgv::data::component_format(cgv::type::info::TI_UINT8, cgv::data::CF_RGB).get_entry_size()) * (block_dimensions(2) + overlap(2));
-
-		for (auto block : blocks_to_retrieve) {
-			std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices";
-			std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices/blocks";
-
-			if (!retrieve_block(input_path, output_path, block, nr_blocks, block_size))
-				std::cout << "failed to retrieve block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slices" << std::endl;
-		}
-	}
-	//}
-}
-
-//! write a block located at \c data_ptr to a tiff file
-bool volume_slicer::write_tiff_block(const std::string& file_name, const char* data_ptr, const std::string& options)
-{
-	// setup output format 
-	cgv::data::data_format df;
-	df.set_component_format(cgv::data::component_format(cgv::type::info::TI_UINT8, cgv::data::CF_RGB));
-	df.set_width(block_dimensions(0) + 1);
-	df.set_height(block_dimensions(1) + 1);
-	cgv::media::image::image_writer iw(file_name + ".tif");
-	iw.multi_set(options);
-	size_t slice_size = df.get_nr_bytes();
-	for (unsigned i = 0; i<(unsigned)(block_dimensions(2) + overlap(2)); ++i) {
-		cgv::data::const_data_view dv(&df, data_ptr + slice_size*i);
-		if (!iw.write_image(dv)) {
-			std::cerr << "could not write slice " << i << " to tiff file " << file_name << std::endl;
-			return false;
-		}
-	}
-	return iw.close();
-}
-
 /// draw a block with a wire frame box
 void volume_slicer::draw_surface(cgv::render::context& ctx)
 {
@@ -888,7 +797,10 @@ void volume_slicer::draw(cgv::render::context& ctx)
 		draw_voxel(ctx, current_voxel, vec3(1, 0, 0));
 	
 	update_intersected_blocks(ctx);
-	
+	//std::thread t([&](volume_slicer* view) { retrieve_blocks_in_plane(); }, this);
+
+	//t.join();
+	//threaded_cache_manager.test(intersected_blocks.size());
 	// retrieve_blocks_in_plane();
 
 	if (show_block) {
@@ -1094,10 +1006,6 @@ void volume_slicer::create_gui()
 		align("\b");
 		end_tree_node(rotate_sensitivity);
 	}
-
-	std::thread t([&](volume_slicer* view) { retrieve_blocks_in_plane(); }, this);
-
-	t.join();
 }
 
 
