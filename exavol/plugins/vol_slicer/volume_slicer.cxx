@@ -8,11 +8,12 @@
 #include <cgv/gui/key_event.h>
 #include <cgv/gui/mouse_event.h>
 #include <cgv/media/image/image_writer.h>
-#include <thread>
-#include <chrono>
 
 /// standard constructor
-volume_slicer::volume_slicer() : cgv::base::node("volume_slicer")
+volume_slicer::volume_slicer() 
+	: cgv::base::node("volume_slicer"),
+	 threaded_cache_manager(*this)
+
 {
 	
 	view_ptr = 0;
@@ -50,6 +51,7 @@ volume_slicer::volume_slicer() : cgv::base::node("volume_slicer")
 	current_voxel = current_block = ivec3(0, 0, 0);
 	block_dimensions = ivec3(16, 16, 16);
 	overlap = ivec3(1, 1, 1);
+	threaded_cache_manager.init_listener();
 }
 
 bool volume_slicer::ensure_view_ptr()
@@ -402,10 +404,8 @@ void volume_slicer::init_frame(cgv::render::context& ctx)
 	if (!tex_slice_prog.is_created())
 		tex_slice_prog.build_program(ctx, "tex_slicer.glpr", true);
 
-	//std::cout << "this is a test" << std::endl;
-
-	// upload more texture data for block based volumes
-
+	//threaded_cache_manager.process_blocks(intersected_blocks);
+	
 	/*
 	if (data_texture.is_created()) {
 	cgv::data::data_format df(170, 170, 170, cgv::type::info::TI_UINT8, cgv::data::CF_R);
@@ -551,8 +551,8 @@ void volume_slicer::draw_voxel(cgv::render::context& ctx, const ivec3& voxel, co
 }
 
 /// computes the distance taking into account the 
-float volume_slicer::compute_distance_to_slice_tex(const vec3& p) const{
-	return cgv::math::dot(p - vec3(0.5f, 0.5f, 0.5f), slice_normal_tex) - slice_center_distance_tex;
+float volume_slicer::compute_distance_to_slice_tex(const vec3& p_tex) const{
+	return cgv::math::dot(p_tex - vec3(0.5f, 0.5f, 0.5f), slice_normal_tex) - slice_center_distance_tex;
 }
 
 bool volume_slicer::is_block_intersected(const box3& B_tex) 
@@ -591,6 +591,7 @@ float volume_slicer::block_distance(const box3& B_tex)
 
 static bool abs_compare(float a, float b){ return (std::abs(a) < std::abs(b)); }
 
+/*
 //binary search approach
 void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 
@@ -598,39 +599,38 @@ void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 	ivec3 nr_blocks(unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), unsigned(ceil(float(dimensions(2)) / block_dimensions(2))));
 
 	vec3 world_slice_normal = world_from_texture_normals(slice_normal_tex);
-	int max_ind = std::distance(std::begin(world_slice_normal), std::max_element(std::begin(world_slice_normal), std::end(world_slice_normal), abs_compare));
-	//std::cout << max_ind << std::endl;
+	int d_max = std::distance(std::begin(world_slice_normal), std::max_element(std::begin(world_slice_normal), std::end(world_slice_normal), abs_compare));
+	//std::cout << d_max << std::endl;
+	// set i0 to first other index than d_max and i1 to second other index
+	int d0 = (d_max + 1) % 3;
+	int d1 = (d_max + 2) % 3;
 
-	std::vector<int> projected_dimensions_indices(2);
-	std::size_t n(0);
+	for (int i0 = 0; i0 < nr_blocks(d0); i0++) {
+		for (int i1 = 0; i1 < nr_blocks(d1); i1++) {
 
-	std::generate(projected_dimensions_indices.begin(), projected_dimensions_indices.end(),[&]{ if (n == max_ind) { n++; } return n++; });
-
-	for (int projected_dim0 = 0; projected_dim0 < nr_blocks(projected_dimensions_indices.at(0)); projected_dim0++) {
-		for (int projected_dim1 = 0; projected_dim1 < nr_blocks(projected_dimensions_indices.at(1)); projected_dim1++) {
-			
-			int l = 0, r = nr_blocks(max_ind);
+			int l = 0, r = nr_blocks(d_max);
 			while (l <= r) {
 
 				int m = l + (r - l) / 2;
 
-				ivec3 block = replace_max_dim(max_ind, m, projected_dim0, projected_dim1);
+				ivec3 block = replace_max_dim(d_max, m, i0, i1);
 				box3 B_tex(texture_from_voxel_coordinates(voxel_from_block_coordinates(block)), texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1))));
 				
 				
 				if (is_block_intersected(B_tex)) {
-					if (nr_blocks(max_ind) > block(max_ind) && block(max_ind) >= 0) {
+					if (nr_blocks(d_max) > block(d_max) && block(d_max) >= 0) {
 						//intersected_blocks[block] = 1;
 						intersected_blocks.push_back(block);
+						
 
-						propagate(block, 1, max_ind, ivec3(m, projected_dim0, projected_dim1), nr_blocks);
-						propagate(block, -1, max_ind, ivec3(m, projected_dim0, projected_dim1), nr_blocks);
+						propagate(block, 1, d_max, ivec3(m, i0, i1), nr_blocks);
+						propagate(block, -1, d_max, ivec3(m, i0, i1), nr_blocks);
 						break;
 					}
 				}
 				
 				//if the deleted dimension is negative distance value should be inverted
-				bool question = slice_normal_tex(max_ind) > 0 ? block_distance(B_tex) < 0 : block_distance(B_tex) > 0;
+				bool question = slice_normal_tex(d_max) > 0 ? block_distance(B_tex) < 0 : block_distance(B_tex) > 0;
 
 				if (question)
 					l = m + 1;
@@ -639,7 +639,8 @@ void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 			}
 		}
 	}
-}
+} 
+*/
 
 /* 
 
@@ -649,73 +650,82 @@ After an intersected block as been found, this function evaluates asks for the o
 This method is necessary because in some cases there are more than 2 blocks contained in the projected grid after removing the highest dimension 
 
 */
-void volume_slicer::propagate(ivec3 block, int dir, int max_ind, ivec3 p_dim, ivec3 b_dim) {
-	block = replace_max_dim(max_ind, p_dim(0)+dir, p_dim(1), p_dim(2));
+void volume_slicer::propagate(ivec3 block, int dir, int d_max, ivec3 p_dim, ivec3 b_dim) {
+	block = replace_max_dim(d_max, p_dim(0)+dir, p_dim(1), p_dim(2));
 	
-	if (b_dim(max_ind) > block(max_ind) && block(max_ind) >= 0) {
+	if (b_dim(d_max) > block(d_max) && block(d_max) >= 0) {
 		box3 B_tex(texture_from_voxel_coordinates(voxel_from_block_coordinates(block)), texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1))));
 		if (is_block_intersected(B_tex)) {
 			
 			intersected_blocks.push_back(block);
 
-			propagate(block, dir, max_ind, ivec3(p_dim(0) + dir, p_dim(1), p_dim(2)), b_dim);
+			propagate(block, dir, d_max, ivec3(p_dim(0) + dir, p_dim(1), p_dim(2)), b_dim);
 		}
 	}
-}
+} 
 
-/*
 
 void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 
 	ivec3 nr_blocks(unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), unsigned(ceil(float(dimensions(2)) / block_dimensions(2))));
 	intersected_blocks.clear();
 
-	vec3 world_slice_normal = (slice_normal_tex);
-	int max_ind = std::distance(std::begin(world_slice_normal), std::max_element(std::begin(world_slice_normal), std::end(world_slice_normal), abs_compare));
+	vec3 world_slice_normal = world_from_texture_normals(slice_normal_tex);
+	int d_max = std::distance(std::begin(world_slice_normal), std::max_element(std::begin(world_slice_normal), std::end(world_slice_normal), abs_compare));
+	
+	// set i0 to first other index than d_max and i1 to second other index
+	int d0 = (d_max + 1) % 3;
+	int d1 = (d_max + 2) % 3;
 
-	std::vector<int> projected_dimensions_indices(2);
-	std::size_t n(0);
-
-	std::generate(projected_dimensions_indices.begin(), projected_dimensions_indices.end(), [&] { if (n == max_ind) { n++; } return n++; });
-
-	for (int projected_dim0 = 0; projected_dim0 < nr_blocks(projected_dimensions_indices.at(0)); projected_dim0++) {
-		for (int projected_dim1 = 0; projected_dim1 < nr_blocks(projected_dimensions_indices.at(1)); projected_dim1++) {
-
-			vec3 l0 = texture_from_voxel_coordinates(voxel_from_block_coordinates(replace_max_dim(max_ind,0, projected_dim0, projected_dim1)));
-			vec3 l = replace_max_dim(max_ind, 1, 0, 0);
-
-
-			float dist = compute_distance_to_slice_tex(l0);
+	for (int i0 = 0; i0 < nr_blocks(d0); i0++) {
+		for (int i1 = 0; i1 < nr_blocks(d1); i1++) {
 			
-			// voxel_from_texture_coordinates
-			float conv = slice_normal_tex(max_ind) > 0 ? -dist : dist;
+			vec3 pi_tex[4]{
+				texture_from_voxel_coordinates(voxel_from_block_coordinates(replace_max_dim(d_max, 0, i0, i1))),
+				texture_from_voxel_coordinates(voxel_from_block_coordinates(replace_max_dim(d_max, 0, i0 + 1, i1))),
+				texture_from_voxel_coordinates(voxel_from_block_coordinates(replace_max_dim(d_max, 0, i0, i1 + 1))),
+				texture_from_voxel_coordinates(voxel_from_block_coordinates(replace_max_dim(d_max, 0, i0 + 1, i1 + 1)))
+			};
 
-			int block_pos = conv*(nr_blocks(max_ind));
-
-			/*
-			//vec3 texture_pos = texture_from_voxel_coordinates(voxel_from_block_coordinates(nr_blocks));
-			//float pos_tex = conv*(texture_pos(max_ind));
-			//vec3 vec = replace_max_dim(max_ind, pos_tex, texture_pos(projected_dimensions_indices.at(0)), texture_pos(projected_dimensions_indices.at(1)));
-			//vec3 block_vec = block_from_voxel_coordinates(voxel_from_texture_coordinates(vec));
+			vec3 pi_block[4];
 			
-			//for (int i = block_pos -1; i <= block_pos+1; i++) {
-
-				//ivec3 block = replace_max_dim(max_ind, i, projected_dim0, projected_dim1);
-				ivec3 block = replace_max_dim(max_ind, block_pos , projected_dim0, projected_dim1); //block_vec(max_ind)
-				box3 B_tex(texture_from_voxel_coordinates(voxel_from_block_coordinates(block)),texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1))));
-
-				// if (is_block_intersected(B_tex)) {
-				intersected_blocks.push_back(block);
-				// }
-			//} 
+			float block_coord_min, block_coord_max;
 			
+			unsigned k;
+
+			for (k = 0; k < 4; k++) {
+
+				pi_tex[k](d_max) = 
+					1.0f / slice_normal_tex(d_max)*(slice_center_distance_tex - (pi_tex[k](d0) - 0.5f)*slice_normal_tex(d0) - (pi_tex[k](d1) - 0.5f)*slice_normal_tex(d1)) + 0.5f;
+				
+				pi_block[k] = block_from_voxel_coordinates(voxel_from_texture_coordinates(pi_tex[k]));
+				
+				block_coord_max = (k == 0 ? pi_block[k][d_max] : std::max(block_coord_max, pi_block[k][d_max]));
+				block_coord_min = (k == 0 ? pi_block[k][d_max] : std::min(block_coord_min, pi_block[k][d_max]));
+			}
+
+			int i_min = std::max(0,int(floor(block_coord_min)));
+			int i_max = std::max(0,int(ceil(block_coord_max)));
+
+			if (i_min > i_max) {
+				std::cout << "this shouldn't happen"  << std::endl;
+				int temp = i_min;
+				i_min = i_max;
+				i_max = i_min;
+			}
+
+			for (k = i_min; k < i_max; k++) {
+				if (nr_blocks(d_max) > k && k >= 0) 
+					intersected_blocks.push_back(replace_max_dim(d_max, k, i0, i1));
+			}
 		}
 	}
-}*/
+}
 
-volume_slicer::vec3 volume_slicer::replace_max_dim(int max_ind, float var_dim, float dim0, float dim1) {
+
+volume_slicer::vec3 volume_slicer::replace_max_dim(int d_max, float var_dim, float dim0, float dim1) {
 	float x, y, z;
-	switch (max_ind) {
+	switch (d_max) {
 		case 0: {
 			x = var_dim;
 			y = dim0;
@@ -723,9 +733,9 @@ volume_slicer::vec3 volume_slicer::replace_max_dim(int max_ind, float var_dim, f
 			break;
 		}
 		case 1: {
-			x = dim0;
+			x = dim1;
 			y = var_dim;
-			z = dim1;
+			z = dim0;
 			break;
 		}
 		case 2: {
@@ -797,11 +807,6 @@ void volume_slicer::draw(cgv::render::context& ctx)
 		draw_voxel(ctx, current_voxel, vec3(1, 0, 0));
 	
 	update_intersected_blocks(ctx);
-	//std::thread t([&](volume_slicer* view) { retrieve_blocks_in_plane(); }, this);
-
-	//t.join();
-	//threaded_cache_manager.test(intersected_blocks.size());
-	// retrieve_blocks_in_plane();
 
 	if (show_block) {
 		draw_block(ctx, current_block, vec3(1, 0.5, 0), vec3(0, 1, 0));
@@ -859,8 +864,8 @@ void volume_slicer::draw(cgv::render::context& ctx)
 	tex_coords[3] = c_tex - y_tex;
 	// map texture coordinates of quad corners to positions in world coordinates
 	static std::vector<vec3> positions(size_t(4));
-	for (unsigned i = 0; i<4; ++i)
-		positions[i] = extent*(tex_coords[i] - vec3(0.5f, 0.5f, 0.5f));
+	for (unsigned i = 0; i < 4; ++i)
+		positions[i] = world_from_texture_coordinates(tex_coords[i]); // extent*(tex_coords[i] - vec3(0.5f, 0.5f, 0.5f));
 	// draw quad using vertex array pointers which is a bit deprecated but still ok 
 	glVertexPointer(3, GL_FLOAT, 0, &positions.front());
 	glEnableClientState(GL_VERTEX_ARRAY);

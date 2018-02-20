@@ -12,28 +12,8 @@
 #include <cgv_gl/gl/gl_view.h>
 #include <cgv/media/mesh/marching_cubes.h>
 #include <vol_data/volume.h>
-#include <unordered_map>
-#include <mutex>
 #include "lib_begin.h"
 #include "cache_manager.h"
-
-
-template <typename Container> 
-struct container_hash {
-	std::size_t operator()(Container const& c) const {
-		std::size_t h = 0;
-		hash_combine(h, c[0], c[1], c[2]);
-		return h;
-	}
-};
-
-template <typename T, typename... Rest>
-inline void hash_combine(std::size_t& seed, const T& v, Rest... rest) {
-	std::hash<T> hasher;
-	seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-	hash_combine(seed, rest...);
-}
-
 
 class CGV_API volume_slicer :
 	public cgv::base::node,
@@ -61,7 +41,7 @@ public:
 
 	/**@name volume*/
 	//@{
-protected:
+public:
 	/// filename of the volume dataset
 	std::string file_name;
 	// volume data structure stored for iso surface extaction
@@ -93,7 +73,7 @@ public:
 
 	/**@name blocks*/
 	//@{
-protected:
+public:
 	/// size of block in voxel, for example (16,16,16) or (32,32,16)
 	ivec3 block_dimensions;
 	/// overlap between adjacent blocks in voxel, typically (1,1,1)
@@ -222,12 +202,11 @@ private:
 	/// store current block
 	ivec3 current_block;
 
+	// logic for putting blocks in cache
+	cache_manager threaded_cache_manager;
+	
 	/// store the intersected blocks
 	std::vector<ivec3> intersected_blocks;
-	std::unordered_map<ivec3, int, container_hash<ivec3>> retrieve_intersected_blocks;
-	
-	//structure to manage block loading with threads
-	cache_manager threaded_cache_manager;
 
 	/// return the point under the mouse pointer in world coordinates
 	bool get_picked_point(int x, int y, vec3& p_pick_world);
@@ -241,12 +220,6 @@ private:
 	float block_distance(const box3& B);
 
 	vec3 replace_max_dim(int max_ind, float var_dim, float dim0, float dim1);
-
-	bool retrieve_block(const std::string& input_path, const std::string& output_path, ivec3& block, const ivec3 nr_blocks, const size_t block_size);
-
-	void retrieve_blocks_in_plane();
-
-	bool write_tiff_block(const std::string& file_name, const char* data_ptr, const std::string& options);
 	
 public:
 	/// adjusts view to bounding box of all instances
