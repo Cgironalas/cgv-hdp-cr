@@ -137,12 +137,33 @@ void GCApplication::showImage() const {
 		return;
 
 	Mat res;
-	Mat binMask;
+	Mat binMask, colorMask;
+	int r, g, b;
+	Scalar intensityBin;
+	Vec3b intensityRGB;
 	if (!isInitialized)
 		image->copyTo(res);
 	else {
+		image->copyTo(res);
 		getBinMask(mask, binMask);
-		image->copyTo(res, binMask);
+		
+		cout << "Image size " << image->cols << " - " << image->rows;
+		for (int x = 0; x < image->cols; x++) {
+			for (int y = 0; y < image->rows; y++) {
+				intensityBin = binMask.at<uchar>(y, x);
+				intensityRGB = image->at<Vec3b>(y, x);
+				b = intensityRGB.val[0];
+				g = intensityRGB.val[1];
+				r = intensityRGB.val[2];
+
+				if (intensityBin.val[0] == 0) {
+					r = (int)std::max(0.0, r - 50.0);
+					g = (int)std::max(0.0, g - 50.0);
+					b = (int)std::max(0.0, b - 50.0);
+					res.at<Vec3b>(y, x) = Vec3b(r, g, b);
+				}
+			}
+		}
 	}
 
 	vector<Point>::const_iterator it;
@@ -461,9 +482,11 @@ bool maskExists(int i) {
 	//cout << "Mask to check: " + maskDir + maskFiles[i] << endl;
 	Mat temp = imread(maskDir + maskFiles[i], IMREAD_GRAYSCALE);
 	if (!temp.empty()) {
+		go = false;
 		return true;
 	}
 	else {
+		go = true;
 		return false;
 	}
 }
@@ -477,9 +500,6 @@ std::string hexStr(unsigned char *data, int len)
 	return ss.str();
 }
 
-void writeMatToVox(Mat pMat, Mat pMask) {
-
-}
 
 void generateVox() {
 	cout << "Vox is being generated." << endl;
@@ -682,7 +702,8 @@ int main(int argc, char** argv) {
 			resetImage();
 			go = false;
 
-			for (; index >= indexBegin - 1; index--, currentImage--) {
+			cout << "Index: " << std::to_string(index) << " - IndexBegin: " << std::to_string(indexBegin) << endl;
+			for (; index >= 0; index--, currentImage--) {
 				if (!maskExists(index)) {
 					cout << "Breaks at image: " + to_string(currentImage) << endl;
 					go = true;
@@ -732,7 +753,7 @@ int main(int argc, char** argv) {
 			resetImage();
 			go = false;
 
-			for (; index < indexEnd; index++, currentImage++) {
+			for (; index < folderSize; index++, currentImage++) {
 				if (!maskExists(index)) {
 					cout << "Breaks at image: " + to_string(currentImage) << endl;
 					go = true;
