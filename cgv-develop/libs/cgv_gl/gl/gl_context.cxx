@@ -99,6 +99,29 @@ GLuint get_gl_format(const texture& tex)
 	return gl_format;
 }
 
+
+void enable_material_color(GLenum side, const cgv::media::illum::phong_material::color_type& c, float alpha, GLenum type)
+{
+	GLfloat v[4] = { c[0],c[1],c[2],c[3] * alpha };
+	glMaterialfv(side, type, v);
+}
+
+
+/// enable a material without textures
+void set_material(const cgv::media::illum::phong_material& mat, MaterialSide ms, float alpha)
+{
+	if (ms == MS_NONE)
+		return;
+
+	unsigned side = map_to_gl(ms);
+	enable_material_color(side, mat.get_ambient(), alpha, GL_AMBIENT);
+	enable_material_color(side, mat.get_diffuse(), alpha, GL_DIFFUSE);
+	enable_material_color(side, mat.get_specular(), alpha, GL_SPECULAR);
+	enable_material_color(side, mat.get_emission(), alpha, GL_EMISSION);
+	glMaterialf(side, GL_SHININESS, mat.get_shininess());
+}
+
+
 /// construct gl_context and attach signals
 gl_context::gl_context()
 {
@@ -489,13 +512,13 @@ void gl_context::perform_screen_shot()
 	if (wr.is_format_supported(*dv.get_format()))
 		wr.write_image(dv);
 }
-
+/*
 void enable_material_color(GLenum side, const textured_material::color_type& c, float alpha, GLenum type)
 {
 	GLfloat v[4] = {c[0],c[1],c[2],c[3]*alpha};
 	glMaterialfv(side, type, v);
 }
-
+*/
 
 /// enable a material without textures
 void gl_context::enable_material(const cgv::media::illum::phong_material& mat, MaterialSide ms, float alpha)
@@ -503,19 +526,28 @@ void gl_context::enable_material(const cgv::media::illum::phong_material& mat, M
 	if (ms == MS_NONE)
 		return;
 
+	set_material(mat, ms, alpha);
+/*
 	unsigned side = map_to_gl(ms);
 	enable_material_color(side, mat.get_ambient(),alpha,GL_AMBIENT);
 	enable_material_color(side, mat.get_diffuse(),alpha,GL_DIFFUSE);
 	enable_material_color(side, mat.get_specular(),alpha,GL_SPECULAR);
 	enable_material_color(side, mat.get_emission(),alpha,GL_EMISSION);
 	glMaterialf(side, GL_SHININESS, mat.get_shininess());
-
+	*/
 	if (ms != MS_BACK && enabled_program == 0) {
 		if (phong_shading) {
 			shader_program& prog = ref_textured_material_prog(*this);
 			prog.enable(*this);
 			prog.set_uniform(*this, "use_bump_map", false);
 			prog.set_uniform(*this, "use_diffuse_map", false);
+			GLboolean cm;
+			glGetBooleanv(GL_COLOR_MATERIAL, &cm);
+			bool cmb = cm != 0;
+			prog.set_uniform(*this, "use_color_material", cmb);
+			glGetBooleanv(GL_LIGHT_MODEL_TWO_SIDE, &cm);
+			cmb = cm != 0;
+			prog.set_uniform(*this, "two_sided", cmb);
 			set_lighting_parameters(*this, prog);
 		}
 		else {
@@ -557,12 +589,14 @@ void gl_context::enable_material(const textured_material& mat, MaterialSide ms, 
 		glDisable(GL_COLOR_MATERIAL);
 	}
 
-	unsigned side = map_to_gl(ms);
-	enable_material_color(side, mat.get_ambient(), alpha, GL_AMBIENT);
+	set_material(mat, ms, alpha);
+	/*
+	enable_material_color(side, mat.get_ambient(),alpha,GL_AMBIENT);
 	enable_material_color(side, mat.get_diffuse(),alpha,GL_DIFFUSE);
 	enable_material_color(side, mat.get_specular(),alpha,GL_SPECULAR);
 	enable_material_color(side, mat.get_emission(),alpha,GL_EMISSION);
 	glMaterialf(side, GL_SHININESS, mat.get_shininess());
+	*/
 
 	if (ms != MS_BACK) {
 		if ((mat.get_bump_texture() || phong_shading) && ref_textured_material_prog(*this).is_linked()) {
@@ -588,7 +622,8 @@ void gl_context::enable_material(const textured_material& mat, MaterialSide ms, 
 			set_lighting_parameters(*this, prog);
 		}
 		else if (mat.get_diffuse_texture()) {
-			enable_material_color(side, textured_material::color_type(1, 1, 1, 1), alpha, GL_DIFFUSE);
+			unsigned side = map_to_gl(ms);
+//			enable_material_color(side, textured_material::color_type(1, 1, 1, 1), alpha, GL_DIFFUSE);
 			mat.get_diffuse_texture()->enable(*this);
 			glTexEnvi(GL_TEXTURE_2D, GL_TEXTURE_ENV, GL_MODULATE);
 		}
@@ -1274,7 +1309,7 @@ bool gl_context::texture_create(texture_base& tb, cgv::data::data_format& df)
 			break;
 		}
 	case TT_3D :
-		glTexImage3D(GL_TEXTURE_3D, 0, 
+		glTexImage3D(GL_TEXTURE_3D, 0,
 			gl_format, df.get_width(), df.get_height(), df.get_depth(), 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 		break;
 	case TT_CUBEMAP :
@@ -2020,6 +2055,7 @@ bool gl_context::shader_program_link(shader_program_base& spb)
 		GLsizei charsWritten = 0;
 		char *infoLog = (char *)malloc(infologLength);
 		glGetProgramInfoLog(p_id, infologLength, &charsWritten, infoLog);
+		spb.last_error = infoLog;
 		error(std::string("gl_context::shader_program_link\n")+infoLog, &spb);
 		free(infoLog);
 	}
@@ -2158,15 +2194,15 @@ bool gl_context::set_uniform_void(shader_program_base& spb, int loc, type_descri
 			break;
 		case 4:
 			switch (value_type.coordinate_type) {
-			case TI_BOOL:   glUniform4i(loc, reinterpret_cast<const bool*>(value_ptr)[0] ? 1 : 0, reinterpret_cast<const bool*>(value_ptr)[2] ? 1 : 0, reinterpret_cast<const bool*>(value_ptr)[1] ? 1 : 0, reinterpret_cast<const bool*>(value_ptr)[3] ? 1 : 0); break;
-			case TI_UINT8:  glUniform4ui(loc, reinterpret_cast<const uint8_type*> (value_ptr)[0], reinterpret_cast<const uint8_type*> (value_ptr)[2], reinterpret_cast<const uint8_type*> (value_ptr)[1], reinterpret_cast<const uint8_type*> (value_ptr)[3]); break;
-			case TI_UINT16: glUniform4ui(loc, reinterpret_cast<const uint16_type*>(value_ptr)[0], reinterpret_cast<const uint16_type*>(value_ptr)[2], reinterpret_cast<const uint16_type*>(value_ptr)[1], reinterpret_cast<const uint16_type*>(value_ptr)[3]); break;
-			case TI_UINT32: glUniform4ui(loc, reinterpret_cast<const uint32_type*>(value_ptr)[0], reinterpret_cast<const uint32_type*>(value_ptr)[2], reinterpret_cast<const uint32_type*>(value_ptr)[1], reinterpret_cast<const uint32_type*>(value_ptr)[3]); break;
-			case TI_INT8:   glUniform4i(loc, reinterpret_cast<const int8_type*>  (value_ptr)[0], reinterpret_cast<const int8_type*>  (value_ptr)[2], reinterpret_cast<const int8_type*>  (value_ptr)[1], reinterpret_cast<const int8_type*>  (value_ptr)[3]); break;
-			case TI_INT16:  glUniform4i(loc, reinterpret_cast<const int16_type*> (value_ptr)[0], reinterpret_cast<const int16_type*> (value_ptr)[2], reinterpret_cast<const int16_type*> (value_ptr)[1], reinterpret_cast<const int16_type*> (value_ptr)[3]); break;
-			case TI_INT32:  glUniform4i(loc, reinterpret_cast<const int32_type*> (value_ptr)[0], reinterpret_cast<const int32_type*> (value_ptr)[2], reinterpret_cast<const int32_type*> (value_ptr)[1], reinterpret_cast<const int32_type*> (value_ptr)[3]); break;
-			case TI_FLT32:  glUniform4f(loc, reinterpret_cast<const flt32_type*> (value_ptr)[0], reinterpret_cast<const flt32_type*> (value_ptr)[2], reinterpret_cast<const flt32_type*> (value_ptr)[1], reinterpret_cast<const flt32_type*> (value_ptr)[3]); break;
-			case TI_FLT64:  glUniform4d(loc, reinterpret_cast<const flt64_type*> (value_ptr)[0], reinterpret_cast<const flt64_type*> (value_ptr)[2], reinterpret_cast<const flt64_type*> (value_ptr)[1], reinterpret_cast<const flt64_type*> (value_ptr)[3]); break;
+			case TI_BOOL:   glUniform4i(loc, reinterpret_cast<const bool*>(value_ptr)[0] ? 1 : 0, reinterpret_cast<const bool*>(value_ptr)[1] ? 1 : 0, reinterpret_cast<const bool*>(value_ptr)[2] ? 1 : 0, reinterpret_cast<const bool*>(value_ptr)[3] ? 1 : 0); break;
+			case TI_UINT8:  glUniform4ui(loc, reinterpret_cast<const uint8_type*> (value_ptr)[0], reinterpret_cast<const uint8_type*> (value_ptr)[1], reinterpret_cast<const uint8_type*> (value_ptr)[2], reinterpret_cast<const uint8_type*> (value_ptr)[3]); break;
+			case TI_UINT16: glUniform4ui(loc, reinterpret_cast<const uint16_type*>(value_ptr)[0], reinterpret_cast<const uint16_type*>(value_ptr)[1], reinterpret_cast<const uint16_type*>(value_ptr)[2], reinterpret_cast<const uint16_type*>(value_ptr)[3]); break;
+			case TI_UINT32: glUniform4ui(loc, reinterpret_cast<const uint32_type*>(value_ptr)[0], reinterpret_cast<const uint32_type*>(value_ptr)[1], reinterpret_cast<const uint32_type*>(value_ptr)[2], reinterpret_cast<const uint32_type*>(value_ptr)[3]); break;
+			case TI_INT8:   glUniform4i(loc, reinterpret_cast<const int8_type*>  (value_ptr)[0], reinterpret_cast<const int8_type*>  (value_ptr)[1], reinterpret_cast<const int8_type*>  (value_ptr)[2], reinterpret_cast<const int8_type*>  (value_ptr)[3]); break;
+			case TI_INT16:  glUniform4i(loc, reinterpret_cast<const int16_type*> (value_ptr)[0], reinterpret_cast<const int16_type*> (value_ptr)[1], reinterpret_cast<const int16_type*> (value_ptr)[2], reinterpret_cast<const int16_type*> (value_ptr)[3]); break;
+			case TI_INT32:  glUniform4i(loc, reinterpret_cast<const int32_type*> (value_ptr)[0], reinterpret_cast<const int32_type*> (value_ptr)[1], reinterpret_cast<const int32_type*> (value_ptr)[2], reinterpret_cast<const int32_type*> (value_ptr)[3]); break;
+			case TI_FLT32:  glUniform4f(loc, reinterpret_cast<const flt32_type*> (value_ptr)[0], reinterpret_cast<const flt32_type*> (value_ptr)[1], reinterpret_cast<const flt32_type*> (value_ptr)[2], reinterpret_cast<const flt32_type*> (value_ptr)[3]); break;
+			case TI_FLT64:  glUniform4d(loc, reinterpret_cast<const flt64_type*> (value_ptr)[0], reinterpret_cast<const flt64_type*> (value_ptr)[1], reinterpret_cast<const flt64_type*> (value_ptr)[2], reinterpret_cast<const flt64_type*> (value_ptr)[3]); break;
 			default:
 				error(std::string("gl_context::set_uniform_void(") + value_type_index_to_string(value_type) + ") unsupported coordinate type.", &spb);
 				res = false; break;

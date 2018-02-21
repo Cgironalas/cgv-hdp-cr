@@ -32,6 +32,12 @@ cgv::base::resource_string_registration ellipsoid_glfs_reg("ellipsoid.glfs",elli
 #include <ellipsoid.glvs.log>
 cgv::base::resource_string_registration ellipsoid_glvs_reg("ellipsoid.glvs",ellipsoid_glvs);
 
+#include <ellipsoid_base.glfs.log>
+cgv::base::resource_string_registration ellipsoid_base_glfs_reg("ellipsoid_base.glfs",ellipsoid_base_glfs);
+
+#include <ellipsoid_base.glgs.log>
+cgv::base::resource_string_registration ellipsoid_base_glgs_reg("ellipsoid_base.glgs",ellipsoid_base_glgs);
+
 #include <group.glsl.log>
 cgv::base::resource_string_registration group_glsl_reg("group.glsl",group_glsl);
 
@@ -79,6 +85,12 @@ cgv::base::resource_string_registration sphere_pglfs_reg("sphere.pglfs",sphere_p
 
 #include <sphere.pglvs.log>
 cgv::base::resource_string_registration sphere_pglvs_reg("sphere.pglvs",sphere_pglvs);
+
+#include <sphere_base.glfs.log>
+cgv::base::resource_string_registration sphere_base_glfs_reg("sphere_base.glfs",sphere_base_glfs);
+
+#include <sphere_base.glgs.log>
+cgv::base::resource_string_registration sphere_base_glgs_reg("sphere_base.glgs",sphere_base_glgs);
 
 #include <textured_material.glfs.log>
 cgv::base::resource_string_registration textured_material_glfs_reg("textured_material.glfs",textured_material_glfs);

@@ -151,6 +151,12 @@
     <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\cgv_gl\glsl\ellipsoid.glvs">
        <Filter>glsl\shader</Filter>
     </shader_rule>
+    <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\cgv_gl\glsl\ellipsoid_base.glfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\cgv_gl\glsl\ellipsoid_base.glgs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
     <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\cgv_gl\glsl\group.glsl">
        <Filter>glsl\shader</Filter>
     </shader_rule>
@@ -197,6 +203,12 @@
        <Filter>glsl\shader</Filter>
     </shader_rule>
     <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\cgv_gl\glsl\sphere.pglvs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\cgv_gl\glsl\sphere_base.glfs">
+       <Filter>glsl\shader</Filter>
+    </shader_rule>
+    <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\cgv_gl\glsl\sphere_base.glgs">
        <Filter>glsl\shader</Filter>
     </shader_rule>
     <shader_rule Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\libs\cgv_gl\glsl\textured_material.glfs">

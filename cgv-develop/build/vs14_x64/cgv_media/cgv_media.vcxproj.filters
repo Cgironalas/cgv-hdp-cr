@@ -122,6 +122,9 @@
     <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\media\image\bmp_writer.h">
        <Filter>image\headers</Filter>
     </ClInclude>
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\media\image\image_proc.h">
+       <Filter>image\headers</Filter>
+    </ClInclude>
     <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\media\image\image_reader.h">
        <Filter>image\headers</Filter>
     </ClInclude>
@@ -155,6 +158,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\media\mesh\cuberille.h">
+       <Filter>mesh\headers</Filter>
+    </ClInclude>
     <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\media\mesh\dual_contouring.h">
        <Filter>mesh\headers</Filter>
     </ClInclude>

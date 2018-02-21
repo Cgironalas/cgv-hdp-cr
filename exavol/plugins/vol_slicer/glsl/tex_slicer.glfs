@@ -1,9 +1,13 @@
 #version 150 compatibility
 
 uniform sampler3D volume;
+
+uniform float texture_gamma = 1.0;
+uniform float texture_scale = 1.0;
+
 in vec3 tex_coords;
 
 void main()
 {
-	gl_FragColor = texture(volume, tex_coords);
+	gl_FragColor = pow(texture_scale*texture(volume, tex_coords), vec4(texture_gamma, texture_gamma, texture_gamma, texture_gamma));
 }

@@ -10,6 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\gui\animate.h">
+       <Filter>headers</Filter>
+    </ClInclude>
     <ClInclude Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\gui\application.h">
        <Filter>headers</Filter>
     </ClInclude>
@@ -103,6 +106,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\gui\animate.cxx">
+       <Filter>sources</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Users\JMendez\Documents\cgv-hdp-cr\cgv-hdp-cr\cgv-develop\cgv\gui\application.cxx">
        <Filter>sources</Filter>
     </ClCompile>

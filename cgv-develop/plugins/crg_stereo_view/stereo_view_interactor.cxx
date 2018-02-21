@@ -4,6 +4,7 @@
 #include <cgv/utils/scan_enum.h>
 #include <cgv/utils/ostream_printf.h>
 #include <cgv/gui/trigger.h>
+#include <cgv/gui/animate.h>
 #include <cgv/signal/rebind.h>
 #include <cgv/gui/key_event.h>
 #include <cgv/gui/mouse_event.h>
@@ -655,9 +656,16 @@ bool stereo_view_interactor::handle(event& e)
 								pnt_type e = view_ptr->get_eye();
 								double l_old = (e-view_ptr->get_focus()).length();
 								double l_new = dot(p-e,view_ptr->get_view_dir());
-								view_ptr->set_y_extent_at_focus(view_ptr->get_y_extent_at_focus() * l_new / l_old);
+								
+								cgv::gui::animation_ptr a_ptr = cgv::gui::animate(view_ptr->y_extent_at_focus, view_ptr->get_y_extent_at_focus() * l_new / l_old, 0.5);
+								a_ptr->set_base_ptr(this);
+								a_ptr->set_parameter_mapping(cgv::gui::APM_SIN_SQUARED);
 							}
-							view_ptr->set_focus(p);
+							
+							cgv::gui::animation_ptr a_ptr = cgv::gui::animate(view_ptr->focus, p, 0.5);
+							a_ptr->set_base_ptr(this);
+							a_ptr->set_parameter_mapping(cgv::gui::APM_SIN_SQUARED);
+
 							update_vec_member(view::focus);
 							post_redraw();
 							return true;
@@ -716,15 +724,15 @@ bool stereo_view_interactor::handle(event& e)
 				return true;
 			}
 			if (me.get_button_state() == MB_RIGHT_BUTTON && me.get_modifiers() == 0) {
-				view_ptr->set_focus(view_ptr->get_focus() - 2 * (view_ptr->get_y_extent_at_focus()*me.get_dx() / width)*x
-					+ 2 * (view_ptr->get_y_extent_at_focus()*me.get_dy() / height)*y);
+				view_ptr->set_focus(view_ptr->get_focus() - (view_ptr->get_y_extent_at_focus()*me.get_dx() / width)*x
+					+ (view_ptr->get_y_extent_at_focus()*me.get_dy() / height)*y);
 				update_vec_member(view::focus);
 				post_redraw();
 				return true;
 			}
 			if (me.get_button_state() == MB_MIDDLE_BUTTON && me.get_modifiers() == 0) {
 				view_ptr->set_focus(view_ptr->get_focus() -
-					10 * view_ptr->get_y_extent_at_focus()*me.get_dy() / height*z / zoom_sensitivity);
+					5 * view_ptr->get_y_extent_at_focus()*me.get_dy() / height*z / zoom_sensitivity);
 				update_vec_member(view::focus);
 				post_redraw();
 				return true;
@@ -1118,9 +1126,9 @@ void stereo_view_interactor::gl_set_projection_matrix(GlsuEye e, double aspect)
 		glOrtho(-aspect*y_extent_at_focus, aspect*y_extent_at_focus, -y_extent_at_focus, y_extent_at_focus, z_near_derived, z_far_derived);
 	else {
 		if (stereo_translate_in_model_view)
-			glsuStereoFrustumScreen(e, eye_distance, 2 * y_extent_at_focus*aspect, 2 * y_extent_at_focus, get_parallax_zero_z(), z_near_derived, z_far_derived);
+			glsuStereoFrustumScreen(e, eye_distance, y_extent_at_focus*aspect, y_extent_at_focus, get_parallax_zero_z(), z_near_derived, z_far_derived);
 		else
-			glsuStereoPerspectiveScreen(e, eye_distance, 2 * y_extent_at_focus*aspect, 2 * y_extent_at_focus, get_parallax_zero_z(), z_near_derived, z_far_derived);
+			glsuStereoPerspectiveScreen(e, eye_distance, y_extent_at_focus*aspect, y_extent_at_focus, get_parallax_zero_z(), z_near_derived, z_far_derived);
 	}
 	glMatrixMode(GL_MODELVIEW);
 }
@@ -1269,17 +1277,17 @@ void stereo_view_interactor::draw_focus()
 	glColor3f(0.5f,0.5f,0.5f);
 	glBegin(GL_LINES);
 	glVertex3dv(get_focus());
-	glVertex3dv(get_focus()+vec_type(get_y_extent_at_focus(),0,0));
+	glVertex3dv(get_focus()+vec_type(0.5*get_y_extent_at_focus(),0,0));
 	glVertex3dv(get_focus());
-	glVertex3dv(get_focus()+vec_type(0,get_y_extent_at_focus(),0));
+	glVertex3dv(get_focus()+vec_type(0, 0.5*get_y_extent_at_focus(),0));
 	glVertex3dv(get_focus());
-	glVertex3dv(get_focus()+vec_type(0,0,get_y_extent_at_focus()));
+	glVertex3dv(get_focus()+vec_type(0,0, 0.5*get_y_extent_at_focus()));
 	glVertex3dv(get_focus());
-	glVertex3dv(get_focus()+vec_type(-get_y_extent_at_focus(),0,0));
+	glVertex3dv(get_focus()+vec_type(-0.5*get_y_extent_at_focus(),0,0));
 	glVertex3dv(get_focus());
-	glVertex3dv(get_focus()+vec_type(0,-get_y_extent_at_focus(),0));
+	glVertex3dv(get_focus()+vec_type(0,-0.5*get_y_extent_at_focus(),0));
 	glVertex3dv(get_focus());
-	glVertex3dv(get_focus()+vec_type(0,0,-get_y_extent_at_focus()));
+	glVertex3dv(get_focus()+vec_type(0,0,-0.5*get_y_extent_at_focus()));
 	glEnd();
 }
 
@@ -1527,14 +1535,35 @@ void stereo_view_interactor::on_set(void* m)
 {
 	if (m == &stereo_enabled || m == &stereo_mode)
 		on_stereo_change();
-	if (find_control_void(m,0))
-		find_control_void(m,0)->update();
-	if (m == &write_images) {
+	update_member(m);
+	if (m == &write_images)
 		write_images_to_file();
-	}
-	else {
+	else
 		post_redraw();
+}
+
+void stereo_view_interactor::set_z_near(double z)
+{
+	cgv::render::gl::gl_view::set_z_near(z);
+	update_member(&z_near);
+	post_redraw();
+}
+void stereo_view_interactor::set_z_far(double z)
+{
+	cgv::render::gl::gl_view::set_z_far(z);
+	update_member(&z_far);
+	post_redraw();
+}
+void stereo_view_interactor::set_default_view()
+{
+	cgv::render::gl::gl_view::set_default_view();
+	for (unsigned c = 0; c < 3; ++c) {
+		update_member(&view_dir[c]);
+		update_member(&view_up_dir[c]);
+		update_member(&cgv::render::view::focus[c]);
 	}
+	update_member(&y_extent_at_focus);
+	post_redraw();
 }
 
 /// you must overload this for gui creation

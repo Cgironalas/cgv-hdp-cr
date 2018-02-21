@@ -3,22 +3,62 @@
 #include <string>
 #include <vector>
 #include <cgv/reflect/reflect_enum.h>
+
 #include <cgv/base/node.h>
 #include <cgv/render/drawable.h>
 #include <cgv/gui/provider.h>
 #include <cgv/gui/event_handler.h>
+
 #include <cgv/render/texture.h>
 #include <cgv/render/shader_program.h>
 #include <cgv_gl/gl/gl_view.h>
-#include <cgv/media/mesh/marching_cubes.h>
+#include <cgv/math/mfunc.h>
+#include <cgv/media/mesh/streaming_mesh.h>
+
 #include <vol_data/volume.h>
-#include "lib_begin.h"
 #include "cache_manager.h"
 
+#include "lib_begin.h"
+
+
+enum DiffuseColorMapping
+{
+	DCM_MATERIAL,
+	DCM_COLOR,
+	DCM_TEXTURE,
+	DCM_NORMAL,
+	DCM_TEXTURE_COORDINATES,
+	DCM_POSITION
+};
+
+struct surface_render_style
+{
+	/// diffuse color mapping mode
+	DiffuseColorMapping diffuse_mapping;
+	/// whether to use illumination
+	bool illumination;
+	/// whether to show surface in wire frame mode
+	bool show_wireframe;
+	/// line width used for wireframe rendering
+	float wireframe_width;
+	/// culling mode
+	cgv::render::CullingMode culling_mode;
+	/// whether to compute per face normals in the shader pipeline
+	bool face_normals;
+	/// whether to negate surface normals
+	bool negate_normals;
+	/// whether to show surface with two sided illumination
+	bool two_sided;
+	/// material used to render the surface faces
+	cgv::media::illum::phong_material material;
+	/// set default values (no wireframe, no culling, no face normals, no negation, no two sided)
+	surface_render_style();
+};
+
 class CGV_API volume_slicer :
-	public cgv::base::node,
-	public cgv::render::drawable,
-	public cgv::gui::provider,
+	public cgv::base::node, 
+	public cgv::render::drawable, 
+	public cgv::gui::provider, 
 	public cgv::gui::event_handler,
 	public cgv::media::mesh::streaming_mesh_callback_handler,
 	public cgv::math::v3_func<float, float>
@@ -44,6 +84,8 @@ public:
 public:
 	/// filename of the volume dataset
 	std::string file_name;
+	/// filename to open volume dataset for iso surface extraction
+	std::string iso_file_name;
 	// volume data structure stored for iso surface extaction
 	volume V;
 	/// return the value of a given voxel scaled to [0,1]
@@ -58,7 +100,7 @@ public:
 	// read volume from sliced or single file representations
 	bool open_block_volume(const std::string& directory_name);
 	/// read regular volume file
-	bool open_volume(const std::string& file_name);
+	bool open_volume(const std::string& file_name, bool is_iso);
 	/// convert world to texture coordinates
 	vec3 texture_from_world_coordinates(const vec3& p_world) const;
 	/// convert texture to voxel coordinates
@@ -99,6 +141,7 @@ public:
 	bool is_block_intersected(const box3& B);
 	/// return a block with the var_dim in the max_ind position, and the other two according to the place of the var_dim
 	vec3 make_vec_d_max(int max_ind, float var_dim, float dim0, float dim1);
+
 	//@}
 
 	/**@name iso surface*/
@@ -109,15 +152,20 @@ protected:
 	std::vector<vec3> normals;
 	std::vector<vec3> texture_coords;
 	std::vector<cgv::type::uint32_type>  corner_indices;
-	/// material used to render the iso surface faces
-	cgv::media::illum::phong_material surface_mat;
+	/// number of vertices per face
+	unsigned face_vertex_count;
 	/// downsampling factor allows to extract iso-surface on a coarser resolution
 	unsigned down_sampling_factor;
 	/// the iso_value to extract the iso surface - always in [0,1]
 	float iso_value;
-	/// whether to negate surface normals
-	bool negate_normals;
+	std::map<int, std::string> *value_name_map;
+	std::string last_name;
+	std::map<std::string, std::vector<int> > *value_map;
+	std::string value_name_map_file_name;
+	bool read_value_name_map(const std::string& file_name);
 private:
+	/// whether to access iso volume with trilinear interpolation
+	bool interpolated_evaluation;
 	/// pointer to marching cubes object to get access to positions of vertices
 	cgv::media::mesh::streaming_mesh<float>* sm_ptr;
 protected:
@@ -132,7 +180,7 @@ protected:
 
 public:
 	/// extract iso surface from volume with current iso_value and down_sampling_factor
-	void extract_surface();
+	void extract_surface(int algorithm);
 	/// remove all elements from surface
 	void clear_surface();
 	/// draw the surface with opengl
@@ -158,8 +206,12 @@ protected:
 	bool show_block;
 	/// flag that tells whether to show the iso surface
 	bool show_surface;
-	/// whether to show surface in wire frame mode
-	bool show_surface_wireframe;
+	/// 
+	float texture_scale;
+	/// 
+	float texture_gamma;
+	///
+	surface_render_style iso_surface_style;
 	/// material used to render the bounding box faces
 	cgv::media::illum::phong_material box_mat;
 private:
@@ -169,8 +221,18 @@ private:
 	cgv::render::shader_program indexed_tex_slice_prog;
 	/// texture storing the volume data
 	cgv::render::texture data_texture;
+	/// whether to use reduced color depth to store texture on GPU
+	bool use_reduced_color_depth;
 	/// index texture will be used later to store for each block the index where it is stored in the data texture
 	cgv::render::texture index_texture;
+	///
+	bool use_standard_prog;
+	/// surface shading program 
+	cgv::render::shader_program surface_prog;
+	/// enables surface rendering with the given rendering style
+	void enable_surface_rendering(cgv::render::context& ctx, const surface_render_style& style);
+	/// disables surface rendering with the given rendering style
+	void disable_surface_rendering(cgv::render::context& ctx, const surface_render_style& style);
 public:
 	/// called once per context for initialization of rendering stuff
 	bool init(cgv::render::context& ctx);
@@ -184,7 +246,6 @@ public:
 	void draw_voxel(cgv::render::context& ctx, const ivec3& voxel, const vec3& color);
 	/// draw a block with a wire frame box
 	void draw_block(cgv::render::context& ctx, const ivec3& block, const vec3& color, const vec3& overlap_color);
-
 	/// draws all blocks that intersect the plane 
 	void draw_blocks_in_plane(cgv::render::context& ctx, const vec3& color, const vec3& overlap_color);
 	/// called to draw the frame
@@ -218,7 +279,6 @@ private:
 	bool get_picked_point(int x, int y, vec3& p_pick_world);
 	/// determine voxel location of mouse pointer
 	void peek_voxel_values(int x, int y);
-	
 public:
 	/// adjusts view to bounding box of all instances
 	void auto_adjust_view();
@@ -228,6 +288,8 @@ public:
 	void stream_help(std::ostream& os);
 	/// stream statistical information about volume
 	void stream_stats(std::ostream& os);
+	///
+	void create_surface_gui(surface_render_style& style);
 	/// called to create gui elements
 	void create_gui();
 	//@}
