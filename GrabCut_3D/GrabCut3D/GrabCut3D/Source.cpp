@@ -17,17 +17,20 @@ static bool go, comeBack1, comeBack2;
 static Mat imageToShow, tempMat, tempMask;
 
 static string sourceDir,	//Directory of the source images
-maskDir,		//Directory of pre-existing masks or where they will be saved.
+maskDir,					//Directory of pre-existing masks or where they will be saved.
 fileExtension,
-tempDir;		//Temporal string for various usages.
+tempDir;					//Temporal string for various usages.
 
-static string *imgFiles,	// names of all the images from sourceDir
-*maskFiles;	// names of all the masks from maskDir
+static vector<String> imgFiles, maskFiles;
 
 static int index, currentImage, folderSize, indexBegin, middle, indexEnd, firstMask, lastMask, counter, rows, columns;
 
 static unsigned char *matPixel;
 static unsigned char *maskPixel;
+
+static Vec3b maskColor = Vec3b (80, 244, 66);
+static double basePercentage = 0.7;
+static double maskPercentage = 0.3;
 
 
 static void help() {
@@ -147,7 +150,6 @@ void GCApplication::showImage() const {
 		image->copyTo(res);
 		getBinMask(mask, binMask);
 		
-		cout << "Image size " << image->cols << " - " << image->rows;
 		for (int x = 0; x < image->cols; x++) {
 			for (int y = 0; y < image->rows; y++) {
 				intensityBin = binMask.at<uchar>(y, x);
@@ -157,9 +159,9 @@ void GCApplication::showImage() const {
 				r = intensityRGB.val[2];
 
 				if (intensityBin.val[0] == 0) {
-					r = (int)std::max(0.0, r - 50.0);
-					g = (int)std::max(0.0, g - 50.0);
-					b = (int)std::max(0.0, b - 50.0);
+					r = (int)(r * basePercentage + maskColor[0] * maskPercentage);
+					g = (int)(g * basePercentage + maskColor[1] * maskPercentage);
+					b = (int)(b * basePercentage + maskColor[2] * maskPercentage);
 					res.at<Vec3b>(y, x) = Vec3b(r, g, b);
 				}
 			}
@@ -380,7 +382,7 @@ void printConfigurationValues() {
 
 //Read the image based on the current index
 Mat readCurrentImage() {
-	Mat image = imread(sourceDir + imgFiles[index], IMREAD_COLOR);
+	Mat image = imread(imgFiles[index], IMREAD_COLOR);
 	if (image.empty()) {
 		cout << endl << "Couldn't read image from file: " << imgFiles[index] << endl;
 		return Mat();
@@ -394,7 +396,7 @@ Mat readCurrentImage() {
 // If mask is empty then it is reported and the variable go will be used
 void readCurrentMask() {
 	cout << maskDir + maskFiles[index];
-	tempMat = imread(maskDir + maskFiles[index], IMREAD_GRAYSCALE);
+	tempMat = imread(maskFiles[index], IMREAD_GRAYSCALE);
 	if (!tempMat.empty()) {
 		cout << " - mask was read" << endl;
 		// Threshold converts all the 255s in the binary mask to 3s, which GrabCut reads as foreground
@@ -480,7 +482,7 @@ void loadPreviousImage() {
 // Check if the mask of a given index exists
 bool maskExists(int i) {
 	//cout << "Mask to check: " + maskDir + maskFiles[i] << endl;
-	Mat temp = imread(maskDir + maskFiles[i], IMREAD_GRAYSCALE);
+	Mat temp = imread(maskFiles[i], IMREAD_GRAYSCALE);
 	if (!temp.empty()) {
 		go = false;
 		return true;
@@ -502,7 +504,7 @@ std::string hexStr(unsigned char *data, int len)
 
 
 void generateVox() {
-	cout << "Vox is being generated." << endl;
+	cout << "Vox is being generated..." << endl;
 	fstream dataVox = fstream("data.bin", std::ios::out | std::ios::binary);
 	fstream maskVox = fstream("mask.bin", std::ios::out | std::ios::binary);
 	Mat tempMat;
@@ -512,11 +514,9 @@ void generateVox() {
 	dataCounter = 0;
 	for (current = folderSize - 1; current >= 0; current--) {
 		dataCounter++;
-		cout << "Index: " + to_string(current) << endl;
-		tempMask = imread(maskDir + maskFiles[current], IMREAD_GRAYSCALE);
-		//cout << "Read mask" << endl;
-		tempMat = imread(sourceDir + imgFiles[current], IMREAD_COLOR);
-		//cout << "Read source" << endl;
+		//cout << "Index: " + to_string(current) << endl;
+		tempMask = imread(maskFiles[current], IMREAD_GRAYSCALE);
+		tempMat = imread(imgFiles[current], IMREAD_COLOR);
 		if (!tempMask.empty()) {
 			maskCounter++;
 			for (int i = 0; i < tempMat.rows; i++) {
@@ -550,27 +550,12 @@ void generateVox() {
 					}
 				}
 			}
-			//cout << "Columns: " + to_string(tempMat.cols) + " - Rows: " + to_string(tempMat.rows) + "." << endl;
-		}
-		else {
-			for (int i = 0; i < tempMat.rows; i++) {
-				for (int j = 0; j < tempMat.cols; j++) {
-					matPixel = tempMat.ptr(i, j);
-
-					if (dataVox.is_open()) {
-						dataVox.write((char *)&matPixel[2], 1);
-						dataVox.write((char *)&matPixel[1], 1);
-						dataVox.write((char *)&matPixel[0], 1);
-					}
-				}
-			}
-
 		}
 	}
 	dataVox.close();
 	maskVox.close();
 	cout << "Finished generating vox!" << endl;
-	cout << "masks read: " << to_string(maskCounter) << " - Images read: " << to_string(dataCounter) << endl;
+	cout << "Masks read (size of vox): " << to_string(maskCounter) << " - Images available: " << to_string(dataCounter) << endl;
 }
 
 
@@ -592,16 +577,8 @@ int main(int argc, char** argv) {
 	folderSize = indexEnd - indexBegin + 1;
 	cout << "Folder size: " + to_string(folderSize) << endl;
 
-
-	imgFiles = new string[folderSize];
-	maskFiles = new string[folderSize];
-
-	for (index = 0, currentImage = indexBegin; index < folderSize; index++, currentImage++) {
-
-		imgFiles[index] = "rgb" + to_string(currentImage) + "." + fileExtension;
-
-		maskFiles[index] = "rgb" + to_string(currentImage) + ".bmp";
-	}
+	glob(sourceDir, imgFiles);
+	glob(maskDir, maskFiles);
 
 	middle = (indexEnd - indexBegin) / 2;
 	cout << "Middle: " + to_string(middle) << endl << endl << endl;
@@ -613,14 +590,8 @@ int main(int argc, char** argv) {
 
 
 	const string winName = "GrabCut";
-	const string imageWin = "source";
 
-	namedWindow(winName, WINDOW_AUTOSIZE);
-	//Creates a window with name 'image', possible flags:
-	//WINDOW_AUTOSIZE (get size of image, cannot be resized)
-	//WINDOW_OPENGL (opengl compatible window)
-
-	//namedWindow(imageWin, WINDOW_AUTOSIZE);
+	namedWindow(winName, WINDOW_KEEPRATIO);
 
 	setMouseCallback(winName, on_mouse, 0);
 	//on_mouse is an in between function that they (in openCV in general) to manage mouse interaction
@@ -641,6 +612,7 @@ int main(int argc, char** argv) {
 
 	for (;;) {
 		char c = (char)waitKey(0);
+		cout << "Pressed key: " << c << endl;
 		switch (c) {
 			// Close GrabCut Window (exits program)
 		case '\x1b': {
