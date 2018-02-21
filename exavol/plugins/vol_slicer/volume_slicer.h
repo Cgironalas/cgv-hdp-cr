@@ -78,11 +78,27 @@ public:
 	ivec3 block_dimensions;
 	/// overlap between adjacent blocks in voxel, typically (1,1,1)
 	ivec3 overlap;
+	/// store the intersected blocks
+	std::vector<ivec3> intersected_blocks;
+	/// identifies wether the batch has been updated
+	bool new_batch = false;
+	/// store the previous iteration of intersected blocks
+	std::unordered_set<ivec3, container_hash<ivec3>> previous_intersected_blocks;
+	/// logic for putting blocks in cache
+	cache_manager threaded_cache_manager;
 public:
 	/// convert voxel to block coordinates
 	vec3 block_from_voxel_coordinates(const vec3& p_voxel) const;
 	/// convert voxel to block coordinates
 	vec3 voxel_from_block_coordinates(const vec3& p_block) const;
+	/// computes intersected blocks in the vector
+	void update_intersected_blocks(cgv::render::context& ctx);
+	/// compute distance of point in texture coordinates to current slice
+	float compute_distance_to_slice_tex(const vec3& p) const;
+	/// determine if a block is intersected by the plane
+	bool is_block_intersected(const box3& B);
+	/// return a block with the var_dim in the max_ind position, and the other two according to the place of the var_dim
+	vec3 make_vec_d_max(int max_ind, float var_dim, float dim0, float dim1);
 	//@}
 
 	/**@name iso surface*/
@@ -124,8 +140,6 @@ public:
 	//@}
 	/**@name slicing*/
 	//@{
-	/// compute distance of point in texture coordinates to current slice
-	float compute_distance_to_slice_tex(const vec3& p) const;
 protected:
 	/// slice normal in texture coordinates
 	vec3 slice_normal_tex;
@@ -170,8 +184,7 @@ public:
 	void draw_voxel(cgv::render::context& ctx, const ivec3& voxel, const vec3& color);
 	/// draw a block with a wire frame box
 	void draw_block(cgv::render::context& ctx, const ivec3& block, const vec3& color, const vec3& overlap_color);
-	/// computes intersected blocks in the vector
-	void update_intersected_blocks(cgv::render::context& ctx);
+
 	/// draws all blocks that intersect the plane 
 	void draw_blocks_in_plane(cgv::render::context& ctx, const vec3& color, const vec3& overlap_color);
 	/// called to draw the frame
@@ -201,25 +214,10 @@ private:
 	ivec3 current_voxel;
 	/// store current block
 	ivec3 current_block;
-
-	// logic for putting blocks in cache
-	cache_manager threaded_cache_manager;
-	
-	/// store the intersected blocks
-	std::vector<ivec3> intersected_blocks;
-
 	/// return the point under the mouse pointer in world coordinates
 	bool get_picked_point(int x, int y, vec3& p_pick_world);
 	/// determine voxel location of mouse pointer
 	void peek_voxel_values(int x, int y);
-	/// determine if a block is intersected by the plane
-	bool is_block_intersected(const box3& B);
-
-	void propagate(ivec3 block, int dir, int max_ind, ivec3 p_dim, ivec3 b_dim);
-
-	float block_distance(const box3& B);
-
-	vec3 replace_max_dim(int max_ind, float var_dim, float dim0, float dim1);
 	
 public:
 	/// adjusts view to bounding box of all instances

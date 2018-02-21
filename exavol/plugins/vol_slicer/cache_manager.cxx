@@ -8,11 +8,21 @@
 #include <thread>
 #include "volume_slicer.h"
 
+//toggles multithreading in individual block retrieval
+bool in_thread = false;
+
+//path to the slices (.bvx files from blockgen.cxx project) 	
+std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices";
+
+// output to generate .tiff blocks for validation if the write_tiff function is called
+//std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices/blocks";
+
+
 cache_manager::cache_manager(volume_slicer &f) : vs(f) {
-	//should be calculated from the GPU capacity
-	cache_size_blocks = 5000;
-	thread_limit = 8;
+	cache_size_blocks = 15000; //should be calculated from the GPU capacity if possible
+	thread_limit = 16;
 	process_running = false;
+	signal_restart = false;
 }
 
 void cache_manager::init_listener() {
@@ -28,48 +38,50 @@ void cache_manager::main_loop() {
 	
 	while (true) {
 		
-		thread_report.lock();
+		blocks_in_progress_lock.lock();
+		bool something_to_do = !blocks_in_progress.empty();
+		blocks_in_progress_lock.unlock();
 
-		intersected_blocks_queue_lock.lock();
-		if (thread_amount < thread_limit && !blocks_in_progress.empty() && !process_running) {
-			thread_amount += 1;
+		thread_report.lock();
+		if (!in_thread && thread_amount > 2) {
+			std::cout << "SOMETHING IS WRONG" << std::endl;
+		}
+
+		if (thread_amount < thread_limit && something_to_do && !process_running) {
 			process_running = true;
-			std::cout << "frame started " << std::endl;
+			thread_amount += 1;
 			std::thread t([&]() { retrieve_blocks_in_plane(); });
 			t.detach();
 		}
-
-		intersected_blocks_queue_lock.unlock();
 		thread_report.unlock();
-
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
-		
 	}
 }
 
-void cache_manager::process_blocks(std::vector<ivec3> pIntersected_blocks) {
-	intersected_blocks_queue_lock.lock();
-	for (auto it : pIntersected_blocks) {
+void cache_manager::request_blocks(std::vector<ivec3> blocks_batch) {
+	blocks_in_progress_lock.lock();
+	for (auto it : blocks_batch) {
+
 		blocks_cache_lock.lock();
-		if (block_cache_map.find(it) == block_cache_map.end()) {
-			blocks_cache_lock.unlock();
+		bool block_in_cache = block_cache_map.find(it) != block_cache_map.end();
+		blocks_cache_lock.unlock();
+
+		if (!block_in_cache) {
 			blocks_in_progress.push_back(it);
-		} else {
-			blocks_cache_lock.unlock();
 		}
 	}
-	intersected_blocks_queue_lock.unlock();
+	signal_restart = true;
+	blocks_in_progress_lock.unlock();
+	
 }
 
 void cache_manager::retrieve_blocks_in_plane() {
-
 	const vec3 dimensions = vs.dimensions;
 	const vec3 block_dimensions = vs.block_dimensions;
 	const vec3 overlap = vs.overlap;
 
-	std::vector<ivec3> blocks_to_retrieve;
 	blocks_in_progress_lock.lock();
-	std::copy(blocks_in_progress.begin(), blocks_in_progress.end(), std::back_inserter(blocks_to_retrieve));
+	std::vector<ivec3> blocks_batch_frame;
+	std::copy(blocks_in_progress.begin(), blocks_in_progress.end(), std::back_inserter(blocks_batch_frame));
 	blocks_in_progress.clear();
 	blocks_in_progress_lock.unlock();
 
@@ -78,134 +90,147 @@ void cache_manager::retrieve_blocks_in_plane() {
 	size_t block_size = (block_dimensions(1) + overlap(1))*((block_dimensions(0) + overlap(0))*cgv::data::component_format(cgv::type::info::TI_UINT8, cgv::data::CF_RGB).get_entry_size()) * (block_dimensions(2) + overlap(2));
 	ivec3 df_dim(block_dimensions(0) + overlap(0), block_dimensions(1) + overlap(1), block_dimensions(2) + overlap(2));
 
+	// traverse the batch
+	bool cancelled = false;
+	for (int i = 0; i < blocks_batch_frame.size(); i++){
 
-	//this code loads from the slices (.bvx files from blockgen.cxx project) 
-	// and uses the output to generate .tiff blocks for validation if the code is accesible
+		blocks_in_progress_lock.lock();
+		bool queued_blocks = !blocks_in_progress.empty();
+		blocks_in_progress_lock.unlock();
 
-	//interaction with the GPU cache should occur here
-
-	bool are_blocks_in_queue = true;
-
-	for (int i = 0; i < blocks_to_retrieve.size(); i++){
-
-		thread_report.lock();
-
-		if (thread_amount < thread_limit) {
-			thread_amount += 1;
-			std::thread t([&]() { retrieve_block(blocks_to_retrieve[i], nr_blocks, block_size, df_dim); });
-			//blocks_to_retrieve.erase(it);
-			t.detach();
-		} else {
-			i--;
+		if (signal_restart && queued_blocks) {
+			signal_restart = false;
+			cancelled = true;
+			std::cout << "cancelled remaining " << blocks_batch_frame.size() - i << " blocks." << std::endl;
+			break;
 		}
+		
+		if (in_thread) {
+			thread_report.lock();
 
-		thread_report.unlock();
-		are_blocks_in_queue = blocks_to_retrieve.empty();
+			if (thread_amount < thread_limit) {
+				thread_amount += 1;
+				thread_report.unlock();
+				if (i % 1000 == 0) {
+					std::cout << "blocks read_: " << i << " " << std::endl;
+				}
+				std::thread t([&]() { retrieve_block(blocks_batch_frame[i], nr_blocks, block_size, df_dim); });
+				t.detach();
+			}
+			else {
+				i--;
+				thread_report.unlock();
+			}
+		} else {
+			retrieve_block(blocks_batch_frame[i], nr_blocks, block_size, df_dim);
+			if (i % 1000 == 0) {
+				std::cout << "blocks read: " << i << " " << std::endl;
+			}
+		}
 	}
 
-	process_running = false;
-	std::cout << "frame loaded " << std::endl;
+	if (!cancelled) {
+		std::cout << "finished batch of  " << blocks_batch_frame.size() << " blocks." << std::endl;
 
-
+		// no real effect for now but this should update the frame with the new block textures loaded.
+		vs.post_redraw();
+	}
+		
 	thread_report.lock();
 	thread_amount -= 1;
+	process_running = false;
 	thread_report.unlock();
 
-	//vs.post_redraw();
 }
 
 bool cache_manager::retrieve_block(ivec3& block, const ivec3& nr_blocks, const size_t& block_size, const vec3& df_dim) {
-
-	lru_refer(block);
-
-	thread_report.lock();
-	thread_amount -= 1;
-	thread_report.unlock();
-	return false;
-
-	std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices";
-	std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices/blocks";
-
-	std::cout << "retrieving block at: " << block(0) << ", " << block(1) << ", " << block(2) << ", " << std::endl;
-
-	std::stringstream ss;
-	ss << input_path << "/level_00_blockslice_" << std::setw(3) << std::setfill('0') << block(2) << ".bvx";
-
-	// compute block index and pointer to block data
-	unsigned bi = block(1) * nr_blocks(0) + block(0);
-	char* block_ptr = new char[block_size];
-
-	// throws exception at fread in some points 
-	FILE* fp = fopen(ss.str().c_str(), "rb");
-	fseek(fp, bi * block_size, SEEK_SET);
+	
+	//std::cout << "retrieving block at: " << block(0) << ", " << block(1) << ", " << block(2) << ", " << std::endl;
 	try {
+
+		std::stringstream ss;
+		ss << input_path << "/level_00_blockslice_" << std::setw(3) << std::setfill('0') << block(2) << ".bvx";
+
+		// compute block index and pointer to block data
+		unsigned bi = block(1) * nr_blocks(0) + block(0);
+		char* block_ptr = new char[block_size];
+
+		// throws exception at fread in some points 
+		FILE* fp = fopen(ss.str().c_str(), "rb");
+		fseek(fp, bi * block_size, SEEK_SET);
 
 		bool result = fread(block_ptr, block_size, 1, fp) == 1;
 
 		if (result) {
+			lru_refer(block, block_ptr);
 			fclose(fp);
 		}
 		else {
 			std::cout << "failed to retrieve block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slices" << std::endl;
 		}
 
-		thread_report.lock();
-		thread_amount -= 1;
-		thread_report.unlock();
+		if (in_thread) {
+			thread_report.lock();
+			thread_amount -= 1;
+			thread_report.unlock();
+		}
+		
+		return result; 
 
-		return result;
-			
+		/// to ensure correct block being loaded
 		//return write_tiff_block(output_path + "/block_at_" + std::to_string(block(0)) + "_" + std::to_string(block(1)) + "_" + std::to_string(block(2)), block_ptr, df_dim, "");
 
-	}
-	catch (const std::exception& e) {
-		std::cout << "Exception thrown: " << e.what() << std::endl;
-		thread_report.lock();
-		thread_amount -= 1;
-		thread_report.unlock();
+	} catch (...) {
+		std::cout << "exception thrown at block retrieval due to existing block slice dimensions" << std::endl;
+	
+		if (in_thread) {
+			thread_report.lock();
+			thread_amount -= 1;
+			thread_report.unlock();
+		}
+
 		return false;
 	}
 }
 
-void cache_manager::lru_refer(ivec3 block) {
+void cache_manager::lru_refer(ivec3 block, char* block_ptr) {
 	
-
+	intersected_blocks_queue_lock.lock();
 	std::list<ivec3>::iterator it = std::find(intersected_blocks_queue.begin(), intersected_blocks_queue.end(), block);
+	intersected_blocks_queue_lock.unlock();
 
+	// not in cache
 	if (it == intersected_blocks_queue.end()) {
+		// cache is full
 		if (intersected_blocks_queue.size() == cache_size_blocks) {
 
-			ivec3 last = intersected_blocks_queue.back();
-
 			intersected_blocks_queue_lock.lock();
+			ivec3 last = intersected_blocks_queue.back();
 			intersected_blocks_queue.pop_back();
 			intersected_blocks_queue_lock.unlock();
 
-			// this should actually erase the block from GPU memory 
 			blocks_cache_lock.lock();
 			block_cache_map.erase(last);
 			blocks_cache_lock.unlock();
 		}
-	}
-	else {
+	} else {
 		intersected_blocks_queue_lock.lock();
 		intersected_blocks_queue.erase(it);
 		intersected_blocks_queue_lock.unlock();
 
-		// this should actually erase the block from GPU memory
 		blocks_cache_lock.lock();
 		block_cache_map.erase(block);
 		blocks_cache_lock.unlock();
 	}
 
 	intersected_blocks_queue_lock.lock();
-	intersected_blocks_queue.push_front(block);
-	intersected_blocks_queue_lock.unlock();
-
-	// this should store the gpu position, not the queue position
 	blocks_cache_lock.lock();
+
+	intersected_blocks_queue.push_front(block);
 	block_cache_map[block] = intersected_blocks_queue.begin();
+	
 	blocks_cache_lock.unlock();
+	intersected_blocks_queue_lock.unlock();
 }
 
 

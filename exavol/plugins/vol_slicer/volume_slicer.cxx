@@ -15,7 +15,6 @@ volume_slicer::volume_slicer()
 	 threaded_cache_manager(*this)
 
 {
-	
 	view_ptr = 0;
 	rotate_sensitivity = 1.0;
 	translation_sensitivity = 1.0;
@@ -49,7 +48,7 @@ volume_slicer::volume_slicer()
 
 	last_x = last_y = -1;
 	current_voxel = current_block = ivec3(0, 0, 0);
-	block_dimensions = ivec3(16, 16, 16);
+	block_dimensions = ivec3(4, 4, 32);
 	overlap = ivec3(1, 1, 1);
 	threaded_cache_manager.init_listener();
 }
@@ -404,7 +403,10 @@ void volume_slicer::init_frame(cgv::render::context& ctx)
 	if (!tex_slice_prog.is_created())
 		tex_slice_prog.build_program(ctx, "tex_slicer.glpr", true);
 
-	//threaded_cache_manager.process_blocks(intersected_blocks);
+	if (new_batch) {
+		threaded_cache_manager.request_blocks(intersected_blocks);
+		new_batch = false;
+	}
 	
 	/*
 	if (data_texture.is_created()) {
@@ -550,11 +552,13 @@ void volume_slicer::draw_voxel(cgv::render::context& ctx, const ivec3& voxel, co
 	draw_wire_box(ctx, B, color);
 }
 
-/// computes the distance taking into account the 
+// not used anymore
+/// computes the distance to the slice center in texture coordinates
 float volume_slicer::compute_distance_to_slice_tex(const vec3& p_tex) const{
 	return cgv::math::dot(p_tex - vec3(0.5f, 0.5f, 0.5f), slice_normal_tex) - slice_center_distance_tex;
 }
 
+// not used anymore
 bool volume_slicer::is_block_intersected(const box3& B_tex) 
 {
 	// intersection is calculated by analyzing the dot product of the corners and the normal of the slice
@@ -579,22 +583,11 @@ bool volume_slicer::is_block_intersected(const box3& B_tex)
 	return false;
 }
 
-float volume_slicer::block_distance(const box3& B_tex) 
-{
-	float dist_corner =0;
-	// iterate over all the block's corners, adding the distance value
-	for (unsigned i = 0; i < 8; i++){
-		dist_corner += compute_distance_to_slice_tex(B_tex.get_corner(i));
-	}
-	return dist_corner;
-}
-
 static bool abs_compare(float a, float b){ return (std::abs(a) < std::abs(b)); }
 
 void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 
 	ivec3 nr_blocks(unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), unsigned(ceil(float(dimensions(2)) / block_dimensions(2))));
-	intersected_blocks.clear();
 
 	vec3 world_slice_normal = world_from_texture_normals(slice_normal_tex);
 	int d_max = std::distance(std::begin(world_slice_normal), std::max_element(std::begin(world_slice_normal), std::end(world_slice_normal), abs_compare));
@@ -603,14 +596,18 @@ void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 	int d0 = (d_max + 1) % 3;
 	int d1 = (d_max + 2) % 3;
 
+	previous_intersected_blocks.clear();
+	previous_intersected_blocks.insert(intersected_blocks.begin(), intersected_blocks.end());
+	intersected_blocks.clear();
+
 	for (int i0 = 0; i0 < nr_blocks(d0); i0++) {
 		for (int i1 = 0; i1 < nr_blocks(d1); i1++) {
 			
 			vec3 pi_tex[4]{
-				texture_from_voxel_coordinates(voxel_from_block_coordinates(replace_max_dim(d_max, 0, i0, i1))),
-				texture_from_voxel_coordinates(voxel_from_block_coordinates(replace_max_dim(d_max, 0, i0 + 1, i1))),
-				texture_from_voxel_coordinates(voxel_from_block_coordinates(replace_max_dim(d_max, 0, i0, i1 + 1))),
-				texture_from_voxel_coordinates(voxel_from_block_coordinates(replace_max_dim(d_max, 0, i0 + 1, i1 + 1)))
+				texture_from_voxel_coordinates(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0, i1))),
+				texture_from_voxel_coordinates(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0 + 1, i1))),
+				texture_from_voxel_coordinates(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0, i1 + 1))),
+				texture_from_voxel_coordinates(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0 + 1, i1 + 1)))
 			};
 
 			vec3 pi_block[4];
@@ -622,7 +619,10 @@ void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 			for (k = 0; k < 4; k++) {
 
 				pi_tex[k](d_max) = 
-					1.0f / slice_normal_tex(d_max)*(slice_center_distance_tex - (pi_tex[k](d0) - 0.5f)*slice_normal_tex(d0) - (pi_tex[k](d1) - 0.5f)*slice_normal_tex(d1)) + 0.5f;
+					1.0f / slice_normal_tex(d_max) * 
+					(slice_center_distance_tex - 
+					(pi_tex[k](d0) - 0.5f) * slice_normal_tex(d0) - 
+					(pi_tex[k](d1) - 0.5f) * slice_normal_tex(d1)) + 0.5f;
 				
 				pi_block[k] = block_from_voxel_coordinates(voxel_from_texture_coordinates(pi_tex[k]));
 				
@@ -641,15 +641,21 @@ void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 			}
 
 			for (k = i_min; k < i_max; k++) {
-				if (nr_blocks(d_max) > k && k >= 0) 
-					intersected_blocks.push_back(replace_max_dim(d_max, k, i0, i1));
+				if (nr_blocks(d_max) > k && k >= 0) {
+					ivec3 block = make_vec_d_max(d_max, k, i0, i1);
+
+					if (previous_intersected_blocks.find(block) == previous_intersected_blocks.end())
+						new_batch = true;
+
+					intersected_blocks.push_back(block);
+				}
 			}
 		}
 	}
 }
 
 
-volume_slicer::vec3 volume_slicer::replace_max_dim(int d_max, float var_dim, float dim0, float dim1) {
+volume_slicer::vec3 volume_slicer::make_vec_d_max(int d_max, float var_dim, float dim0, float dim1) {
 	float x, y, z;
 	switch (d_max) {
 		case 0: {
@@ -900,9 +906,9 @@ void volume_slicer::create_gui()
 	if (begin_tree_node("Blocks", block_dimensions, false, "level=3")) {
 		align("\a");
 		// w=50 specifies the width of each component view in 50 pixels
-		add_gui("block_dimensions", block_dimensions, "vector", "main_label='first';align=' ';gui_type='value_input';options='w=50;min=1;max=1024;step=1'"); align("\n");
+		add_gui("block_dimensions", block_dimensions, "vector", "main_label='first';align=' ';gui_type='view';options='w=50;'"); align("\n");
 		// w=50 specifies the width of each component view in 50 pixels
-		add_gui("overlap", overlap, "vector", "main_label='first';align=' ';gui_type='value_input';options='w=50;min=0;max=1;step=1'"); align("\n");
+		add_gui("overlap", overlap, "vector", "main_label='first';align=' ';gui_type='view';options='w=50;'"); align("\n");
 		align("\b");
 		end_tree_node(block_dimensions);
 	}
@@ -938,7 +944,6 @@ void volume_slicer::create_gui()
 		end_tree_node(rotate_sensitivity);
 	}
 }
-
 
 // 
 void volume_slicer::on_set(void* member_ptr)
