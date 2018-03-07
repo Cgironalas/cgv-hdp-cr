@@ -22,16 +22,17 @@ struct container_hash {
 	}
 };
 
-class cache_manager  {
-	
+class cache_manager {
+
 	volume_slicer &vs;
 
 	typedef cgv::math::fvec<float, 3> vec3;
 	typedef cgv::math::fvec<int, 3> ivec3;
 	typedef cgv::media::axis_aligned_box<float, 3> box3;
 
-	// limit the size of the cache structure. 
-	int cache_size_blocks;
+	// limit the size of the cache structures 
+	int cpu_cache_size_blocks;
+	int gpu_cache_size_blocks;
 
 	// limit the amount of worker threads for block retrieval
 	int thread_amount;
@@ -40,20 +41,29 @@ class cache_manager  {
 	bool signal_restart;
 	bool process_running;
 
-	// receives the stream of intersected blocks.
-	std::vector<ivec3> blocks_in_progress;
-	
+	// receives the stream of intersected blocks
+	std::vector<ivec3> disk_queue_blocks;
+	std::vector<ivec3> cache_queue_blocks;
+
+	// manages cpu cache blocks
+	std::list<ivec3> cpu_blocks_queue;
+	// cpu level cache
+	std::unordered_map < ivec3, char*, container_hash<ivec3 >> cpu_block_cache_map;
+
 	// manages gpu cache blocks
-	std::list<ivec3> intersected_blocks_queue;
-	
-	// change iterator to gpu pointer
-	std::unordered_map < ivec3, std::list<ivec3>::iterator, container_hash<ivec3>> block_cache_map;
+	std::list<ivec3> gpu_blocks_queue;
+	// gpu level cache mirror (typically smaller than cpu)
+	std::unordered_map < ivec3, char*, container_hash<ivec3 >> gpu_block_cache_map;
 
 	// mutexes
-	std::mutex blocks_cache_lock;
 	std::mutex blocks_in_progress_lock;
-	std::mutex intersected_blocks_queue_lock;
 	std::mutex thread_report;
+	
+	std::mutex cpu_cache_lock;
+	std::mutex cpu_blocks_queue_lock;
+
+	std::mutex gpu_cache_lock;
+	std::mutex gpu_blocks_queue_lock;
 
 public:
 	///constructor receives volume_slicer reference 
@@ -70,13 +80,16 @@ public:
 	void cache_manager::request_blocks(std::vector<ivec3> blocks_batch);
 	
 	// updates an lru controlled list with the size limit
-	void cache_manager::lru_refer(ivec3 block, char* block_ptr);
+	void cache_manager::lru_refer(ivec3& block, const ivec3& nr_blocks, const size_t& block_size, const vec3& df_dim);
+
+	// updates the gpu 
+	void cache_manager::gpu_lru_refer(ivec3& block, char* block_ptr);
 
 	// spawns threads to retrieve all blocks
 	void cache_manager::retrieve_blocks_in_plane();
 
-	// uses lru_refer and loads a block
-	bool cache_manager::retrieve_block(ivec3& block, const ivec3& nr_blocks, const size_t& block_size, const vec3& df_dim);
+	// loads a block for the lru_refer
+	char* cache_manager::retrieve_block(ivec3& block, const ivec3& nr_blocks, const size_t& block_size, const vec3& df_dim);
 
 	// for testing purposes
 	bool cache_manager::write_tiff_block(const std::string& file_name, const char* data_ptr, const vec3 df_dim, const std::string& options);

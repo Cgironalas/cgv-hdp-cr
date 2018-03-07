@@ -19,6 +19,7 @@ surface_render_style::surface_render_style()
 {
 	diffuse_mapping = DCM_MATERIAL;
 	illumination = true;
+
 	show_wireframe = false;
 	wireframe_width = 1;
 	culling_mode = cgv::render::CM_OFF;
