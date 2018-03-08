@@ -68,7 +68,7 @@ volume_slicer::volume_slicer() : cgv::base::node("volume_slicer"), threaded_cach
 
 	last_x = last_y = -1;
 	current_voxel = current_block = ivec3(0, 0, 0);
-	block_dimensions = ivec3(4,4,32);
+	block_dimensions = ivec3(16,16,16);
 	overlap = ivec3(1, 1, 1);
 	threaded_cache_manager.init_listener();
 }
@@ -107,6 +107,7 @@ bool volume_slicer::self_reflect(cgv::reflect::reflection_handler& rh)
 		rh.reflect_member("value_name_map_file_name", value_name_map_file_name) &&
 		rh.reflect_member("file_name", file_name) &&
 		rh.reflect_member("iso_file_name", iso_file_name) &&
+		rh.reflect_member("slices_path", slices_path) &&
 		rh.reflect_member("show_box", show_box);
 }
 
@@ -1112,6 +1113,7 @@ void volume_slicer::create_gui()
 		// the options 'title' and 'filter' configure the file dialog
 		add_gui("file_name", file_name, "file_name", "title='open volume';filter='Volume Files(vox,qim,tif,avi) :*.vox;*.qim;*.tif;*.avi|All Files:*.*'");
 		add_gui("iso_file_name", iso_file_name, "file_name", "title='open iso volume';filter='Volume Files(vox,qim,tif,avi) :*.vox;*.qim;*.tif;*.avi|All Files:*.*'");
+		add_gui("slices_path", slices_path, "file_name", "title='modify_slices_path';filter='All Files:*.*'");
 		// add gui for the vector of pixel counts, where "dimensions" is used only in label of gui element for first vector component
 		// using view as gui_type will only show the values but not allow modification
 		// by align=' ' the component views are arranged with a small space in one row
@@ -1192,6 +1194,7 @@ void volume_slicer::on_set(void* member_ptr)
 	// in case that file_name changed, read new volume
 	if (member_ptr == &file_name) {
 		open_volume(file_name, false);
+		threaded_cache_manager.set_block_folder("");
 		post_redraw();
 		post_recreate_gui();
 	}
@@ -1201,6 +1204,13 @@ void volume_slicer::on_set(void* member_ptr)
 		post_redraw();
 		post_recreate_gui();
 	}
+	
+	// in case that slices path changed, modify the folder in the cache
+	if (member_ptr == &slices_path) {
+		threaded_cache_manager.set_block_folder(slices_path);
+		return;
+	}
+
 	// update gui of member
 	update_member(member_ptr);
 	// for all value changes schedule a redraw of the 3D window

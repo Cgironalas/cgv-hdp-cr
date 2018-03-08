@@ -26,6 +26,8 @@ class cache_manager {
 
 	volume_slicer &vs;
 
+	std::string slices_path;
+
 	typedef cgv::math::fvec<float, 3> vec3;
 	typedef cgv::math::fvec<int, 3> ivec3;
 	typedef cgv::media::axis_aligned_box<float, 3> box3;
@@ -71,6 +73,9 @@ public:
 	cache_manager(volume_slicer &f);
 
 	// starts infinite loop to receive requests and handle them
+	void cache_manager::set_block_folder(std::string);
+
+	// starts infinite loop to receive requests and handle them
 	void cache_manager::init_listener();
 
 	// endless loop to check for new blocks to load
@@ -80,10 +85,10 @@ public:
 	void cache_manager::request_blocks(std::vector<ivec3> blocks_batch);
 	
 	// updates an lru controlled list with the size limit
-	void cache_manager::lru_refer(ivec3& block, const ivec3& nr_blocks, const size_t& block_size, const vec3& df_dim);
+	void cache_manager::fifo_refer(ivec3& block, const ivec3& nr_blocks, const size_t& block_size, const vec3& df_dim);
 
 	// updates the gpu 
-	void cache_manager::gpu_lru_refer(ivec3& block, char* block_ptr);
+	void cache_manager::gpu_fifo_refer(ivec3& block, char* block_ptr);
 
 	// spawns threads to retrieve all blocks
 	void cache_manager::retrieve_blocks_in_plane();

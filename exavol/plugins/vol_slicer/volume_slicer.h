@@ -86,6 +86,8 @@ public:
 	std::string file_name;
 	/// filename to open volume dataset for iso surface extraction
 	std::string iso_file_name;
+	/// folder path with the .bvx slices
+	std::string slices_path;
 	// volume data structure stored for iso surface extaction
 	volume V;
 	/// return the value of a given voxel scaled to [0,1]

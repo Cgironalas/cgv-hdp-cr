@@ -8,22 +8,26 @@
 #include <thread>
 #include "volume_slicer.h"
 
-//path to the slices (.bvx files from blockgen.cxx project) 	
-std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices";
 
 // output to generate .tiff blocks for validation if the write_tiff function is called
 //std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices/blocks";
 
-
 cache_manager::cache_manager(volume_slicer &f) : vs(f) {
-	cpu_cache_size_blocks = 20000; //should be calculated from the CPU capacity if possible
-	gpu_cache_size_blocks = 13000; //should be calculated from the GPU capacity if possible
+
+	slices_path = "";
+	cpu_cache_size_blocks = 150000; //should be calculated from the CPU capacity if possible
+	gpu_cache_size_blocks = 15000; //should be calculated from the GPU capacity if possible
 
 	// extra validation for threaded approaches
 	thread_limit = 8; 
 
 	process_running = false;
 	signal_restart = false;
+}
+
+
+void cache_manager::set_block_folder(std::string folder_path) {
+	slices_path = folder_path;
 }
 
 void cache_manager::init_listener() {
@@ -49,7 +53,7 @@ void cache_manager::main_loop() {
 			std::cout << "SOMETHING IS WRONG" << std::endl;
 		}
 
-		if (thread_amount < thread_limit && something_to_do && !process_running) {
+		if (thread_amount < thread_limit && something_to_do && !process_running && slices_path != "") {
 			process_running = true;
 			thread_amount += 1;
 			std::thread t([&]() { retrieve_blocks_in_plane(); });
@@ -136,14 +140,14 @@ void cache_manager::retrieve_blocks_in_plane() {
 				}
 
 				if (s == 0) {
-					lru_refer(blocks_batch_frame[i], nr_blocks, block_size, df_dim);
+					fifo_refer(blocks_batch_frame[i], nr_blocks, block_size, df_dim);
 
 				} else {
 					cpu_cache_lock.lock();
 					char* block_ptr = cpu_block_cache_map[cached_batch_frame[i]];
 					cpu_cache_lock.unlock();
 
-					gpu_lru_refer(cached_batch_frame[i], block_ptr);
+					gpu_fifo_refer(cached_batch_frame[i], block_ptr);
 				}
 
 				if (i % 1000 == 0) {
@@ -154,7 +158,7 @@ void cache_manager::retrieve_blocks_in_plane() {
 	}
 
 	if (!cancelled) {
-		std::cout << "finished batch of  " << blocks_batch_frame.size() << " blocks. Currently  " << cpu_block_cache_map.size() << " blocks in cpu and " << gpu_block_cache_map.size() << " in gpu " << std::endl;
+		std::cout << "finished batch of " << blocks_batch_frame.size() + cached_batch_frame.size() << " blocks. Currently  " << cpu_block_cache_map.size() << " blocks in cpu and " << gpu_block_cache_map.size() << " in gpu " << std::endl;
 		
 		// no real effect for now but this should update the frame with the new block textures loaded.
 		vs.post_redraw();
@@ -173,7 +177,7 @@ char* cache_manager::retrieve_block(ivec3& block, const ivec3& nr_blocks, const 
 	try {
 
 		std::stringstream ss;
-		ss << input_path << "/level_00_blockslice_" << std::setw(3) << std::setfill('0') << block(2) << ".bvx";
+		ss << slices_path << "/level_00_blockslice_" << std::setw(3) << std::setfill('0') << block(2) << ".bvx";
 
 		// compute block index and pointer to block data
 		unsigned bi = block(1) * nr_blocks(0) + block(0);
@@ -191,7 +195,7 @@ char* cache_manager::retrieve_block(ivec3& block, const ivec3& nr_blocks, const 
 		}
 		else {
 			std::cout << "failed to retrieve block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slices" << std::endl;
-			return NULL;
+			return "";
 		}
 
 		/// to ensure correct block being loaded
@@ -199,11 +203,11 @@ char* cache_manager::retrieve_block(ivec3& block, const ivec3& nr_blocks, const 
 
 	} catch (...) {
 		std::cout << "exception thrown at block retrieval due to existing block slice dimensions" << std::endl;
-		return NULL;
+		return "";
 	}
 }
 
-void cache_manager::lru_refer(ivec3& block, const ivec3& nr_blocks, const size_t& block_size, const vec3& df_dim) {
+void cache_manager::fifo_refer(ivec3& block, const ivec3& nr_blocks, const size_t& block_size, const vec3& df_dim) {
 	
 	// note: because of the request_blocks filtering of blocks not in cache, we assume this function will never be called with a block already present in cpu cache
 	
@@ -218,7 +222,7 @@ void cache_manager::lru_refer(ivec3& block, const ivec3& nr_blocks, const size_t
 		cpu_block_cache_map.erase(last);
 	}
 
-	cpu_block_cache_map[block] = retrieve_block(block, nr_blocks, block_size, df_dim);
+	cpu_block_cache_map[block] = slices_path != "" ? retrieve_block(block, nr_blocks, block_size, df_dim) : "";
 	cpu_blocks_queue.push_front(block);
 
 	char* block_ptr = cpu_block_cache_map[block];
@@ -227,33 +231,24 @@ void cache_manager::lru_refer(ivec3& block, const ivec3& nr_blocks, const size_t
 	cpu_cache_lock.unlock();
 	cpu_blocks_queue_lock.unlock();
 	
-	gpu_lru_refer(block, block_ptr);
+	gpu_fifo_refer(block, block_ptr);
 }
 
-void cache_manager::gpu_lru_refer(ivec3& block, char* block_ptr) {
+void cache_manager::gpu_fifo_refer(ivec3& block, char* block_ptr) {
 
 	//lock mutexes
 	gpu_blocks_queue_lock.lock();
 	gpu_cache_lock.lock();
 
-	std::list<ivec3>::iterator it = std::find(gpu_blocks_queue.begin(), gpu_blocks_queue.end(), block);
-
-	// not in cache
-	if (it == gpu_blocks_queue.end()) {
-		// cache is full
-		if (gpu_blocks_queue.size() == gpu_cache_size_blocks) {
-
-			ivec3 last = gpu_blocks_queue.back();
-			gpu_blocks_queue.pop_back();
-			gpu_block_cache_map.erase(last);
-		}
-
-	} else { // in cache
-		gpu_blocks_queue.erase(it);
+	// cache is full
+	if (gpu_blocks_queue.size() == gpu_cache_size_blocks) {
+		ivec3 last = gpu_blocks_queue.back();
+		gpu_blocks_queue.pop_back();
+		gpu_block_cache_map.erase(last);
 	}
 
-	gpu_blocks_queue.push_front(block);
 	gpu_block_cache_map[block] = "";
+	gpu_blocks_queue.push_front(block);
 	// call upload to gpu should go here
 
 	//unlock mutexes

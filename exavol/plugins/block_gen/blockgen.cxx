@@ -358,45 +358,42 @@ bool retrieve_block(const block_generation_info& bgi, const std::string& input_p
 	return write_tiff_block(output_path + "/slice_block_" + std::to_string(block(0)) + "_" + std::to_string(block(1)) + "_" + std::to_string(block(2)), bgi, block_ptr, "");
 }
 
-bool write_vox(const std::string& input_path, const std::string& output_path, const block_generation_info& bgi) {
-	std::fstream vox_file = std::fstream(output_path + "/result.bin", std::ios::out | std::ios::binary);
-
+bool write_vox(const std::string& input_path, const std::string& output_path) {
+	static unsigned char *matPixel;
 	// collect input files
 	std::vector<std::string> file_names;
-	void* handle = cgv::utils::file::find_first(input_path + "/*.*");
+	void* handle = cgv::utils::file::find_first(input_path + "*.*");
 	while (handle) {
 		if (!cgv::utils::file::find_directory(handle))
-			file_names.push_back(cgv::utils::file::find_name(handle));
+			file_names.push_back(input_path+"/" +cgv::utils::file::find_name(handle));
 		handle = cgv::utils::file::find_next(handle);
 	}
 
-	if (file_names.empty()) {
-		std::cerr << "did not find files in directory <" << input_path << ">" << std::endl;
-		return false;
-	}
+	std::fstream dataVox = std::fstream(output_path + "/result.bin", std::ios::out | std::ios::binary);
+	cv::Mat tempMat;
+	int current;
+	for (current = 0; current < file_names.size(); current++) {
+		//cout << "Index: " + to_string(current) << endl;
+		tempMat = cv::imread(file_names[current], cv::IMREAD_COLOR);
+		if (!tempMat.empty()) {
+			for (int i = 0; i < tempMat.rows; i++) {
+				for (int j = 0; j < tempMat.cols; j++) {
+					matPixel = tempMat.ptr(i, j);
 
-	for (int z = 0; z < file_names.size(); z++) {
-		std::cout << "read slice " << z << ": <" << file_names[z] << ">" << std::endl;
-
-		cv::Mat img = cv::imread(input_path + "/" + file_names[z], cv::IMREAD_COLOR);
-		uchar* data = img.data;
-		int cn = img.channels();
-
-		for (int y = 0; y < img.rows; y++) {
-			for (int x = 0; x < img.cols; x++) {
-				unsigned char *pixel = img.ptr(y,x);
-		
-				if (vox_file.is_open()) {
-					vox_file.write((char *)&data[y*img.cols*cn + x*cn + 2], 1);
-					vox_file.write((char *)&data[y*img.cols*cn + x*cn + 1], 1);
-					vox_file.write((char *)&data[y*img.cols*cn + x*cn + 0], 1);
+					if (dataVox.is_open()) {
+						dataVox.write((char *)&matPixel[2], 1);
+						dataVox.write((char *)&matPixel[1], 1);
+						dataVox.write((char *)&matPixel[0], 1);
+					}
 				}
 			}
 		}
 
-		std::cout << "Columns: " << img.cols << " - Rows: " << img.rows << "." << std::endl;
+		if (current % 10 == 0) {
+			std::cout << "completed: " << current << std::endl;
+		}
 	}
-	vox_file.close();
+	dataVox.close();
 	return true;
 }
 
@@ -423,8 +420,7 @@ if (bgi.subsampling_offset[c] <= int(level))
 dimensions(c) = unsigned(ceil(float(dimensions(c)) / bgi.subsampling_factor[c]));
 }
 };
-
-// iterate
+vox
 std::stringstream ss;
 ss << output_path << "/level_00_blockslice_" << std::setw(3) << std::setfill('0') << k << ".bvx";
 if (!cgv::utils::file::exists(ss.str())) {
@@ -853,9 +849,9 @@ bool subsample_directory(const std::string& input_path, const std::string& outpu
 //Testing:
 void init_to_visible_human_male_png(block_generation_info& bgi)
 {
-	int width = 4096;
-	int height = 2700;
-	int amount = 774;
+	int width = 512;
+	int height = 304;
+	int amount = 543;
 
 	bgi.type_id = cgv::type::info::TI_UINT8;
 	bgi.components = cgv::data::CF_RGB;
@@ -892,20 +888,20 @@ int main(int argc, char** argv)
 	build_level_infos(visible_human);
 
 	std::string bk = "E:/data/visual_human/male/PNG_format/head";
-	std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged";
-	std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices";
+	std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male_small_png/";
+	std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male_slices/";
 
 
 	// Generate the blocks in slice
-	//if (build_blocks_from_directory(input_path, output_path, visible_human)) { std::cout << "success" << std::endl; }
-	//else { std::cout << "failed" << std::endl; }
-
-	// Test retrieve block from block slices
-    if (retrieve_block(visible_human, output_path, "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices/blocks", cgv::math::fvec<double, 3>(32,0,0.0))) { std::cout << "success" << std::endl; }
+	if (build_blocks_from_directory(input_path, output_path, visible_human)) { std::cout << "success" << std::endl; }
 	else { std::cout << "failed" << std::endl; }
 
+	// Test retrieve block from block slices
+    //if (retrieve_block(visible_human, output_path, "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices/blocks", cgv::math::fvec<double, 3>(32,0,0.0))) { std::cout << "success" << std::endl; }
+	//else { std::cout << "failed" << std::endl; }
+
 	// Generate vox
-	//if (write_vox(input_path, output_path, visible_human)) { std::cout << "success" << std::endl; }
+	//if (write_vox(input_path, input_path)) { std::cout << "success" << std::endl; }
 	//else { std::cout << "failed" << std::endl; }
 
 	std::cin.get();
