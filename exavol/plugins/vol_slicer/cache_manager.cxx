@@ -6,6 +6,7 @@
 #include <cgv/media/image/image_writer.h>
 #include <chrono>
 #include <thread>
+#include <string>
 #include "volume_slicer.h"
 
 
@@ -15,6 +16,7 @@
 cache_manager::cache_manager(volume_slicer &f) : vs(f) {
 
 	slices_path = "";
+	slices_dimensions = ivec3(0, 0, 0);
 	cpu_cache_size_blocks = 150000; //should be calculated from the CPU capacity if possible
 	gpu_cache_size_blocks = 15000; //should be calculated from the GPU capacity if possible
 
@@ -88,9 +90,10 @@ void cache_manager::request_blocks(std::vector<ivec3> blocks_batch) {
 
 void cache_manager::retrieve_blocks_in_plane() {
 
-	const vec3 dimensions = vs.dimensions;
-	const vec3 block_dimensions = vs.block_dimensions;
-	const vec3 overlap = vs.overlap;
+	vec3 dimensions = vs.slices_dimensions;
+	vec3 block_dimensions = vs.block_dimensions;
+	std::cout << "\nblock sizes " << block_dimensions(0) << " " << block_dimensions(1) << " " << block_dimensions(1) << std::endl;
+	vec3 overlap = vs.overlap;
 
 	blocks_in_progress_lock.lock();
 	
@@ -104,10 +107,10 @@ void cache_manager::retrieve_blocks_in_plane() {
 
 	blocks_in_progress_lock.unlock();
 
-	//these three values need to be recalculated only if the GUI options have changed
+	
 	ivec3 nr_blocks(unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), unsigned(ceil(float(dimensions(2)) / block_dimensions(2))));
 	size_t block_size = (block_dimensions(1) + overlap(1))*((block_dimensions(0) + overlap(0))*cgv::data::component_format(cgv::type::info::TI_UINT8, cgv::data::CF_RGB).get_entry_size()) * (block_dimensions(2) + overlap(2));
-	ivec3 df_dim(block_dimensions(0) + overlap(0), block_dimensions(1) + overlap(1), block_dimensions(2) + overlap(2));
+	vec3 df_dim(block_dimensions(0) + overlap(0), block_dimensions(1) + overlap(1), block_dimensions(2) + overlap(2));
 
 	// traverse the batch
 	bool cancelled = false;
@@ -164,7 +167,7 @@ void cache_manager::retrieve_blocks_in_plane() {
 	process_running = false;
 }
 
-char* cache_manager::retrieve_block(ivec3& block, const ivec3& nr_blocks, const size_t& block_size, const vec3& df_dim) {
+char* cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim) {
 	
 	//std::cout << "retrieving block at: " << block(0) << ", " << block(1) << ", " << block(2) << ", " << std::endl;
 	try {
@@ -178,28 +181,36 @@ char* cache_manager::retrieve_block(ivec3& block, const ivec3& nr_blocks, const 
 
 		// throws exception at fread in some points 
 		FILE* fp = fopen(ss.str().c_str(), "rb");
-		
-		size_t offset = bi * block_size;
-		fseek(fp, 0, SEEK_END);
-		off_t file_length = ftell(fp);
+		if (fp != NULL) {
+			size_t offset = bi * block_size;
 
-		if (file_length < offset) {
-			std::cout << "failed to retrieve block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slices" << std::endl;
-		}
-		else {
-			fseek(fp, offset, SEEK_SET);
-		}
-		
-		bool result = fread(block_ptr, block_size, 1, fp) == 1;
+			// checks size of the block slice
+			fseek(fp, 0, SEEK_END);
+			off_t file_length = ftell(fp);
 
-		if (result) {
+			if (file_length < offset) {
+				std::cout << "failed to locate pointer for block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slice " << ss.str() << std::endl;
+				fclose(fp);
+				return "";
+			} else {
+				fseek(fp, offset, SEEK_SET);
+			}
+
+			bool result = fread(block_ptr, block_size, 1, fp) == 1;
+
 			fclose(fp);
-			return block_ptr;
-		} else {
-			std::cout << "failed to retrieve block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slices" << std::endl;
-			return "";
-		}
 
+			if (result) {
+				return block_ptr;
+			} else {
+				std::cout << "failed to read block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slices" << std::endl;
+				return "";
+			}
+		} else {
+			std::cout << "failed to open slice: " << ss.str() << " for block :" << block(0) << ", " << block(1) << ", " << block(2) << std::endl;
+		}
+		return "";
+	
 		/// to ensure correct block being loaded
 		//return write_tiff_block(output_path + "/block_at_" + std::to_string(block(0)) + "_" + std::to_string(block(1)) + "_" + std::to_string(block(2)), block_ptr, df_dim, "");
 
@@ -209,7 +220,7 @@ char* cache_manager::retrieve_block(ivec3& block, const ivec3& nr_blocks, const 
 	}
 }
 
-void cache_manager::fifo_refer(ivec3& block, const ivec3& nr_blocks, const size_t& block_size, const vec3& df_dim) {
+void cache_manager::fifo_refer(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim) {
 	
 	// note: because of the request_blocks filtering of blocks not in cache, we assume this function will never be called with a block already present in cpu cache
 	
@@ -260,7 +271,7 @@ void cache_manager::gpu_fifo_refer(ivec3& block, char* block_ptr) {
 
 
 //! write a block located at \c data_ptr to a tiff file
-bool cache_manager::write_tiff_block(const std::string& file_name, const char* data_ptr, const vec3 df_dim, const std::string& options)
+bool cache_manager::write_tiff_block(std::string& file_name, char* data_ptr, vec3 df_dim, std::string& options)
 {
 	// setup output format 
 	cgv::data::data_format df;

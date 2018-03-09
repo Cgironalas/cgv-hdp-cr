@@ -849,8 +849,8 @@ bool subsample_directory(const std::string& input_path, const std::string& outpu
 //Testing:
 void init_to_visible_human_male_png(block_generation_info& bgi)
 {
-	int width = 512;
-	int height = 304;
+	int width = 2048;
+	int height = 1216;
 	int amount = 543;
 
 	bgi.type_id = cgv::type::info::TI_UINT8;
@@ -888,8 +888,8 @@ int main(int argc, char** argv)
 	build_level_infos(visible_human);
 
 	std::string bk = "E:/data/visual_human/male/PNG_format/head";
-	std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male_small_png/";
-	std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male_slices/";
+	std::string input_path = "E:/studentdata/blocks_test/abdomen/male_png";
+	std::string output_path = "E:/studentdata/blocks_test/abdomen/male_slices";
 
 
 	// Generate the blocks in slice

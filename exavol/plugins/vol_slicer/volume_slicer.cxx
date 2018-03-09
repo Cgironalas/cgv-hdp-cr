@@ -13,6 +13,7 @@
 #include <cgv/media/mesh/dual_contouring.h>
 #include <cgv/media/mesh/cuberille.h>
 #include <cgv/media/image/image_writer.h>
+#include <fstream>
 
 /// set default values (no wireframe, no culling, no face normals, no negation, no two sided)
 surface_render_style::surface_render_style()
@@ -190,7 +191,7 @@ void volume_slicer::peek_voxel_values(int x, int y)
 	box3 B(-0.5f*extent, 0.5f*extent);
 	if (B.inside(p_pick_world)) {
 		volume::point_type p_texture = texture_from_world_coordinates(p_pick_world);
-		volume::point_type p_voxel = voxel_from_texture_coordinates(p_texture);
+		volume::point_type p_voxel = voxel_from_texture_coordinates_blocks(p_texture);
 		current_voxel = p_voxel;
 		
 		current_block = block_from_voxel_coordinates(p_voxel);
@@ -413,6 +414,12 @@ volume_slicer::vec3 volume_slicer::voxel_from_texture_coordinates(const vec3& p_
 	return p_voxel;
 }
 
+volume_slicer::vec3 volume_slicer::voxel_from_texture_coordinates_blocks(const vec3& p_texture) const
+{
+	vec3 p_voxel = p_texture * slices_dimensions;
+	return p_voxel;
+}
+
 /// convert texture to world coordinates
 volume_slicer::vec3 volume_slicer::world_from_texture_coordinates(const vec3& p_texture) const
 {
@@ -432,6 +439,12 @@ volume_slicer::vec3 volume_slicer::world_from_texture_normals(const vec3& n_text
 volume_slicer::vec3 volume_slicer::texture_from_voxel_coordinates(const vec3& p_voxel) const
 {
 	vec3 p_texture = p_voxel / dimensions;
+	return p_texture;
+}
+
+volume_slicer::vec3 volume_slicer::texture_from_voxel_coordinates_blocks(const vec3& p_voxel) const
+{
+	vec3 p_texture = p_voxel / slices_dimensions;
 	return p_texture;
 }
 
@@ -732,8 +745,8 @@ void volume_slicer::draw_wire_box(cgv::render::context& ctx, const box3& B, cons
 /// draw a voxel with a wire frame box
 void volume_slicer::draw_voxel(cgv::render::context& ctx, const ivec3& voxel, const vec3& color)
 {
-	box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates(voxel)),
-		world_from_texture_coordinates(texture_from_voxel_coordinates(voxel + ivec3(1, 1, 1))));
+	box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel)),
+		world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel + ivec3(1, 1, 1))));
 	draw_wire_box(ctx, B, color);
 }
 
@@ -741,7 +754,9 @@ static bool abs_compare(float a, float b){ return (std::abs(a) < std::abs(b)); }
 
 void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 
-	ivec3 nr_blocks(unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), unsigned(ceil(float(dimensions(2)) / block_dimensions(2))));
+	ivec3 nr_blocks(unsigned(ceil(float(slices_dimensions(0)) / block_dimensions(0))), 
+		unsigned(ceil(float(slices_dimensions(1)) / block_dimensions(1))),
+		unsigned(ceil(float(slices_dimensions(2)) / block_dimensions(2))));
 
 	vec3 world_slice_normal = world_from_texture_normals(slice_normal_tex);
 	int d_max = std::distance(std::begin(world_slice_normal), std::max_element(std::begin(world_slice_normal), std::end(world_slice_normal), abs_compare));
@@ -758,10 +773,10 @@ void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 		for (int i1 = 0; i1 < nr_blocks(d1); i1++) {
 			
 			vec3 pi_tex[4]{
-				texture_from_voxel_coordinates(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0, i1))),
-				texture_from_voxel_coordinates(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0 + 1, i1))),
-				texture_from_voxel_coordinates(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0, i1 + 1))),
-				texture_from_voxel_coordinates(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0 + 1, i1 + 1)))
+				texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0, i1))),
+				texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0 + 1, i1))),
+				texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0, i1 + 1))),
+				texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0 + 1, i1 + 1)))
 			};
 
 			vec3 pi_block[4];
@@ -778,7 +793,7 @@ void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 					(pi_tex[k](d0) - 0.5f) * slice_normal_tex(d0) - 
 					(pi_tex[k](d1) - 0.5f) * slice_normal_tex(d1)) + 0.5f;
 				
-				pi_block[k] = block_from_voxel_coordinates(voxel_from_texture_coordinates(pi_tex[k]));
+				pi_block[k] = block_from_voxel_coordinates(voxel_from_texture_coordinates_blocks(pi_tex[k]));
 				
 				block_coord_max = (k == 0 ? pi_block[k][d_max] : std::max(block_coord_max, pi_block[k][d_max]));
 				block_coord_min = (k == 0 ? pi_block[k][d_max] : std::min(block_coord_min, pi_block[k][d_max]));
@@ -837,14 +852,14 @@ volume_slicer::vec3 volume_slicer::make_vec_d_max(int d_max, float var_dim, floa
 /// draw a block with a wire frame box
 void volume_slicer::draw_block(cgv::render::context& ctx, const ivec3& block, const vec3& color, const vec3& overlap_color)
 {
-	box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block))),
-		world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1)))));
+	box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(block))),
+		world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(block + ivec3(1, 1, 1)))));
 	draw_wire_box(ctx, B, color);
 	vec3 offset = overlap;
 	offset *= 0.5f;
 	box3 B_overlap(
-		world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block)-offset)),
-		world_from_texture_coordinates(texture_from_voxel_coordinates(voxel_from_block_coordinates(block + ivec3(1, 1, 1)) + offset)));
+		world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(block)-offset)),
+		world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(block + ivec3(1, 1, 1)) + offset)));
 	draw_wire_box(ctx, B_overlap, overlap_color);
 }
 
@@ -1208,6 +1223,33 @@ void volume_slicer::on_set(void* member_ptr)
 	// in case that slices path changed, modify the folder in the cache
 	if (member_ptr == &slices_path) {
 		threaded_cache_manager.set_block_folder(slices_path);
+		std::cout << "setting real dimensions" << std::endl;
+		std::string dimensions_parse;
+		std::ifstream infile;
+		infile.open(slices_path + "/slices_dimensions.sd");
+
+		if (std::getline(infile, dimensions_parse)) {
+
+			size_t pos = 0;
+			std::string token;
+			std::string delimiter = "x";
+			int i = 0;
+
+			while ((pos = dimensions_parse.find(delimiter)) != std::string::npos) {
+
+				slices_dimensions(i) = std::stoi(dimensions_parse.substr(0, pos), NULL);
+				dimensions_parse.erase(0, pos + delimiter.length());
+				i++;
+			}
+			slices_dimensions(i) = std::stoi(dimensions_parse.substr(0, pos), NULL);
+
+		}
+		else {
+			slices_path = "";
+			std::cout << "couldn't read file dimensions" << std::endl;
+		}
+
+		infile.close();
 		return;
 	}
 

@@ -107,12 +107,15 @@ public:
 	vec3 texture_from_world_coordinates(const vec3& p_world) const;
 	/// convert texture to voxel coordinates
 	vec3 voxel_from_texture_coordinates(const vec3& p_texture) const;
+	vec3 voxel_from_texture_coordinates_blocks(const vec3& p_texture) const;
 	/// convert texture to world coordinates
 	vec3 world_from_texture_coordinates(const vec3& p_texture) const;
 	/// convert voxel to texture coordinates
 	vec3 texture_from_voxel_coordinates(const vec3& p_voxel) const;
+	vec3 texture_from_voxel_coordinates_blocks(const vec3& p_voxel) const;
 
 	vec3 world_from_texture_normals(const vec3& n_texture) const;
+
 	//@}
 
 	/**@name blocks*/
@@ -120,6 +123,8 @@ public:
 public:
 	/// size of block in voxel, for example (16,16,16) or (32,32,16)
 	ivec3 block_dimensions;
+	/// size of block in voxel, for example (16,16,16) or (32,32,16)
+	ivec3 slices_dimensions;
 	/// overlap between adjacent blocks in voxel, typically (1,1,1)
 	ivec3 overlap;
 	/// store the intersected blocks

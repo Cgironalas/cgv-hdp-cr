@@ -26,11 +26,12 @@ class cache_manager {
 
 	volume_slicer &vs;
 
-	std::string slices_path;
-
 	typedef cgv::math::fvec<float, 3> vec3;
 	typedef cgv::math::fvec<int, 3> ivec3;
 	typedef cgv::media::axis_aligned_box<float, 3> box3;
+
+	std::string slices_path;
+	ivec3 slices_dimensions;
 
 	// limit the size of the cache structures 
 	int cpu_cache_size_blocks;
@@ -85,7 +86,7 @@ public:
 	void cache_manager::request_blocks(std::vector<ivec3> blocks_batch);
 	
 	// updates an lru controlled list with the size limit
-	void cache_manager::fifo_refer(ivec3& block, const ivec3& nr_blocks, const size_t& block_size, const vec3& df_dim);
+	void cache_manager::fifo_refer(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim);
 
 	// updates the gpu 
 	void cache_manager::gpu_fifo_refer(ivec3& block, char* block_ptr);
@@ -94,9 +95,9 @@ public:
 	void cache_manager::retrieve_blocks_in_plane();
 
 	// loads a block for the lru_refer
-	char* cache_manager::retrieve_block(ivec3& block, const ivec3& nr_blocks, const size_t& block_size, const vec3& df_dim);
+	char* cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim);
 
 	// for testing purposes
-	bool cache_manager::write_tiff_block(const std::string& file_name, const char* data_ptr, const vec3 df_dim, const std::string& options);
+	bool cache_manager::write_tiff_block(std::string& file_name, char* data_ptr, vec3 df_dim, std::string& options);
 };
 
