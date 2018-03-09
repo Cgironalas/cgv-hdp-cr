@@ -55,9 +55,7 @@ void cache_manager::main_loop() {
 
 		if (thread_amount < thread_limit && something_to_do && !process_running && slices_path != "") {
 			process_running = true;
-			thread_amount += 1;
-			std::thread t([&]() { retrieve_blocks_in_plane(); });
-			t.detach();
+			retrieve_blocks_in_plane();
 		}
 		thread_report.unlock();
 	}
@@ -150,8 +148,8 @@ void cache_manager::retrieve_blocks_in_plane() {
 					gpu_fifo_refer(cached_batch_frame[i], block_ptr);
 				}
 
-				if (i % 1000 == 0) {
-					std::cout << "blocks read from " << sources[s] << ":" << i << " " << std::endl;
+				if (i % 1000 == 0 || i % (frame_sources[s].size()-1) == 0) {
+					std::cout << "blocks read from " << sources[s] << ":" << i+1 << " " << std::endl;
 				}
 			}
 		}
@@ -163,12 +161,7 @@ void cache_manager::retrieve_blocks_in_plane() {
 		// no real effect for now but this should update the frame with the new block textures loaded.
 		vs.post_redraw();
 	}
-		
-	thread_report.lock();
-	thread_amount -= 1;
 	process_running = false;
-	thread_report.unlock();
-
 }
 
 char* cache_manager::retrieve_block(ivec3& block, const ivec3& nr_blocks, const size_t& block_size, const vec3& df_dim) {
@@ -185,15 +178,24 @@ char* cache_manager::retrieve_block(ivec3& block, const ivec3& nr_blocks, const 
 
 		// throws exception at fread in some points 
 		FILE* fp = fopen(ss.str().c_str(), "rb");
-		fseek(fp, bi * block_size, SEEK_SET);
+		
+		size_t offset = bi * block_size;
+		fseek(fp, 0, SEEK_END);
+		off_t file_length = ftell(fp);
 
+		if (file_length < offset) {
+			std::cout << "failed to retrieve block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slices" << std::endl;
+		}
+		else {
+			fseek(fp, offset, SEEK_SET);
+		}
+		
 		bool result = fread(block_ptr, block_size, 1, fp) == 1;
 
 		if (result) {
 			fclose(fp);
 			return block_ptr;
-		}
-		else {
+		} else {
 			std::cout << "failed to retrieve block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slices" << std::endl;
 			return "";
 		}
