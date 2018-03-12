@@ -68,6 +68,8 @@ class cache_manager {
 	std::mutex gpu_cache_lock;
 	std::mutex gpu_blocks_queue_lock;
 
+	std::mutex restart_lock;
+
 public:
 	///constructor receives volume_slicer reference 
 	/// to use the post_redraw method when a batch of blocks is ready

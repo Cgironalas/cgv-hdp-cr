@@ -29,7 +29,26 @@ cache_manager::cache_manager(volume_slicer &f) : vs(f) {
 
 
 void cache_manager::set_block_folder(std::string folder_path) {
+	restart_lock.lock();
+	gpu_cache_lock.lock();
+	cpu_cache_lock.lock();
+	blocks_in_progress_lock.lock();
+
 	slices_path = folder_path;
+	
+	cpu_blocks_queue.clear();
+	cpu_block_cache_map.clear();
+
+	gpu_blocks_queue.clear();
+	gpu_block_cache_map.clear();
+
+	disk_queue_blocks.clear();
+	cache_queue_blocks.clear();
+	
+	restart_lock.unlock();
+	cpu_cache_lock.unlock();
+	gpu_cache_lock.unlock();
+	blocks_in_progress_lock.unlock();
 }
 
 void cache_manager::init_listener() {
@@ -55,7 +74,11 @@ void cache_manager::main_loop() {
 			std::cout << "SOMETHING IS WRONG" << std::endl;
 		}
 
-		if (thread_amount < thread_limit && something_to_do && !process_running && slices_path != "") {
+		restart_lock.lock();
+		bool start_retrieval = thread_amount < thread_limit && something_to_do && !process_running && slices_path != "";
+		restart_lock.unlock();
+
+		if (start_retrieval) {
 			process_running = true;
 			retrieve_blocks_in_plane();
 		}
@@ -82,7 +105,9 @@ void cache_manager::request_blocks(std::vector<ivec3> blocks_batch) {
 	}
 
 	if (new_blocks) {
+		restart_lock.lock();
 		signal_restart = true;
+		restart_lock.unlock();
 	}
 		
 	blocks_in_progress_lock.unlock();
@@ -132,10 +157,16 @@ void cache_manager::retrieve_blocks_in_plane() {
 				bool queued_blocks = s == 0 ? !disk_queue_blocks.empty() : !cache_queue_blocks.empty();
 				blocks_in_progress_lock.unlock();
 
-				if (signal_restart && queued_blocks) {
-					signal_restart = false;
-					cancelled = true;
+				restart_lock.lock();
+				bool restart = (signal_restart && queued_blocks) | slices_path == "";
+				restart_lock.unlock();
 
+				if (restart) {
+					restart_lock.lock();
+					signal_restart = false;
+					restart_lock.unlock();
+
+					cancelled = true;
 					std::cout << "cancelled remaining " << frame_sources[s].size() - i << " blocks from " << sources[s] << std::endl;
 					break;
 				}

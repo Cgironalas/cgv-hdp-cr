@@ -1128,7 +1128,7 @@ void volume_slicer::create_gui()
 		// the options 'title' and 'filter' configure the file dialog
 		add_gui("file_name", file_name, "file_name", "title='open volume';filter='Volume Files(vox,qim,tif,avi) :*.vox;*.qim;*.tif;*.avi|All Files:*.*'");
 		add_gui("iso_file_name", iso_file_name, "file_name", "title='open iso volume';filter='Volume Files(vox,qim,tif,avi) :*.vox;*.qim;*.tif;*.avi|All Files:*.*'");
-		add_gui("slices_path", slices_path, "file_name", "title='modify_slices_path';filter='All Files:*.*'");
+		add_gui("slices_path", slices_path, "directory", "title='choose slices path';filter='All Files:*.*'");
 		// add gui for the vector of pixel counts, where "dimensions" is used only in label of gui element for first vector component
 		// using view as gui_type will only show the values but not allow modification
 		// by align=' ' the component views are arranged with a small space in one row
@@ -1209,7 +1209,8 @@ void volume_slicer::on_set(void* member_ptr)
 	// in case that file_name changed, read new volume
 	if (member_ptr == &file_name) {
 		open_volume(file_name, false);
-		threaded_cache_manager.set_block_folder("");
+		slices_path = "";
+		threaded_cache_manager.set_block_folder(slices_path);
 		post_redraw();
 		post_recreate_gui();
 	}
@@ -1222,8 +1223,8 @@ void volume_slicer::on_set(void* member_ptr)
 	
 	// in case that slices path changed, modify the folder in the cache
 	if (member_ptr == &slices_path) {
-		threaded_cache_manager.set_block_folder(slices_path);
-		std::cout << "setting real dimensions" << std::endl;
+		threaded_cache_manager.set_block_folder("");
+		std::cout << "\nsetting block dimensions" << std::endl;
 		std::string dimensions_parse;
 		std::ifstream infile;
 		infile.open(slices_path + "/slices_dimensions.sd");
@@ -1235,6 +1236,7 @@ void volume_slicer::on_set(void* member_ptr)
 			std::string delimiter = "x";
 			int i = 0;
 
+			//asumes the .sd file is not corrupt
 			while ((pos = dimensions_parse.find(delimiter)) != std::string::npos) {
 
 				slices_dimensions(i) = std::stoi(dimensions_parse.substr(0, pos), NULL);
@@ -1242,14 +1244,19 @@ void volume_slicer::on_set(void* member_ptr)
 				i++;
 			}
 			slices_dimensions(i) = std::stoi(dimensions_parse.substr(0, pos), NULL);
-
+			std::cout << "success reading the block dimensions\n" << std::endl;
+			
 		}
 		else {
 			slices_path = "";
-			std::cout << "couldn't read file dimensions" << std::endl;
+			std::cout << "couldn't read file dimensions\n" << std::endl;
 		}
 
 		infile.close();
+
+		// flushes caches and restart
+		threaded_cache_manager.set_block_folder(slices_path);
+		threaded_cache_manager.request_blocks(intersected_blocks);
 		return;
 	}
 
