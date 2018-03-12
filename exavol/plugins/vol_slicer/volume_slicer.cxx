@@ -36,6 +36,19 @@ surface_render_style::surface_render_style()
 /// standard constructor
 volume_slicer::volume_slicer() : cgv::base::node("volume_slicer"), threaded_cache_manager(*this)
 {
+	extrusionLevel = 0.1f;
+	draw_selected_cube_bool = false;
+
+	selected_point_material.set_ambient(cgv::media::illum::phong_material::color_type(0.0f, 1.0f, 0.0f, 1.0f));
+	selected_point_material.set_diffuse(cgv::media::illum::phong_material::color_type(0.0f, 1.0f, 0.0f, 1.0f));
+	//selected_point_material.set_specular(cgv::media::illum::phong_material::color_type(0.0f, 0.0f, 0.0f, 1.0f));
+	selected_point_material.set_shininess(20.0f);
+
+	extrusion_material.set_ambient(cgv::media::illum::phong_material::color_type(1.0f, 1.0f, 0.0f, 1.0f));
+	extrusion_material.set_diffuse(cgv::media::illum::phong_material::color_type(1.0f, 1.0f, 1.0f, 1.0f));
+	//extrusion_material.set_specular(cgv::media::illum::phong_material::color_type(0.0f, 0.0f, 0.0f, 1.0f));
+	extrusion_material.set_shininess(20.0f);
+
 	texture_gamma = 1.0f;
 	texture_scale = 1.0f;
 	view_ptr = 0;
@@ -57,6 +70,9 @@ volume_slicer::volume_slicer() : cgv::base::node("volume_slicer"), threaded_cach
 	box_mat.set_diffuse(cgv::media::illum::phong_material::color_type(0.6f, 0.6f, 0.6f, 1.0f));
 	box_mat.set_specular(cgv::media::illum::phong_material::color_type(0.0f, 0.0f, 0.0f, 1.0f));
 	box_mat.set_shininess(20.0f);
+
+	selection_cube_style.diffuse_mapping = DCM_TEXTURE;
+	selection_cube_style.illumination = false;
 
 	use_standard_prog = false;
 #ifdef _DEBUG
@@ -176,6 +192,216 @@ bool volume_slicer::get_picked_point(int x, int y, vec3& p_pick_world)
 	return true;
 }
 
+
+
+
+double volume_slicer::get_points_distance(vec3 pointA, vec3 pointB) {
+	return sqrt(pow((pointA[0] - pointB[0]), 2) + pow((pointA[1] - pointB[1]), 2) + pow((pointA[2] - pointB[2]), 2));
+}
+
+volume::point_type volume_slicer::get_selected_point_normal(volume::point_type point) {
+	double currentDistance, smallestDistance;
+	int currentIndex, smallestIndex;
+
+	for (currentIndex = 0, smallestIndex = 0; currentIndex < positions.size(); currentIndex++) {
+		currentDistance = get_points_distance(point, positions[currentIndex]);
+		if (currentIndex == 0 || (currentIndex != 0 && currentDistance < smallestDistance)) {
+			smallestIndex = currentIndex;
+			smallestDistance = currentDistance;
+		}
+	}
+
+	return normals[smallestIndex];
+}
+
+void volume_slicer::clear_selected_points() {
+	selected_points.clear();
+}
+
+void volume_slicer::savePoint(int x, int y) {
+	// unproject pixel position of mouse
+	volume::point_type p_pick_world, normal;
+	if (!get_picked_point(x, y, p_pick_world)) {
+		return;
+	}
+	if (positions.size() > 0) {
+		if (selected_points.size() < 4) {
+			selected_points.push_back(p_pick_world);
+			normal = get_selected_point_normal(p_pick_world);
+			selected_normals.push_back(normal);
+			std::cout << "Point saved at:\n" << "x: " << std::to_string(p_pick_world(0)) << " - y: " << std::to_string(p_pick_world(1)) << " - z: " << std::to_string(p_pick_world(2)) << std::endl;
+			std::cout << "x: " << std::to_string(normal(0)) << " - y: " << std::to_string(normal(1)) << " - z: " << std::to_string(normal(2)) << std::endl << std::endl;
+		}
+		else
+			std::cout << "Already selected 4 points" << std::endl;
+	}
+	else {
+		std::cout << "NO SURFACE PRESNT!!!!!!!" << std::endl;
+	}
+}
+
+void volume_slicer::draw_solid_block(cgv::render::context& ctx, const ivec3& voxel, const cgv::media::illum::phong_material& material) {
+	box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates(voxel)),
+		world_from_texture_coordinates(texture_from_voxel_coordinates(voxel + ivec3(1, 1, 1))));
+	draw_box(ctx, B, material);
+}
+
+void volume_slicer::bresenham3d(vec3 pointA, vec3 pointB, cgv::render::context& ctx) {
+	volume::point_type p_texture, point1, point2, currentPoint;
+
+	p_texture = texture_from_world_coordinates(pointA);
+	point1 = voxel_from_texture_coordinates(p_texture);
+
+	p_texture = texture_from_world_coordinates(pointB);
+	point2 = voxel_from_texture_coordinates(p_texture);
+
+	double pointAx = floor(point1[0]), pointAy = floor(point1[1]), pointAz = floor(point1[2]);
+	double pointBx = floor(point2[0]), pointBy = floor(point2[1]), pointBz = floor(point2[2]);
+
+	double sx = pointBx > pointAx ? 1 : pointBx < pointAx ? -1 : 0;
+	double sy = pointBy > pointAy ? 1 : pointBy < pointAy ? -1 : 0;
+	double sz = pointBz > pointAz ? 1 : pointBz < pointAz ? -1 : 0;
+
+	double gx = pointAx;
+	double gy = pointAy;
+	double gz = pointAz;
+
+	//Planes for each axis that will be crossed
+	double gxp = pointAx + (pointBx > pointAx ? 1 : 0);
+	double gyp = pointAy + (pointBy > pointAy ? 1 : 0);
+	double gzp = pointAz + (pointBz > pointAz ? 1 : 0);
+
+	//Used for multiplying up the error margins
+	double vx = point2[0] == point1[0] ? 1 : point2[0] - point1[0];
+	double vy = point2[1] == point1[1] ? 1 : point2[1] - point1[1];
+	double vz = point2[2] == point1[2] ? 1 : point2[2] - point1[2];
+
+	//Error is normalized to vx * vy * vz to only multiply up
+	double vxvy = vx * vy;
+	double vxvz = vx * vz;
+	double vyvz = vy * vz;
+
+	double errx = (gxp - point1[0]) * vyvz;
+	double erry = (gyp - point1[1]) * vxvz;
+	double errz = (gzp - point1[2]) * vxvy;
+
+	double derrx = sx * vyvz;
+	double derry = sy * vxvz;
+	double derrz = sz * vxvy;
+
+	std::cout << "Begin - x: " << point1[0] << " - y: " << point1[1] << " - z: " << point1[2] << std::endl;
+	std::cout << "End   - x: " << point2[0] << " - y: " << point2[1] << " - z: " << point2[2] << std::endl;
+	double counter = 0;
+	do
+	{
+		//std::cout << "this" << std::endl;
+		draw_voxel(ctx, vec3(gx, gy, gz), vec3(1, 1, 0));
+
+		if ((int)gx == (int)point2[0] && (int)gy == (int)point2[1] && (int)gz == (int)point2[2]) break;
+
+		double xr = abs(errx);
+		double yr = abs(erry);
+		double zr = abs(errz);
+
+		if (sx != 0 && (sy == 0 || xr < yr) && (sz == 0 || xr < zr)) {
+			gx += sx;
+			errx += derrx;
+		}
+		else if (sy != 0 && (sz == 0 || yr < zr)) {
+			gy += sy;
+			erry += derry;
+		}
+		else if (sz != 0) {
+			gz += sz;
+			errz += derrz;
+		}
+		else {
+			std::cout << "the fiddle was a lie" << std::endl;
+		}
+		counter += 0.01;
+	} while (true);
+}
+
+void volume_slicer::drawSelectedPoints(cgv::render::context& ctx) {
+	std::vector<vec3> top_points, bottom_points;
+	float scale = 0.5f*V.get_extent().length()*extrusionLevel;
+	for (unsigned i = 0; i < selected_points.size(); ++i) {
+		top_points.push_back(selected_points[i] + scale*selected_normals[i]);
+		bottom_points.push_back(selected_points[i] - scale*selected_normals[i]);
+	}
+
+	volume::point_type p_voxel;// , p_voxel_top, p_voxel_bottom;
+	volume::point_type p_texture;
+	for (auto &point : selected_points) {
+		box3 B(-0.5f*extent, 0.5f*extent);
+		if (B.inside(point)) {
+			p_texture = texture_from_world_coordinates(point);
+			p_voxel = voxel_from_texture_coordinates(p_texture);
+
+			//p_voxel_top = p_voxel;
+			//p_voxel_bottom = p_voxel;
+
+			draw_voxel(ctx, p_voxel, vec3(0, 1, 0));
+			//draw_solid_block(ctx, p_voxel, point_material);
+
+			for (unsigned i = 0; i < selected_points.size(); ++i) {
+				bresenham3d(bottom_points[i], top_points[i], ctx);
+			}
+
+			/*
+			float counter = 0;
+			while (counter < extrusionLevel) {
+				p_voxel_top(1) += 1;
+				p_voxel_bottom(1) -= 1;
+
+				//draw_solid_block(ctx, p_voxel, extrusion_material);
+				draw_voxel(ctx, p_voxel_top, vec3(1, 1, 0));
+				draw_voxel(ctx, p_voxel_bottom, vec3(1, 1, 0));
+				
+				counter += 0.01;
+			}
+			*/
+		}
+	}
+}
+
+void volume_slicer::draw_selected_cube(cgv::render::context& ctx) {
+	std::vector<vec3> top_points, bottom_points;
+	float scale = 0.5f*V.get_extent().length()*extrusionLevel;
+	for (unsigned i = 0; i < selected_points.size(); ++i) {
+		top_points.push_back(selected_points[i] + scale*selected_normals[i]);
+		bottom_points.push_back(selected_points[i] - scale*selected_normals[i]);
+	}
+
+	std::vector<vec3> positions, texcoords;
+	for (unsigned i = 0; i < selected_points.size(); ++i) {
+		positions.push_back(bottom_points[i]);
+		positions.push_back(top_points[i]);
+		texcoords.push_back(texture_from_world_coordinates(bottom_points[i]));
+		texcoords.push_back(texture_from_world_coordinates(top_points[i]));
+	}
+	if (selected_points.size() == 4) {
+		positions.push_back(bottom_points[0]);
+		positions.push_back(top_points[0]);
+		texcoords.push_back(texture_from_world_coordinates(bottom_points[0]));
+		texcoords.push_back(texture_from_world_coordinates(top_points[0]));
+	}
+
+	if (selected_points.size() > 0) {
+		enable_surface_rendering(ctx, selection_cube_style);
+		glVertexPointer(3, GL_FLOAT, 0, &positions[0]);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glTexCoordPointer(3, GL_FLOAT, 0, &texcoords[0]);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, positions.size());
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		disable_surface_rendering(ctx, selection_cube_style);
+	}
+}
+ 
+
+
 ///
 void volume_slicer::peek_voxel_values(int x, int y)
 {
@@ -229,6 +455,17 @@ bool volume_slicer::handle(cgv::gui::event& e)
 			if (!last_name.empty())
 				extract_surface(4);
 			return true;
+		case 'M':
+			extract_surface(0);
+			return true;
+		case 'S':
+			show_surface = !show_surface;
+			on_set(&show_surface);
+			return true;
+		case 'N':
+			iso_surface_style.negate_normals = !iso_surface_style.negate_normals;
+			on_set(&iso_surface_style.negate_normals);
+			return true;
 		// handle key press events for 'X'-key
 		case 'X':
 			// we only want to use event if user holds CTRL and SHIFT
@@ -273,10 +510,15 @@ bool volume_slicer::handle(cgv::gui::event& e)
 		switch (me.get_action()) {
 		case cgv::gui::MA_PRESS:
 			// support drag and drop for left and right button
-			if (me.get_button() == cgv::gui::MB_LEFT_BUTTON || me.get_button() == cgv::gui::MB_RIGHT_BUTTON)
+			if (me.get_button() == cgv::gui::MB_LEFT_BUTTON)
 				return true;
 			else
-				return false;
+				if (me.get_button() == cgv::gui::MB_RIGHT_BUTTON) {
+					savePoint(me.get_x(), me.get_y());
+					return true;
+				}
+				else
+					return false;
 		case cgv::gui::MA_DRAG:
 			// check for non zero drag vector in pixel coordinates 
 			// as well as availability of view_ptr and context_ptr 
@@ -400,6 +642,8 @@ bool volume_slicer::open_volume(const std::string& _file_name, bool is_iso)
 	return success;
 }
 
+
+/// Coordinates conversion
 
 /// convert world to texture coordinates
 volume_slicer::vec3 volume_slicer::texture_from_world_coordinates(const vec3& p_world) const
@@ -975,6 +1219,14 @@ void volume_slicer::draw(cgv::render::context& ctx)
 	if (show_surface)
 		draw_surface(ctx);
 
+	// Show selected voxels
+	if (draw_selected_cube_bool) {
+		draw_selected_cube(ctx);
+	}
+	else {
+		drawSelectedPoints(ctx);
+	}
+
 	// render slice
 	// compute two directions x/y_tex orthogonal to normal direction
 	vec3 x_tex = cross(slice_normal_tex, vec3(1, 0, 0));
@@ -1196,6 +1448,15 @@ void volume_slicer::create_gui()
 		add_member_control(this, "translation_sensitivity", translation_sensitivity, "value_slider", "min=0.1;max=10;ticks=true;log=true");
 		align("\b");
 		end_tree_node(rotate_sensitivity);
+	}
+	if (begin_tree_node("Cutting", extrusionLevel, false, "level=3")) {
+		align("\a");
+		add_member_control(this, "extrusion", extrusionLevel, "value_slider", "min=0;max=1;ticks=true");
+		add_member_control(this, "draw selected cube", draw_selected_cube_bool, "check");
+		connect_copy(add_button("clear points")->click, cgv::signal::rebind(this, &volume_slicer::clear_selected_points));
+
+		align("\b");
+		end_tree_node(extrusionLevel);
 	}
 }
 
