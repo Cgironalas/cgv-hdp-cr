@@ -87,7 +87,7 @@ public:
 	/// filename to open volume dataset for iso surface extraction
 	std::string iso_file_name;
 	/// folder path with the .bvx slices
-	std::string slices_path;
+	std::string block_config;
 	// volume data structure stored for iso surface extaction
 	volume V;
 	/// return the value of a given voxel scaled to [0,1]
@@ -123,7 +123,7 @@ public:
 public:
 	/// size of block in voxel, for example (16,16,16) or (32,32,16)
 	ivec3 block_dimensions;
-	/// size of block in voxel, for example (16,16,16) or (32,32,16)
+	/// size of block structure
 	ivec3 slices_dimensions;
 	/// overlap between adjacent blocks in voxel, typically (1,1,1)
 	ivec3 overlap;
@@ -142,10 +142,8 @@ public:
 	vec3 voxel_from_block_coordinates(const vec3& p_block) const;
 	/// computes intersected blocks in the vector
 	void update_intersected_blocks(cgv::render::context& ctx);
-	/// compute distance of point in texture coordinates to current slice
-	float compute_distance_to_slice_tex(const vec3& p) const;
-	/// determine if a block is intersected by the plane
-	bool is_block_intersected(const box3& B);
+	/// sets up block related structures from a file
+	void set_block_structure(std::string);
 	/// return a block with the var_dim in the max_ind position, and the other two according to the place of the var_dim
 	vec3 make_vec_d_max(int max_ind, float var_dim, float dim0, float dim1);
 

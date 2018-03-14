@@ -1,0 +1,32 @@
+#version 150 compatibility
+
+uniform vec3 minp;
+uniform vec3 maxp;
+uniform bool negate_normals;
+
+// interpolated surface normal in eye space
+out vec3 N;
+// interpolated surface point in eye space
+out vec3 s;
+// interpolated texture coordinates
+out vec3 tc;
+// pass color through 
+out vec4 clr;
+
+void main()
+{
+	// transform vertex to clip space
+	gl_Position = ftransform();
+	// transform vertex to eye space
+	vec4 h_s    = gl_ModelViewMatrix * gl_Vertex;
+	gl_ClipVertex = h_s;
+	s           = h_s.xyz / h_s.w;
+	// transform texture coordinates
+	tc          = (gl_Vertex.xyz - minp)/(maxp - minp);
+	// transform normal to eye space
+	N      = normalize(gl_NormalMatrix * gl_Normal);
+	if (negate_normals) {
+		N = -N;
+	}
+	clr = gl_Color;
+}

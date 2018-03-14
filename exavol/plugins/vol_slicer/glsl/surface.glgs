@@ -1,0 +1,43 @@
+#version 150 compatibility
+
+layout(triangles) in; 
+layout(triangle_strip, max_vertices = 3) out;
+
+uniform bool face_normals;
+uniform bool negate_normals;
+
+in vec3 N[];
+in vec3 s[];
+in vec3 tc[];
+in vec4 clr[];
+
+out vec3 normal;
+out vec3 position;
+out vec3 texcoord;
+out vec4 color;
+
+void main()
+{
+	vec3 face_normal = vec3(0.0, 0.0, 0.0);
+	if (face_normals) {
+		for (int i = 0; i < gl_in.length(); i++) {
+			face_normal += cross(s[i], s[(i + 1) % gl_in.length()]);
+		}
+		face_normal = normalize(face_normal);
+		if (negate_normals) {
+			face_normal = -face_normal;
+		}
+	}
+	normal = face_normal;
+	for (int i = 0; i < gl_in.length(); i++) {
+		if (!face_normals) {
+			normal = N[i];
+		}
+		position = s[i];
+		texcoord = tc[i];
+		color = clr[i];
+		gl_Position = gl_in[i].gl_Position;
+		EmitVertex();
+	}
+	EndPrimitive();
+}

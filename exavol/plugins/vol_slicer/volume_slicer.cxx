@@ -69,6 +69,8 @@ volume_slicer::volume_slicer() : cgv::base::node("volume_slicer"), threaded_cach
 
 	last_x = last_y = -1;
 	current_voxel = current_block = ivec3(0, 0, 0);
+
+
 	block_dimensions = ivec3(16,16,16);
 	overlap = ivec3(1, 1, 1);
 	threaded_cache_manager.init_listener();
@@ -108,7 +110,7 @@ bool volume_slicer::self_reflect(cgv::reflect::reflection_handler& rh)
 		rh.reflect_member("value_name_map_file_name", value_name_map_file_name) &&
 		rh.reflect_member("file_name", file_name) &&
 		rh.reflect_member("iso_file_name", iso_file_name) &&
-		rh.reflect_member("slices_path", slices_path) &&
+		rh.reflect_member("slices_path", block_config) &&
 		rh.reflect_member("show_box", show_box);
 }
 
@@ -191,10 +193,8 @@ void volume_slicer::peek_voxel_values(int x, int y)
 	box3 B(-0.5f*extent, 0.5f*extent);
 	if (B.inside(p_pick_world)) {
 		volume::point_type p_texture = texture_from_world_coordinates(p_pick_world);
-		volume::point_type p_voxel = voxel_from_texture_coordinates_blocks(p_texture);
+		volume::point_type p_voxel = voxel_from_texture_coordinates(p_texture);
 		current_voxel = p_voxel;
-		
-		current_block = block_from_voxel_coordinates(p_voxel);
 		int value = (int)evaluate(p_pick_world.to_vec());
 		ss << p_voxel << "\n" << value;
 		if (value_name_map) {
@@ -745,8 +745,8 @@ void volume_slicer::draw_wire_box(cgv::render::context& ctx, const box3& B, cons
 /// draw a voxel with a wire frame box
 void volume_slicer::draw_voxel(cgv::render::context& ctx, const ivec3& voxel, const vec3& color)
 {
-	box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel)),
-		world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel + ivec3(1, 1, 1))));
+	box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates(voxel)),
+		world_from_texture_coordinates(texture_from_voxel_coordinates(voxel + ivec3(1, 1, 1))));
 	draw_wire_box(ctx, B, color);
 }
 
@@ -965,10 +965,11 @@ void volume_slicer::draw(cgv::render::context& ctx)
 	if (show_voxel) 
 		draw_voxel(ctx, current_voxel, vec3(1,0,0));
 	
-	update_intersected_blocks(ctx);
-
+	if (block_config != "") {
+		update_intersected_blocks(ctx);
+	}
+	
 	if (show_block) {
-		draw_block(ctx, current_block, vec3(1, 0.5, 0), vec3(0, 1, 0));
 		draw_blocks_in_plane(ctx, vec3(1, 0, 1), vec3(0, 0, 1));
 	}
 
@@ -1128,7 +1129,7 @@ void volume_slicer::create_gui()
 		// the options 'title' and 'filter' configure the file dialog
 		add_gui("file_name", file_name, "file_name", "title='open volume';filter='Volume Files(vox,qim,tif,avi) :*.vox;*.qim;*.tif;*.avi|All Files:*.*'");
 		add_gui("iso_file_name", iso_file_name, "file_name", "title='open iso volume';filter='Volume Files(vox,qim,tif,avi) :*.vox;*.qim;*.tif;*.avi|All Files:*.*'");
-		add_gui("slices_path", slices_path, "directory", "title='choose slices path';filter='All Files:*.*'");
+		add_gui("slices_path", block_config, "file_name", "title='choose slices path';filter='Block Config Files:*.bsdc'");
 		// add gui for the vector of pixel counts, where "dimensions" is used only in label of gui element for first vector component
 		// using view as gui_type will only show the values but not allow modification
 		// by align=' ' the component views are arranged with a small space in one row
@@ -1148,7 +1149,7 @@ void volume_slicer::create_gui()
 		end_tree_node(dimensions);
 	}
 	// start tree node to interact with volume
-	if (begin_tree_node("Blocks", block_dimensions, false, "level=3")) {
+	/*if (begin_tree_node("Blocks", block_dimensions, false, "level=3")) {
 		align("\a");
 		// w=50 specifies the width of each component view in 50 pixels
 		add_gui("block_dimensions", block_dimensions, "vector", "main_label='first';align=' ';gui_type='value_input';options='w=50;min=1;max=1024;step=1'"); align("\n");
@@ -1156,7 +1157,7 @@ void volume_slicer::create_gui()
 		add_gui("overlap", overlap, "vector", "main_label='first';align=' ';gui_type='value_input';options='w=50;min=0;max=1;step=1'"); align("\n");
 		align("\b");
 		end_tree_node(block_dimensions);
-	}
+	}*/
 	// start tree node to interact with volume
 	if (begin_tree_node("Iso Surface", down_sampling_factor, false, "level=3")) {
 		align("\a");
@@ -1209,8 +1210,8 @@ void volume_slicer::on_set(void* member_ptr)
 	// in case that file_name changed, read new volume
 	if (member_ptr == &file_name) {
 		open_volume(file_name, false);
-		slices_path = "";
-		threaded_cache_manager.set_block_folder(slices_path);
+		block_config = "";
+		threaded_cache_manager.set_block_folder(block_config);
 		post_redraw();
 		post_recreate_gui();
 	}
@@ -1222,41 +1223,8 @@ void volume_slicer::on_set(void* member_ptr)
 	}
 	
 	// in case that slices path changed, modify the folder in the cache
-	if (member_ptr == &slices_path) {
-		threaded_cache_manager.set_block_folder("");
-		std::cout << "\nsetting block dimensions" << std::endl;
-		std::string dimensions_parse;
-		std::ifstream infile;
-		infile.open(slices_path + "/slices_dimensions.sd");
-
-		if (std::getline(infile, dimensions_parse)) {
-
-			size_t pos = 0;
-			std::string token;
-			std::string delimiter = "x";
-			int i = 0;
-
-			//asumes the .sd file is not corrupt
-			while ((pos = dimensions_parse.find(delimiter)) != std::string::npos) {
-
-				slices_dimensions(i) = std::stoi(dimensions_parse.substr(0, pos), NULL);
-				dimensions_parse.erase(0, pos + delimiter.length());
-				i++;
-			}
-			slices_dimensions(i) = std::stoi(dimensions_parse.substr(0, pos), NULL);
-			std::cout << "success reading the block dimensions\n" << std::endl;
-			
-		}
-		else {
-			slices_path = "";
-			std::cout << "couldn't read file dimensions\n" << std::endl;
-		}
-
-		infile.close();
-
-		// flushes caches and restart
-		threaded_cache_manager.set_block_folder(slices_path);
-		threaded_cache_manager.request_blocks(intersected_blocks);
+	if (member_ptr == &block_config) {
+		set_block_structure(block_config);
 		return;
 	}
 
@@ -1264,6 +1232,83 @@ void volume_slicer::on_set(void* member_ptr)
 	update_member(member_ptr);
 	// for all value changes schedule a redraw of the 3D window
 	post_redraw();
+}
+
+void volume_slicer::set_block_structure(std::string) {
+	threaded_cache_manager.set_block_folder("");
+	std::cout << "\nsetting block dimensions..." << std::endl;
+	std::string line_parse;
+	std::ifstream infile;
+	infile.open(block_config);
+
+	//line 1: block structure dimensions
+	//line 2: block dimensions
+	//line 3: overlap
+	//line 4: slices path
+
+	bool line_checks[4] = { false, false, false, false };
+	std::string slices_path;
+
+	if (infile.is_open()) {
+		int line_index = 0;
+		while (std::getline(infile, line_parse)) {
+
+			size_t pos = 0;
+			std::string delimiter = "x";
+
+			ivec3 variables[3];
+			std::string variable_names[4] = { "block_structure_dimensions=", "block_dimensions=", "overlap=", "slices_folder=" };
+			
+			if (line_index < 3) {
+				if ((pos = line_parse.find(variable_names[line_index])) != std::string::npos) {
+					line_parse.erase(0, pos + variable_names[line_index].length());
+					int i = 0;
+					while ((pos = line_parse.find(delimiter)) != std::string::npos) {
+						variables[line_index](i) = std::stoi(line_parse.substr(0, pos), NULL);
+						line_parse.erase(0, pos + delimiter.length());
+						i++;
+					}
+					variables[line_index](i) = std::stoi(line_parse.substr(0, pos), NULL);
+					line_checks[line_index] = true;
+				}
+
+				switch (line_index) {
+				case 0: { slices_dimensions = variables[line_index]; break; }
+				case 1: { block_dimensions = variables[line_index]; break; }
+				case 2: { overlap = variables[line_index]; break; }
+				default: { break; }
+				}
+			}
+
+			if (line_index == 3) {
+				if ((pos = line_parse.find(variable_names[line_index])) != std::string::npos) {
+					line_parse.erase(0, pos + variable_names[line_index].length());
+
+					slices_path = line_parse.substr(0, std::string::npos);
+					line_checks[line_index] = true;
+				}
+			}
+
+			line_index += 1;
+		}
+
+	} else {
+		block_config = "";
+		std::cout << "couldn't read file \n" << std::endl;
+	}
+
+	infile.close();
+	for (bool check : line_checks) {
+		if (!check) {
+			std::cout << "error reading file \n" << std::endl;
+			return;
+		}
+	}
+
+	threaded_cache_manager.set_block_folder(slices_path);
+	std::cout << "success reading the block configuration file\n" << std::endl;
+	threaded_cache_manager.request_blocks(intersected_blocks);
+
 }
 
 #include <cgv/base/register.h>
