@@ -297,7 +297,7 @@ void volume_slicer::bresenham3d(vec3 pointA, vec3 pointB, cgv::render::context& 
 	do
 	{
 		//std::cout << "this" << std::endl;
-		draw_voxel(ctx, vec3(gx, gy, gz), vec3(1, 1, 0));
+		draw_voxel(ctx, vec3( (float) gx, (float)gy, (float)gz), vec3(1.0, 1.0, 0.0));
 
 		if ((int)gx == (int)point2[0] && (int)gy == (int)point2[1] && (int)gz == (int)point2[2]) break;
 
@@ -395,7 +395,7 @@ void volume_slicer::draw_selected_cube(cgv::render::context& ctx) {
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glTexCoordPointer(3, GL_FLOAT, 0, &texcoords[0]);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, positions.size());
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei) positions.size());
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		disable_surface_rendering(ctx, selection_cube_style);
@@ -843,7 +843,7 @@ void volume_slicer::extract_surface(int algorithm)
 	std::cout << "iso_surface has " << positions.size() << " vertices and " << corner_indices.size() / face_vertex_count << (face_vertex_count == 3 ? " triangles" : " quads") << std::endl;
 	// triangulate quads
 	if (face_vertex_count == 4) {
-		unsigned n = corner_indices.size() / 4;
+		unsigned n = (unsigned) (corner_indices.size() / 4);
 		corner_indices.resize(6 * n);
 		for (int i = n - 1; i >= 0; --i) {
 			unsigned vi[4] = { corner_indices[4 * i], corner_indices[4 * i + 1], corner_indices[4 * i + 2], corner_indices[4 * i + 3] };
@@ -1003,7 +1003,7 @@ void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 		unsigned(ceil(float(slices_dimensions(2)) / block_dimensions(2))));
 
 	vec3 world_slice_normal = world_from_texture_normals(slice_normal_tex);
-	int d_max = std::distance(std::begin(world_slice_normal), std::max_element(std::begin(world_slice_normal), std::end(world_slice_normal), abs_compare));
+	int d_max = (int) std::distance(std::begin(world_slice_normal), std::max_element(std::begin(world_slice_normal), std::end(world_slice_normal), abs_compare));
 	
 	// set i0 to first other index than d_max and i1 to second other index
 	int d0 = (d_max + 1) % 3;
@@ -1013,8 +1013,8 @@ void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 	previous_intersected_blocks.insert(intersected_blocks.begin(), intersected_blocks.end());
 	intersected_blocks.clear();
 
-	for (int i0 = 0; i0 < nr_blocks(d0); i0++) {
-		for (int i1 = 0; i1 < nr_blocks(d1); i1++) {
+	for (float i0 = 0; i0 < nr_blocks(d0); i0++) {
+		for (float i1 = 0; i1 < nr_blocks(d1); i1++) {
 			
 			vec3 pi_tex[4]{
 				texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0, i1))),
@@ -1027,7 +1027,7 @@ void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 			
 			float block_coord_min, block_coord_max;
 			
-			unsigned k;
+			int k;
 
 			for (k = 0; k < 4; k++) {
 
@@ -1055,7 +1055,7 @@ void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 
 			for (k = i_min; k < i_max; k++) {
 				if (nr_blocks(d_max) > k && k >= 0) {
-					ivec3 block = make_vec_d_max(d_max, k, i0, i1);
+					ivec3 block = (ivec3) make_vec_d_max(d_max, (float) k, i0, i1);
 
 					if (previous_intersected_blocks.find(block) == previous_intersected_blocks.end())
 						new_batch = true;
@@ -1188,8 +1188,8 @@ void volume_slicer::draw_surface(cgv::render::context& ctx)
 		glNormalPointer(GL_FLOAT, 0, &normals[0]);
 		glEnableClientState(GL_NORMAL_ARRAY);
 			switch (face_vertex_count) {
-			case 3: glDrawElements(GL_TRIANGLES, corner_indices.size(), GL_UNSIGNED_INT, &corner_indices[0]); break;
-			case 4: glDrawElements(GL_QUADS, corner_indices.size(), GL_UNSIGNED_INT, &corner_indices[0]); break;
+			case 3: glDrawElements(GL_TRIANGLES, (GLsizei)corner_indices.size(), GL_UNSIGNED_INT, &corner_indices[0]); break;
+			case 4: glDrawElements(GL_QUADS, (GLsizei) corner_indices.size(), GL_UNSIGNED_INT, &corner_indices[0]); break;
 			default: std::cerr << "face vertex count " << face_vertex_count << "not supported!" << std::endl;
 			}
 		glDisableClientState(GL_NORMAL_ARRAY);

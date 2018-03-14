@@ -134,7 +134,10 @@ void cache_manager::retrieve_blocks_in_plane() {
 
 	
 	ivec3 nr_blocks(unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), unsigned(ceil(float(dimensions(2)) / block_dimensions(2))));
-	size_t block_size = (block_dimensions(1) + overlap(1))*((block_dimensions(0) + overlap(0))*cgv::data::component_format(cgv::type::info::TI_UINT8, cgv::data::CF_RGB).get_entry_size()) * (block_dimensions(2) + overlap(2));
+	size_t block_size = (long) ( (block_dimensions(1) + overlap(1))*
+		((block_dimensions(0) + overlap(0))*
+			 (cgv::data::component_format(cgv::type::info::TI_UINT8, cgv::data::CF_RGB).get_entry_size())) 
+		* (block_dimensions(2) + overlap(2)) );
 	vec3 df_dim(block_dimensions(0) + overlap(0), block_dimensions(1) + overlap(1), block_dimensions(2) + overlap(2));
 
 	// traverse the batch
@@ -213,7 +216,7 @@ char* cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& bloc
 		// throws exception at fread in some points 
 		FILE* fp = fopen(ss.str().c_str(), "rb");
 		if (fp != NULL) {
-			size_t offset = bi * block_size;
+			long offset = (long) (bi * block_size);
 
 			// checks size of the block slice
 			fseek(fp, 0, SEEK_END);
@@ -307,8 +310,8 @@ bool cache_manager::write_tiff_block(std::string& file_name, char* data_ptr, vec
 	// setup output format 
 	cgv::data::data_format df;
 	df.set_component_format(cgv::data::component_format(cgv::type::info::TI_UINT8, cgv::data::CF_RGB));
-	df.set_width(df_dim(0));
-	df.set_height(df_dim(1));
+	df.set_width( (int) df_dim(0));
+	df.set_height( (int) df_dim(1));
 
 	// setup image writer
 	cgv::media::image::image_writer iw(file_name + ".tif");
