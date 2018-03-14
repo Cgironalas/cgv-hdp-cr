@@ -217,6 +217,8 @@ protected:
 	float texture_gamma;
 	///
 	surface_render_style iso_surface_style;
+	//
+	surface_render_style selection_cube_style;
 	/// material used to render the bounding box faces
 	cgv::media::illum::phong_material box_mat;
 private:
@@ -298,6 +300,23 @@ public:
 	/// called to create gui elements
 	void create_gui();
 	//@}
+public:
+	/// Vector variable to store the selected points with right mouse button
+	float extrusionLevel;
+	std::vector<vec3> selected_points;
+	std::vector<vec3> selected_normals;
+	cgv::media::illum::phong_material selected_point_material;
+	cgv::media::illum::phong_material extrusion_material;
+
+	bool draw_selected_cube_bool;
+	void savePoint(int x, int y);
+	void draw_selected_cube(cgv::render::context & ctx);
+	void draw_solid_block(cgv::render::context& ctx, const ivec3& voxel, const cgv::media::illum::phong_material& material);
+	void drawSelectedPoints(cgv::render::context & ctx);
+	void clear_selected_points();
+	void bresenham3d(volume::point_type pointA, volume::point_type pointB, cgv::render::context& ctx);
+	volume::point_type get_selected_point_normal(volume::point_type point);
+	double get_points_distance(volume::point_type pointA, volume::point_type pointB);
 
 };
 
