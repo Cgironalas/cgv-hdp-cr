@@ -24,6 +24,7 @@ struct container_hash {
 
 class cache_manager {
 
+	// reference to the main program
 	volume_slicer &vs;
 
 	typedef cgv::math::fvec<float, 3> vec3;
@@ -52,22 +53,22 @@ class cache_manager {
 	std::list<ivec3> cpu_blocks_queue;
 	// cpu level cache
 	std::unordered_map < ivec3, char*, container_hash<ivec3 >> cpu_block_cache_map;
+	// cpu mutexes
+	std::mutex cpu_cache_lock;
+	std::mutex cpu_blocks_queue_lock;
 
 	// manages gpu cache blocks
 	std::list<ivec3> gpu_blocks_queue;
 	// gpu level cache mirror (typically smaller than cpu)
 	std::unordered_map < ivec3, char*, container_hash<ivec3 >> gpu_block_cache_map;
-
-	// mutexes
-	std::mutex blocks_in_progress_lock;
-	std::mutex thread_report;
-	
-	std::mutex cpu_cache_lock;
-	std::mutex cpu_blocks_queue_lock;
-
+	// gpu mutexes
 	std::mutex gpu_cache_lock;
 	std::mutex gpu_blocks_queue_lock;
 
+	// general mutexes
+	std::mutex blocks_in_progress_lock;
+	std::mutex thread_report;
+	std::mutex slices_files_lock;
 	std::mutex restart_lock;
 
 public:
