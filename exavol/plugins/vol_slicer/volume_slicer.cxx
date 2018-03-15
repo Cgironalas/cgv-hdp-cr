@@ -160,12 +160,6 @@ bool volume_slicer::read_value_name_map(const std::string& file_name)
 }
 
 
-template <typename T>
-cgv::math::fvec<T, 3> rotate(const cgv::math::fvec<T, 3>& v, const cgv::math::fvec<T, 3>& n, T a)
-{
-	cgv::math::fvec<T, 3> vn = dot(n, v)*n;
-	return vn + cos(a)*(v - vn) + sin(a)*cross(n, v);
-}
 
 /// return the point under the mouse pointer in world coordinates
 bool volume_slicer::get_picked_point(int x, int y, vec3& p_pick_world)
@@ -291,13 +285,13 @@ void volume_slicer::bresenham3d(vec3 pointA, vec3 pointB, cgv::render::context& 
 	double derry = sy * vxvz;
 	double derrz = sz * vxvy;
 
-	std::cout << "Begin - x: " << point1[0] << " - y: " << point1[1] << " - z: " << point1[2] << std::endl;
-	std::cout << "End   - x: " << point2[0] << " - y: " << point2[1] << " - z: " << point2[2] << std::endl;
-	double counter = 0;
 	do
 	{
-		//std::cout << "this" << std::endl;
-		draw_voxel(ctx, vec3( (float) gx, (float)gy, (float)gz), vec3(1.0, 1.0, 0.0));
+		box3 B(-extent, extent);
+		vec3 point = vec3((float)gx, (float)gy, (float)gz);
+		if (B.inside(point)) {
+			draw_voxel(ctx, point, vec3(1.0, 1.0, 0.0));
+		}
 
 		if ((int)gx == (int)point2[0] && (int)gy == (int)point2[1] && (int)gz == (int)point2[2]) break;
 
@@ -320,7 +314,6 @@ void volume_slicer::bresenham3d(vec3 pointA, vec3 pointB, cgv::render::context& 
 		else {
 			std::cout << "the fiddle was a lie" << std::endl;
 		}
-		counter += 0.01;
 	} while (true);
 }
 
@@ -328,12 +321,18 @@ void volume_slicer::drawSelectedPoints(cgv::render::context& ctx) {
 	std::vector<vec3> top_points, bottom_points;
 	float scale = 0.5f*V.get_extent().length()*extrusionLevel;
 	for (unsigned i = 0; i < selected_points.size(); ++i) {
-		top_points.push_back(selected_points[i] + scale*selected_normals[i]);
-		bottom_points.push_back(selected_points[i] - scale*selected_normals[i]);
+		top_points.push_back(selected_points[i] + scale*selected_normal);
+		bottom_points.push_back(selected_points[i] - scale*selected_normal);
 	}
 
 	volume::point_type p_voxel;// , p_voxel_top, p_voxel_bottom;
 	volume::point_type p_texture;
+	for (unsigned i = 0; i < selected_points.size(); ++i) {
+		bresenham3d(bottom_points[i], top_points[i], ctx);
+		p_texture = texture_from_world_coordinates(selected_points[i]);
+		p_voxel = voxel_from_texture_coordinates(p_texture);
+		draw_voxel(ctx, p_voxel, vec3(0, 1, 0));
+	}
 	for (auto &point : selected_points) {
 		box3 B(-0.5f*extent, 0.5f*extent);
 		if (B.inside(point)) {
@@ -371,8 +370,8 @@ void volume_slicer::draw_selected_cube(cgv::render::context& ctx) {
 	std::vector<vec3> top_points, bottom_points;
 	float scale = 0.5f*V.get_extent().length()*extrusionLevel;
 	for (unsigned i = 0; i < selected_points.size(); ++i) {
-		top_points.push_back(selected_points[i] + scale*selected_normals[i]);
-		bottom_points.push_back(selected_points[i] - scale*selected_normals[i]);
+		top_points.push_back(selected_points[i] + scale*selected_normal);
+		bottom_points.push_back(selected_points[i] - scale*selected_normal);
 	}
 
 	std::vector<vec3> positions, texcoords;
@@ -400,6 +399,24 @@ void volume_slicer::draw_selected_cube(cgv::render::context& ctx) {
 		glDisableClientState(GL_VERTEX_ARRAY);
 		disable_surface_rendering(ctx, selection_cube_style);
 	}
+}
+
+#include <cgv/gui/animate.h>
+void volume_slicer::animate_view_to_selection(volume::point_type pointA, volume::point_type pointB, vec3 normal) {
+	vec3 xDirection = pointB - pointA;
+	vec3 upDirection = normal;
+	if (iso_surface_style.negate_normals) {
+		upDirection = -upDirection;
+	}
+	vec3 viewDirection = cross(xDirection, upDirection);
+	viewDirection.normalize();
+	double angle;
+	cgv::render::view::pnt_type axis;
+	view_ptr->compute_axis_and_angle(viewDirection, upDirection, axis, angle);
+	cgv::gui::animate_with_axis_rotation(view_ptr->ref_view_dir(), axis, angle, 1);
+	cgv::gui::animate_with_axis_rotation(view_ptr->ref_view_up_dir(), axis, angle, 1);
+	cgv::gui::animate_with_geometric_blend(view_ptr->ref_y_extent_at_focus(), (double)1.4*V.get_extent().length()*extrusionLevel, 1);
+	cgv::gui::animate_with_linear_blend(view_ptr->ref_focus(), cgv::render::view::pnt_type(0.5f*(pointA + pointB)), 1)->set_base_ptr(this);
 }
  
 
@@ -450,6 +467,22 @@ bool volume_slicer::handle(cgv::gui::event& e)
 		// view all when space key pressed
 		case cgv::gui::KEY_Space:
 			auto_adjust_view();
+			return true;
+		case '1':
+			if (selected_points.size() >= 2)
+				animate_view_to_selection(selected_points[0], selected_points[1], selected_normal);
+			return true;
+		case '2':
+			if (selected_points.size() >= 3)
+				animate_view_to_selection(selected_points[1], selected_points[2], selected_normal);
+			return true;
+		case '3':
+			if (selected_points.size() >= 4)
+				animate_view_to_selection(selected_points[2], selected_points[3], selected_normal);
+			return true;
+		case '4':
+			if (selected_points.size() >= 4)
+				animate_view_to_selection(selected_points[3], selected_points[0], selected_normal);
 			return true;
 		case 'E' :
 			if (!last_name.empty())
@@ -1220,14 +1253,6 @@ void volume_slicer::draw(cgv::render::context& ctx)
 	if (show_surface)
 		draw_surface(ctx);
 
-	// Show selected voxels
-	if (draw_selected_cube_bool) {
-		draw_selected_cube(ctx);
-	}
-	else {
-		drawSelectedPoints(ctx);
-	}
-
 	// render slice
 	// compute two directions x/y_tex orthogonal to normal direction
 	vec3 x_tex = cross(slice_normal_tex, vec3(1, 0, 0));
@@ -1256,6 +1281,12 @@ void volume_slicer::draw(cgv::render::context& ctx)
 		glClipPlane(GL_CLIP_PLANE0 + i, cp);
 		glEnable(GL_CLIP_PLANE0 + i);
 	}
+
+	// Show selected voxels
+	drawSelectedPoints(ctx);
+	if (draw_selected_cube_bool)
+		draw_selected_cube(ctx);
+
 	// disable culling
 	glDisable(GL_CULL_FACE);
 		// enable volume texture on texture unit 0
@@ -1453,9 +1484,9 @@ void volume_slicer::create_gui()
 	if (begin_tree_node("Cutting", extrusionLevel, false, "level=3")) {
 		align("\a");
 		add_member_control(this, "extrusion", extrusionLevel, "value_slider", "min=0;max=1;ticks=true");
-		add_member_control(this, "draw selected cube", draw_selected_cube_bool, "check");
+		add_member_control(this, "draw selected cube", draw_selected_cube_bool, "toggle");
 		connect_copy(add_button("clear points")->click, cgv::signal::rebind(this, &volume_slicer::clear_selected_points));
-
+		add_gui("selection normal", selected_normal, "direction");
 		align("\b");
 		end_tree_node(extrusionLevel);
 	}
