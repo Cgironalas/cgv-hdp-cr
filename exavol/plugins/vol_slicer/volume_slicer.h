@@ -303,6 +303,7 @@ public:
 public:
 	/// Vector variable to store the selected points with right mouse button
 	float extrusionLevel;
+	vec3 selected_normal;
 	std::vector<vec3> selected_points;
 	std::vector<vec3> selected_normals;
 	cgv::media::illum::phong_material selected_point_material;
@@ -317,6 +318,7 @@ public:
 	void bresenham3d(volume::point_type pointA, volume::point_type pointB, cgv::render::context& ctx);
 	volume::point_type get_selected_point_normal(volume::point_type point);
 	double get_points_distance(volume::point_type pointA, volume::point_type pointB);
+	void animate_view_to_selection(volume::point_type pointA, volume::point_type pointB, vec3 normal);
 
 };
 
