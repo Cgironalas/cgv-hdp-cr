@@ -412,11 +412,11 @@ void volume_slicer::animate_view_to_selection(volume::point_type pointA, volume:
 	viewDirection.normalize();
 	double angle;
 	cgv::render::view::pnt_type axis;
-	view_ptr->compute_axis_and_angle(viewDirection, upDirection, axis, angle);
+	/*view_ptr->compute_axis_and_angle(viewDirection, upDirection, axis, angle);
 	cgv::gui::animate_with_axis_rotation(view_ptr->ref_view_dir(), axis, angle, 1);
 	cgv::gui::animate_with_axis_rotation(view_ptr->ref_view_up_dir(), axis, angle, 1);
 	cgv::gui::animate_with_geometric_blend(view_ptr->ref_y_extent_at_focus(), (double)1.4*V.get_extent().length()*extrusionLevel, 1);
-	cgv::gui::animate_with_linear_blend(view_ptr->ref_focus(), cgv::render::view::pnt_type(0.5f*(pointA + pointB)), 1)->set_base_ptr(this);
+	cgv::gui::animate_with_linear_blend(view_ptr->ref_focus(), cgv::render::view::pnt_type(0.5f*(pointA + pointB)), 1)->set_base_ptr(this);*/
 }
  
 
@@ -571,7 +571,7 @@ bool volume_slicer::handle(cgv::gui::event& e)
 					// normalize axis and use resulting length to scale rotation angle  
 					double rotation_angle = 5.0 * axis_world.normalize() * rotate_sensitivity;
 					// update slice_normal_tex by rotation around axis
-					slice_normal_tex = rotate(slice_normal_tex, axis_world, (float)rotation_angle);
+					//slice_normal_tex = rotate(slice_normal_tex, axis_world, (float)rotation_angle);
 					// ensure that user interface has current values
 					for (unsigned c = 0; c < 3; ++c)
 						update_member(&slice_normal_tex[c]);
@@ -1362,6 +1362,7 @@ void volume_slicer::clear(cgv::render::context& ctx)
 	indexed_tex_slice_prog.destruct(ctx);
 	data_texture.destruct(ctx);
 	index_texture.destruct(ctx);
+	threaded_cache_manager.close_slices_files();
 }
 
 ///

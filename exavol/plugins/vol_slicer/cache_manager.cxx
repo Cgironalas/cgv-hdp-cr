@@ -27,6 +27,13 @@ cache_manager::cache_manager(volume_slicer &f) : vs(f) {
 	signal_restart = false;
 }
 
+void cache_manager::close_slices_files() {
+
+	slices_files_names.clear();
+	for (auto it : slices_files)
+		fclose(it);
+	slices_files.clear();
+}
 
 void cache_manager::set_block_folder(std::string folder_path) {
 	restart_lock.lock();
@@ -35,6 +42,28 @@ void cache_manager::set_block_folder(std::string folder_path) {
 	blocks_in_progress_lock.lock();
 
 	slices_path = folder_path;
+
+	close_slices_files();
+	if (slices_path != "") {
+	
+		void* handle = cgv::utils::file::find_first(folder_path + "*.*");
+		while (handle) {
+			if (!cgv::utils::file::find_directory(handle)) {
+				std::string file_name = folder_path + cgv::utils::file::find_name(handle);
+				slices_files_names.push_back(file_name);
+
+				FILE* fp = fopen(file_name.c_str(), "rb");
+				if (fp != NULL) 
+					slices_files.push_back(fp);
+				else {
+					slices_path = folder_path;
+					break;
+				}
+			}
+				
+			handle = cgv::utils::file::find_next(handle);
+		}
+	}
 	
 	cpu_blocks_queue.clear();
 	cpu_block_cache_map.clear();
@@ -207,49 +236,47 @@ char* cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& bloc
 	try {
 
 		std::stringstream ss;
-		ss << slices_path << "/level_00_blockslice_" << std::setw(3) << std::setfill('0') << block(2) << ".bvx";
+		ss << slices_path << "level_00_blockslice_" << std::setw(3) << std::setfill('0') << block(2) << ".bvx";
 
 		// compute block index and pointer to block data
 		unsigned bi = block(1) * nr_blocks(0) + block(0);
 		char* block_ptr = new char[block_size];
 
 		// throws exception at fread in some points 
-		FILE* fp = fopen(ss.str().c_str(), "rb");
-		if (fp != NULL) {
-			long offset = (long) (bi * block_size);
+		if (block(2) <= slices_files.size()) {
+			FILE* fp = slices_files.at(block(2));
+			if (fp != NULL) {
+				long offset = (long)(bi * block_size);
 
-			// checks size of the block slice
-			fseek(fp, 0, SEEK_END);
-			off_t file_length = ftell(fp);
+				// checks size of the block slice
+				fseek(fp, 0, SEEK_END);
+				off_t file_length = ftell(fp);
 
-			if (file_length < offset) {
-				std::cout << "failed to locate pointer for block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slice " << ss.str() << std::endl;
-				fclose(fp);
-				return "";
-			} else {
-				fseek(fp, offset, SEEK_SET);
+				if (file_length >= offset) 
+					fseek(fp, offset, SEEK_SET); 
+				else {
+					std::cout << "failed to locate pointer for block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slice " << ss.str() << std::endl;
+					return "";
+				}
+
+				bool result = fread(block_ptr, block_size, 1, fp) == 1;
+
+				if (result) 
+					return block_ptr;
+				else {
+					std::cout << "failed to read block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slices" << std::endl;
+					return "";
+				}
 			}
-
-			bool result = fread(block_ptr, block_size, 1, fp) == 1;
-
-			fclose(fp);
-
-			if (result) {
-				return block_ptr;
-			} else {
-				std::cout << "failed to read block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slices" << std::endl;
-				return "";
-			}
-		} else {
-			std::cout << "failed to open slice: " << ss.str() << " for block :" << block(0) << ", " << block(1) << ", " << block(2) << std::endl;
 		}
+		std::cout << "slice isn't open: " << ss.str() << " for block :" << block(0) << ", " << block(1) << ", " << block(2) << std::endl;
 		return "";
 	
 		/// to ensure correct block being loaded
 		//return write_tiff_block(output_path + "/block_at_" + std::to_string(block(0)) + "_" + std::to_string(block(1)) + "_" + std::to_string(block(2)), block_ptr, df_dim, "");
 
 	} catch (...) {
-		std::cout << "exception thrown at block retrieval due to existing block slice dimensions" << std::endl;
+		std::cout << "unhandled exception thrown at block retrieval" << std::endl;
 		return "";
 	}
 }
@@ -269,7 +296,11 @@ void cache_manager::fifo_refer(ivec3& block, ivec3& nr_blocks, size_t& block_siz
 		cpu_block_cache_map.erase(last);
 	}
 
-	cpu_block_cache_map[block] = slices_path != "" ? retrieve_block(block, nr_blocks, block_size, df_dim) : "";
+	restart_lock.lock();
+	bool slices_available = slices_path != "";
+	restart_lock.unlock();
+
+	cpu_block_cache_map[block] = slices_available ? retrieve_block(block, nr_blocks, block_size, df_dim) : "";
 	cpu_blocks_queue.push_front(block);
 
 	char* block_ptr = cpu_block_cache_map[block];

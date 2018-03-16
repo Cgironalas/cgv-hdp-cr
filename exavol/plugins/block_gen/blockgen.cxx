@@ -365,7 +365,7 @@ bool write_vox(const std::string& input_path, const std::string& output_path) {
 	void* handle = cgv::utils::file::find_first(input_path + "*.*");
 	while (handle) {
 		if (!cgv::utils::file::find_directory(handle))
-			file_names.push_back(input_path+"/" +cgv::utils::file::find_name(handle));
+			file_names.push_back(input_path +cgv::utils::file::find_name(handle));
 		handle = cgv::utils::file::find_next(handle);
 	}
 
@@ -851,14 +851,14 @@ void init_to_visible_human_male_png(block_generation_info& bgi)
 {
 	int width = 2048;
 	int height = 1216;
-	int amount = 543;
+	int amount = 1878;
 
 	bgi.type_id = cgv::type::info::TI_UINT8;
 	bgi.components = cgv::data::CF_RGB;
 	bgi.dimensions.set(width, height, amount);
 	bgi.extent.set(width * 0.114f, height * 0.114f, amount * 1.0f);
 
-	bgi.block_dimensions.set(16, 16, 16);
+	bgi.block_dimensions.set(64, 64, 64);
 	bgi.overlap.set(1, 1, 1);
 	bgi.subsampling_factor.set(2, 2, 2);
 	bgi.subsampling_offset.set(0, 0, 3);
@@ -888,21 +888,20 @@ int main(int argc, char** argv)
 	build_level_infos(visible_human);
 
 	std::string bk = "E:/data/visual_human/male/PNG_format/head";
-	std::string input_path = "E:/studentdata/blocks_test/abdomen/male_png";
-	std::string output_path = "E:/studentdata/blocks_test/abdomen/male_slices";
-
+	std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/sources/small_png/";
+	std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody";
 
 	// Generate the blocks in slice
-	if (build_blocks_from_directory(input_path, output_path, visible_human)) { std::cout << "success" << std::endl; }
-	else { std::cout << "failed" << std::endl; }
+	//if (build_blocks_from_directory(input_path, output_path, visible_human)) { std::cout << "success" << std::endl; }
+	//else { std::cout << "failed" << std::endl; }
 
 	// Test retrieve block from block slices
     //if (retrieve_block(visible_human, output_path, "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices/blocks", cgv::math::fvec<double, 3>(32,0,0.0))) { std::cout << "success" << std::endl; }
 	//else { std::cout << "failed" << std::endl; }
 
 	// Generate vox
-	//if (write_vox(input_path, input_path)) { std::cout << "success" << std::endl; }
-	//else { std::cout << "failed" << std::endl; }
+	if (write_vox(input_path, output_path)) { std::cout << "success" << std::endl; }
+	else { std::cout << "failed" << std::endl; }
 
 	std::cin.get();
 	return 1;

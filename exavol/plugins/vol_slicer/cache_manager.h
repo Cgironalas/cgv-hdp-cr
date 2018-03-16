@@ -4,6 +4,7 @@
 #include <string>
 #include <mutex>
 #include <cgv/render/drawable.h>
+#include <cgv/utils/file.h>
 #include <vol_data/volume.h>
 #include <unordered_map>
 #include <unordered_set>
@@ -45,9 +46,13 @@ class cache_manager {
 	bool signal_restart;
 	bool process_running;
 
+	std::vector<std::string> slices_files_names;
+	std::vector<FILE*> slices_files;
+
 	// receives the stream of intersected blocks
 	std::vector<ivec3> disk_queue_blocks;
 	std::vector<ivec3> cache_queue_blocks;
+	
 
 	// manages cpu cache blocks
 	std::list<ivec3> cpu_blocks_queue;
@@ -78,6 +83,8 @@ public:
 
 	// starts infinite loop to receive requests and handle them
 	void cache_manager::set_block_folder(std::string);
+
+	void cache_manager::close_slices_files();
 
 	// starts infinite loop to receive requests and handle them
 	void cache_manager::init_listener();
