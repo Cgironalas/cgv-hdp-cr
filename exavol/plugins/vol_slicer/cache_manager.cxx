@@ -16,23 +16,30 @@
 cache_manager::cache_manager(volume_slicer &f) : vs(f) {
 
 	slices_path = "";
-	slices_dimensions = ivec3(0, 0, 0);
-	cpu_cache_size_blocks = 15000; //should be calculated from the CPU capacity if possible
-	gpu_cache_size_blocks = 1500; //should be calculated from the GPU capacity if possible
+	cpu_cache_size_blocks = 15000; //could be calculated from the CPU capacity if possible
+	gpu_cache_size_blocks = 1500; //could be calculated from the GPU capacity if possible
 
 	// extra validation for threaded approaches
 	thread_limit = 8; 
+	selected_cache_policy = 1;
 
 	process_running = false;
 	signal_restart = false;
 }
 
-void cache_manager::close_slices_files() {
+void cache_manager::init_listener() {
 
-	slices_files_names.clear();
-	for (auto it : slices_files)
-		fclose(it);
-	slices_files.clear();
+	thread_report.lock();
+	thread_amount += 1;
+	std::thread t([&]() { main_loop(); });
+	t.detach();
+	thread_report.unlock();
+}
+
+void cache_manager::kill_listener() {
+	kill_lock.lock();
+	signal_kill = true;
+	kill_lock.unlock();
 }
 
 void cache_manager::set_block_folder(std::string folder_path) {
@@ -65,9 +72,11 @@ void cache_manager::set_block_folder(std::string folder_path) {
 		}
 	}
 	
+	manager_cpu_blocks_queue.clear();
 	cpu_blocks_queue.clear();
 	cpu_block_cache_map.clear();
 
+	manager_gpu_blocks_queue.clear();
 	gpu_blocks_queue.clear();
 	gpu_block_cache_map.clear();
 
@@ -80,19 +89,12 @@ void cache_manager::set_block_folder(std::string folder_path) {
 	blocks_in_progress_lock.unlock();
 }
 
-void cache_manager::init_listener() {
-	
-	thread_report.lock();
-	thread_amount += 1;
-	std::thread t([&]() { main_loop(); });
-	t.detach();
-	thread_report.unlock();
-}
+void cache_manager::close_slices_files() {
 
-void cache_manager::kill_listener() {
-	kill_lock.lock();
-	signal_kill = true;
-	kill_lock.unlock();
+	slices_files_names.clear();
+	for (auto it : slices_files)
+		fclose(it);
+	slices_files.clear();
 }
 
 void cache_manager::main_loop() {
@@ -128,39 +130,57 @@ void cache_manager::main_loop() {
 	}
 }
 
+// process request of blocks
 void cache_manager::request_blocks(std::vector<ivec3> blocks_batch) {
-	blocks_in_progress_lock.lock();
-	bool new_blocks = false;
-	for (auto it : blocks_batch) {
+	if (selected_cache_policy == 0) {
+		blocks_in_progress_lock.lock();
+		bool new_blocks = false;
+		for (auto it : blocks_batch) {
 
-		cpu_cache_lock.lock();
-		bool block_in_cache = cpu_block_cache_map.find(it) != cpu_block_cache_map.end();
-		cpu_cache_lock.unlock();
+			cpu_cache_lock.lock();
+			bool block_in_cache = cpu_block_cache_map.find(it) != cpu_block_cache_map.end();
+			cpu_cache_lock.unlock();
 
-		if (!block_in_cache) {
-			disk_queue_blocks.push_back(it);
-			new_blocks = true;
-			
-		} else {
-			gpu_cache_lock.lock();
-			bool block_in_gpu = gpu_block_cache_map.find(it) != gpu_block_cache_map.end();
-			gpu_cache_lock.unlock();
-
-			if (!block_in_gpu) {
-				cache_queue_blocks.push_back(it);
+			if (!block_in_cache) {
+				disk_queue_blocks.push_back(it);
 				new_blocks = true;
-			}	
-		}
-	}
 
-	std::cout << "new batch" << std::endl;
-	restart_lock.lock();
-	signal_restart = true;
-	restart_lock.unlock();
+			}
+			else {
+				gpu_cache_lock.lock();
+				bool block_in_gpu = gpu_block_cache_map.find(it) != gpu_block_cache_map.end();
+				gpu_cache_lock.unlock();
+
+				if (!block_in_gpu) {
+					cache_queue_blocks.push_back(it);
+					new_blocks = true;
+				}
+			}
+		}
+
+		restart_lock.lock();
+		signal_restart = true;
+		restart_lock.unlock();
+
+		blocks_in_progress_lock.unlock();
+	} else { // plain lru or fifo
+
+		blocks_in_progress_lock.lock();
 		
-	blocks_in_progress_lock.unlock();
+		for (auto it : blocks_batch) {
+			disk_queue_blocks.push_back(it);
+		}
+
+		restart_lock.lock();
+		signal_restart = true;
+		restart_lock.unlock();
+
+		blocks_in_progress_lock.unlock();
+	}
 }
 
+// main queue processing
+int disk_read_count = 0;
 void cache_manager::retrieve_blocks_in_plane() {
 
 	vec3 dimensions = vs.slices_dimensions;
@@ -181,25 +201,28 @@ void cache_manager::retrieve_blocks_in_plane() {
 	blocks_in_progress_lock.unlock();
 
 	ivec3 nr_blocks(unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), unsigned(ceil(float(dimensions(2)) / block_dimensions(2))));
-	size_t block_size = (long) ( (block_dimensions(1) + overlap(1))*
-		((block_dimensions(0) + overlap(0))*
-			 (cgv::data::component_format(cgv::type::info::TI_UINT8, cgv::data::CF_RGB).get_entry_size())) 
-		* (block_dimensions(2) + overlap(2)) );
+	size_t block_size = (long) ( (block_dimensions(1) + overlap(1))*((block_dimensions(0) + overlap(0))*(cgv::data::component_format(cgv::type::info::TI_UINT8, cgv::data::CF_RGB).get_entry_size())) * (block_dimensions(2) + overlap(2)) );
 	vec3 df_dim(block_dimensions(0) + overlap(0), block_dimensions(1) + overlap(1), block_dimensions(2) + overlap(2));
 
-	// traverse the batch
+	// cancel flag for cpu -> gpu loading: not used right now, but could be helpful if cpu -> gpu takes long
 	bool cancelled = false;
 
 	std::cout << "\n\n total blocks to retrieve: " << blocks_batch_frame.size() + cached_batch_frame.size() << " \n" << std::endl;
 
-	std::string sources[2] = { "disk", "cache" };
+	std::string sources[2] = { "cpu", "gpu" };
 	std::vector<ivec3> frame_sources[2] = { blocks_batch_frame, cached_batch_frame };
 
-	for (int s = 0; s < 2; s++) {
-		std::cout << "\nsize batch from " << sources[s] << ": " << frame_sources[s].size() << " \n" << std::endl;
+	// plain fifo or lru never use cached_batch_frame
+	int s = frame_sources[0].empty() ? 1 : 0;
+	int end_batch = frame_sources[1].empty() ? 1 : 2;
+
+	disk_read_count = 0;
+	for (s; s < end_batch; s++) {
+		std::cout << "\nsize batch for " << sources[s] << " cache: " << frame_sources[s].size() << " \n" << std::endl;
 
 		for (int i = 0; i < frame_sources[s].size(); i++) {
 
+			// premature termination ========= 
 			blocks_in_progress_lock.lock();
 			bool queued_blocks = s == 0 ? !disk_queue_blocks.empty() : !cache_queue_blocks.empty();
 			blocks_in_progress_lock.unlock();
@@ -214,23 +237,28 @@ void cache_manager::retrieve_blocks_in_plane() {
 				restart_lock.unlock();
 
 				cancelled = true;
-				std::cout << "cancelled remaining " << frame_sources[s].size() - i << " blocks from " << sources[s] << std::endl;
+				std::cout << "cancelled remaining " << frame_sources[s].size() - i << " blocks for: " << sources[s] << std::endl;
 				break;
 			}
 
+			// ==============================
+
 			if (s == 0) {
-				fifo_refer(blocks_batch_frame[i], nr_blocks, block_size, df_dim);
+				cpu_refer(blocks_batch_frame[i], nr_blocks, block_size, df_dim);
 
 			} else {
 				cpu_cache_lock.lock();
 				char* block_ptr = cpu_block_cache_map[cached_batch_frame[i]];
 				cpu_cache_lock.unlock();
 
-				gpu_fifo_refer(cached_batch_frame[i], block_ptr);
+				gpu_refer(cached_batch_frame[i], block_ptr);
 			}
 
-			if (i % 1000 == 0 || i % (frame_sources[s].size()-1) == 0) {
-				std::cout << "blocks read from " << sources[s] << ":" << i+1 << " " << std::endl;
+			int ten_percentage = int(ceil(0.1*frame_sources[s].size()));
+			ten_percentage = ten_percentage == 0 ? 1 : ten_percentage;
+
+			if (i % ten_percentage == 0 || i % (frame_sources[s].size()-1) == 0) {
+				std::cout << "blocks processed for " << sources[s] << ": " << i + 1 << ", total read from disk : " << disk_read_count << std::endl;
 			}
 		}
 	}
@@ -238,12 +266,14 @@ void cache_manager::retrieve_blocks_in_plane() {
 	if (!cancelled) {
 		std::cout << "finished batch of " << blocks_batch_frame.size() + cached_batch_frame.size() << " blocks. Currently  " << cpu_block_cache_map.size() << " blocks in cpu and " << gpu_block_cache_map.size() << " in gpu " << std::endl;
 		
-		// no real effect for now but this should update the frame with the new block textures loaded.
+		// update the frame with the new block textures loaded.
 		vs.post_redraw();
 	}
+
 	process_running = false;
 }
 
+//retrieve block from disk using the open files
 char* cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim) {
 	
 	//std::cout << "retrieving block at: " << block(0) << ", " << block(1) << ", " << block(2) << ", " << std::endl;
@@ -275,9 +305,10 @@ char* cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& bloc
 
 				bool result = fread(block_ptr, block_size, 1, fp) == 1;
 
-				if (result) 
+				if (result) {
+					disk_read_count++;
 					return block_ptr;
-				else {
+				} else {
 					std::cout << "failed to read block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slices" << std::endl;
 					return "";
 				}
@@ -295,12 +326,31 @@ char* cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& bloc
 	}
 }
 
-void cache_manager::fifo_refer(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim) {
+// interface selector
+void cache_manager::cpu_refer(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim) {
 	
-	// note: because of the request_blocks filtering of blocks not in cache, we assume this function will never be called with a block already present in cpu cache
+	if (selected_cache_policy == 0 || selected_cache_policy == 2) {
+		cpu_fifo_refer(block, nr_blocks, block_size, df_dim);
+	} else {
+		cpu_lru_refer(block, nr_blocks, block_size, df_dim);
+	}
+}
+
+void cache_manager::gpu_refer(ivec3& block, char* block_ptr) {
+	if (selected_cache_policy == 0 || selected_cache_policy == 2) {
+		gpu_fifo_refer(block, block_ptr);
+	} else {
+		gpu_lru_refer(block, block_ptr);
+	}
+}
+
+// fifo methods
+void cache_manager::cpu_fifo_refer(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim) {
+
+	// note: because of the request_blocks filtering of blocks not in cache, we can assume this function will never be called with a block already present in cpu cache
 
 	cpu_cache_lock.lock();
-	
+
 	if (cpu_blocks_queue.size() == cpu_cache_size_blocks) {
 
 		ivec3 last = cpu_blocks_queue.back();
@@ -316,10 +366,10 @@ void cache_manager::fifo_refer(ivec3& block, ivec3& nr_blocks, size_t& block_siz
 	cpu_blocks_queue.push_front(block);
 
 	char* block_ptr = cpu_block_cache_map[block];
-	
+
 	cpu_cache_lock.unlock();
 
-	gpu_fifo_refer(block, block_ptr);
+	gpu_refer(block, block_ptr);
 }
 
 void cache_manager::gpu_fifo_refer(ivec3& block, char* block_ptr) {
@@ -336,7 +386,70 @@ void cache_manager::gpu_fifo_refer(ivec3& block, char* block_ptr) {
 	// call upload to gpu should go here, using block_ptr
 	gpu_block_cache_map[block] = "";
 	gpu_blocks_queue.push_front(block);
+
+	gpu_cache_lock.unlock();
+}
+
+// lru methods
+void cache_manager::cpu_lru_refer(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim) {
+
+	// note: because of the request_blocks filtering of blocks not in cache, we can assume this function will never be called with a block already present in cpu cache
+
+	cpu_cache_lock.lock();
+
+	//not in cache
+	if (manager_cpu_blocks_queue.find(block) == manager_cpu_blocks_queue.end()) {
+		// cache is full
+		if (cpu_blocks_queue.size() == cpu_cache_size_blocks) {
+
+			ivec3 last = cpu_blocks_queue.back();
+			cpu_blocks_queue.pop_back();
+			manager_cpu_blocks_queue.erase(last);
+			cpu_block_cache_map.erase(last);
+		}
+	} else {
+		cpu_blocks_queue.erase(manager_cpu_blocks_queue[block]);
+	}
+
+	restart_lock.lock();
+	bool slices_available = slices_path != "";
+	restart_lock.unlock();
+
+	if (cpu_block_cache_map.find(block) == cpu_block_cache_map.end()) {
+		cpu_block_cache_map[block] = slices_available ? retrieve_block(block, nr_blocks, block_size, df_dim) : "";
+	}
+
+	cpu_blocks_queue.push_front(block);
+	manager_cpu_blocks_queue[block] = cpu_blocks_queue.begin();
+	char* block_ptr = cpu_block_cache_map[block];
+
+	cpu_cache_lock.unlock();
+
+	gpu_refer(block, block_ptr);
+}
+
+void cache_manager::gpu_lru_refer(ivec3& block, char* block_ptr) {
+
+	gpu_cache_lock.lock();
+
+	//not in cache
+	if (manager_gpu_blocks_queue.find(block) == manager_gpu_blocks_queue.end()) {
+		// cache is full
+		if (gpu_blocks_queue.size() == gpu_cache_size_blocks) {
+			ivec3 last = gpu_blocks_queue.back();
+			gpu_blocks_queue.pop_back();
+			manager_gpu_blocks_queue.erase(last);
+			gpu_block_cache_map.erase(last);
+		}
+	} else {
+		gpu_blocks_queue.erase(manager_gpu_blocks_queue[block]);
+	}
 	
+	// call upload to gpu should go here, using block_ptr
+	gpu_block_cache_map[block] = "";
+	gpu_blocks_queue.push_front(block);
+	manager_gpu_blocks_queue[block] = gpu_blocks_queue.begin();
+
 	gpu_cache_lock.unlock();
 }
 
