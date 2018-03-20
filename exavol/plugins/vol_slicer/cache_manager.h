@@ -43,6 +43,10 @@ class cache_manager {
 	int thread_amount;
 	int thread_limit;
 
+	// cache policy selection 
+	bool lru_or_fifo = 0;
+	
+	bool signal_kill = false;
 	bool signal_restart;
 	bool process_running;
 
@@ -53,30 +57,32 @@ class cache_manager {
 	std::vector<ivec3> disk_queue_blocks;
 	std::vector<ivec3> cache_queue_blocks;
 	
-
 	// manages cpu cache blocks
+	std::unordered_map < ivec3, std::list<ivec3>::iterator, container_hash<ivec3 >> manager_cpu_blocks_queue;
 	std::list<ivec3> cpu_blocks_queue;
 	// cpu level cache
 	std::unordered_map < ivec3, char*, container_hash<ivec3 >> cpu_block_cache_map;
 	// cpu mutexes
 	std::mutex cpu_cache_lock;
-	std::mutex cpu_blocks_queue_lock;
 
 	// manages gpu cache blocks
+	std::unordered_map < ivec3, std::list<ivec3>::iterator, container_hash<ivec3 >> manager_gpu_blocks_queue;
 	std::list<ivec3> gpu_blocks_queue;
 	// gpu level cache mirror (typically smaller than cpu)
 	std::unordered_map < ivec3, char*, container_hash<ivec3 >> gpu_block_cache_map;
 	// gpu mutexes
 	std::mutex gpu_cache_lock;
-	std::mutex gpu_blocks_queue_lock;
 
 	// general mutexes
 	std::mutex blocks_in_progress_lock;
 	std::mutex thread_report;
 	std::mutex slices_files_lock;
 	std::mutex restart_lock;
+	std::mutex kill_lock;
 
 public:
+
+
 	///constructor receives volume_slicer reference 
 	/// to use the post_redraw method when a batch of blocks is ready
 	cache_manager(volume_slicer &f);
@@ -88,6 +94,9 @@ public:
 
 	// starts infinite loop to receive requests and handle them
 	void cache_manager::init_listener();
+
+	// starts infinite loop to receive requests and handle them
+	void cache_manager::kill_listener();
 
 	// endless loop to check for new blocks to load
 	void cache_manager::main_loop();
@@ -101,8 +110,11 @@ public:
 	// updates the gpu 
 	void cache_manager::gpu_fifo_refer(ivec3& block, char* block_ptr);
 
-	// spawns threads to retrieve all blocks
+	// processes blocks that need to be retrieved from disk before gpu processing
 	void cache_manager::retrieve_blocks_in_plane();
+
+	// passes cpu blocks to gpu
+	void cache_manager::transfer_cpu_to_gpu();
 
 	// loads a block for the lru_refer
 	char* cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim);

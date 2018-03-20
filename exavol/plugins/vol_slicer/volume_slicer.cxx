@@ -765,12 +765,6 @@ void volume_slicer::init_frame(cgv::render::context& ctx)
 	if (!surface_prog.is_created())
 		surface_prog.build_program(ctx, "surface.glpr", true);
 
-	// upload more texture data for block based volumes
-	if (new_batch) {
-		threaded_cache_manager.request_blocks(intersected_blocks);
-		new_batch = false;
-	}
-
 	/*
 	if (data_texture.is_created()) {
 		cgv::data::data_format df(170, 170, 170, cgv::type::info::TI_UINT8, cgv::data::CF_R);
@@ -1090,7 +1084,7 @@ void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
 				if (nr_blocks(d_max) > k && k >= 0) {
 					ivec3 block = (ivec3) make_vec_d_max(d_max, (float) k, i0, i1);
 
-					if (previous_intersected_blocks.find(block) == previous_intersected_blocks.end())
+					if (previous_intersected_blocks.find(block) == previous_intersected_blocks.end()) 
 						new_batch = true;
 
 					intersected_blocks.push_back(block);
@@ -1244,6 +1238,11 @@ void volume_slicer::draw(cgv::render::context& ctx)
 	
 	if (block_config != "") {
 		update_intersected_blocks(ctx);
+		// upload more texture data for block based volumes
+		if (new_batch) {
+			threaded_cache_manager.request_blocks(intersected_blocks);
+			new_batch = false;
+		}
 	}
 	
 	if (show_block) {
@@ -1362,7 +1361,7 @@ void volume_slicer::clear(cgv::render::context& ctx)
 	indexed_tex_slice_prog.destruct(ctx);
 	data_texture.destruct(ctx);
 	index_texture.destruct(ctx);
-	threaded_cache_manager.close_slices_files();
+	threaded_cache_manager.kill_listener();
 }
 
 ///

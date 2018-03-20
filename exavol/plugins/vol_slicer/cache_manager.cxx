@@ -17,8 +17,8 @@ cache_manager::cache_manager(volume_slicer &f) : vs(f) {
 
 	slices_path = "";
 	slices_dimensions = ivec3(0, 0, 0);
-	cpu_cache_size_blocks = 150000; //should be calculated from the CPU capacity if possible
-	gpu_cache_size_blocks = 15000; //should be calculated from the GPU capacity if possible
+	cpu_cache_size_blocks = 15000; //should be calculated from the CPU capacity if possible
+	gpu_cache_size_blocks = 1500; //should be calculated from the GPU capacity if possible
 
 	// extra validation for threaded approaches
 	thread_limit = 8; 
@@ -89,19 +89,33 @@ void cache_manager::init_listener() {
 	thread_report.unlock();
 }
 
+void cache_manager::kill_listener() {
+	kill_lock.lock();
+	signal_kill = true;
+	kill_lock.unlock();
+}
+
 void cache_manager::main_loop() {
 	
 	while (true) {
+
+		// handle termination from the vol slicer when it didnt die on close
+		kill_lock.lock();
+		if (signal_kill) {
+			kill_lock.unlock();
+			close_slices_files();
+			break;
+		}
+		kill_lock.unlock();
 		
 		blocks_in_progress_lock.lock();
-		bool something_to_do = !disk_queue_blocks.empty();
+		bool something_to_do = !disk_queue_blocks.empty() || !cache_queue_blocks.empty();
 		blocks_in_progress_lock.unlock();
 
 		thread_report.lock();
-
-		if (thread_amount > 2) {
+		if (thread_amount > 1) 
 			std::cout << "SOMETHING IS WRONG" << std::endl;
-		}
+		thread_report.unlock();
 
 		restart_lock.lock();
 		bool start_retrieval = thread_amount < thread_limit && something_to_do && !process_running && slices_path != "";
@@ -111,7 +125,6 @@ void cache_manager::main_loop() {
 			process_running = true;
 			retrieve_blocks_in_plane();
 		}
-		thread_report.unlock();
 	}
 }
 
@@ -129,15 +142,21 @@ void cache_manager::request_blocks(std::vector<ivec3> blocks_batch) {
 			new_blocks = true;
 			
 		} else {
-			cache_queue_blocks.push_back(it);
+			gpu_cache_lock.lock();
+			bool block_in_gpu = gpu_block_cache_map.find(it) != gpu_block_cache_map.end();
+			gpu_cache_lock.unlock();
+
+			if (!block_in_gpu) {
+				cache_queue_blocks.push_back(it);
+				new_blocks = true;
+			}	
 		}
 	}
 
-	if (new_blocks) {
-		restart_lock.lock();
-		signal_restart = true;
-		restart_lock.unlock();
-	}
+	std::cout << "new batch" << std::endl;
+	restart_lock.lock();
+	signal_restart = true;
+	restart_lock.unlock();
 		
 	blocks_in_progress_lock.unlock();
 }
@@ -161,7 +180,6 @@ void cache_manager::retrieve_blocks_in_plane() {
 
 	blocks_in_progress_lock.unlock();
 
-	
 	ivec3 nr_blocks(unsigned(ceil(float(dimensions(0)) / block_dimensions(0))), unsigned(ceil(float(dimensions(1)) / block_dimensions(1))), unsigned(ceil(float(dimensions(2)) / block_dimensions(2))));
 	size_t block_size = (long) ( (block_dimensions(1) + overlap(1))*
 		((block_dimensions(0) + overlap(0))*
@@ -174,49 +192,45 @@ void cache_manager::retrieve_blocks_in_plane() {
 
 	std::cout << "\n\n total blocks to retrieve: " << blocks_batch_frame.size() + cached_batch_frame.size() << " \n" << std::endl;
 
-
 	std::string sources[2] = { "disk", "cache" };
 	std::vector<ivec3> frame_sources[2] = { blocks_batch_frame, cached_batch_frame };
 
 	for (int s = 0; s < 2; s++) {
-		if (!cancelled) {
+		std::cout << "\nsize batch from " << sources[s] << ": " << frame_sources[s].size() << " \n" << std::endl;
 
-			std::cout << "\nsize batch from " << sources[s] << ": " << frame_sources[s].size() << " \n" << std::endl;
+		for (int i = 0; i < frame_sources[s].size(); i++) {
 
-			for (int i = 0; i < frame_sources[s].size(); i++) {
+			blocks_in_progress_lock.lock();
+			bool queued_blocks = s == 0 ? !disk_queue_blocks.empty() : !cache_queue_blocks.empty();
+			blocks_in_progress_lock.unlock();
 
-				blocks_in_progress_lock.lock();
-				bool queued_blocks = s == 0 ? !disk_queue_blocks.empty() : !cache_queue_blocks.empty();
-				blocks_in_progress_lock.unlock();
+			restart_lock.lock();
+			bool restart = (signal_restart && queued_blocks) | slices_path == "";
+			restart_lock.unlock();
 
+			if (restart) {
 				restart_lock.lock();
-				bool restart = (signal_restart && queued_blocks) | slices_path == "";
+				signal_restart = false;
 				restart_lock.unlock();
 
-				if (restart) {
-					restart_lock.lock();
-					signal_restart = false;
-					restart_lock.unlock();
+				cancelled = true;
+				std::cout << "cancelled remaining " << frame_sources[s].size() - i << " blocks from " << sources[s] << std::endl;
+				break;
+			}
 
-					cancelled = true;
-					std::cout << "cancelled remaining " << frame_sources[s].size() - i << " blocks from " << sources[s] << std::endl;
-					break;
-				}
+			if (s == 0) {
+				fifo_refer(blocks_batch_frame[i], nr_blocks, block_size, df_dim);
 
-				if (s == 0) {
-					fifo_refer(blocks_batch_frame[i], nr_blocks, block_size, df_dim);
+			} else {
+				cpu_cache_lock.lock();
+				char* block_ptr = cpu_block_cache_map[cached_batch_frame[i]];
+				cpu_cache_lock.unlock();
 
-				} else {
-					cpu_cache_lock.lock();
-					char* block_ptr = cpu_block_cache_map[cached_batch_frame[i]];
-					cpu_cache_lock.unlock();
+				gpu_fifo_refer(cached_batch_frame[i], block_ptr);
+			}
 
-					gpu_fifo_refer(cached_batch_frame[i], block_ptr);
-				}
-
-				if (i % 1000 == 0 || i % (frame_sources[s].size()-1) == 0) {
-					std::cout << "blocks read from " << sources[s] << ":" << i+1 << " " << std::endl;
-				}
+			if (i % 1000 == 0 || i % (frame_sources[s].size()-1) == 0) {
+				std::cout << "blocks read from " << sources[s] << ":" << i+1 << " " << std::endl;
 			}
 		}
 	}
@@ -284,9 +298,7 @@ char* cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& bloc
 void cache_manager::fifo_refer(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim) {
 	
 	// note: because of the request_blocks filtering of blocks not in cache, we assume this function will never be called with a block already present in cpu cache
-	
-	//lock mutexes
-	cpu_blocks_queue_lock.lock();
+
 	cpu_cache_lock.lock();
 	
 	if (cpu_blocks_queue.size() == cpu_cache_size_blocks) {
@@ -304,18 +316,14 @@ void cache_manager::fifo_refer(ivec3& block, ivec3& nr_blocks, size_t& block_siz
 	cpu_blocks_queue.push_front(block);
 
 	char* block_ptr = cpu_block_cache_map[block];
-
-	//unlock mutexes
-	cpu_cache_lock.unlock();
-	cpu_blocks_queue_lock.unlock();
 	
+	cpu_cache_lock.unlock();
+
 	gpu_fifo_refer(block, block_ptr);
 }
 
 void cache_manager::gpu_fifo_refer(ivec3& block, char* block_ptr) {
 
-	//lock mutexes
-	gpu_blocks_queue_lock.lock();
 	gpu_cache_lock.lock();
 
 	// cache is full
@@ -325,13 +333,11 @@ void cache_manager::gpu_fifo_refer(ivec3& block, char* block_ptr) {
 		gpu_block_cache_map.erase(last);
 	}
 
+	// call upload to gpu should go here, using block_ptr
 	gpu_block_cache_map[block] = "";
 	gpu_blocks_queue.push_front(block);
-	// call upload to gpu should go here
-
-	//unlock mutexes
+	
 	gpu_cache_lock.unlock();
-	gpu_blocks_queue_lock.unlock();
 }
 
 
