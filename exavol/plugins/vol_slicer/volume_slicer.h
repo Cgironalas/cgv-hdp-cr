@@ -193,7 +193,6 @@ public:
 	//@}
 	/**@name slicing*/
 	//@{
-protected:
 	/// slice normal in texture coordinates
 	vec3 slice_normal_tex;
 	/// distance to center of volume in texture coordinates

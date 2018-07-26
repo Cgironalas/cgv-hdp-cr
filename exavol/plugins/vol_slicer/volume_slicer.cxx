@@ -1600,7 +1600,6 @@ void volume_slicer::set_block_structure(std::string) {
 	threaded_cache_manager.set_block_folder(slices_path);
 	std::cout << "success reading the block configuration file\n" << std::endl;
 	threaded_cache_manager.request_blocks(intersected_blocks);
-
 }
 
 #include <cgv/base/register.h>

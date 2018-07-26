@@ -21,10 +21,16 @@ cache_manager::cache_manager(volume_slicer &f) : vs(f) {
 
 	// extra validation for threaded approaches
 	thread_limit = 8; 
-	selected_cache_policy = 1;
+	
+	selected_cache_policy = 2;
+	std::cout << "selected cache policy " << selected_cache_policy << std::endl;
 
 	process_running = false;
 	signal_restart = false;
+
+	if (test_mode == 1) {
+		init_test_array();
+	}
 }
 
 void cache_manager::init_listener() {
@@ -217,6 +223,15 @@ void cache_manager::retrieve_blocks_in_plane() {
 	int end_batch = frame_sources[1].empty() ? 1 : 2;
 
 	disk_read_count = 0;
+
+	if (test_mode == 1) {
+		time_record_lock.lock();
+		retrieval_ongoing = false;
+		time_record_lock.unlock();
+	}
+
+	std::clock_t start = std::clock();
+
 	for (s; s < end_batch; s++) {
 		std::cout << "\nsize batch for " << sources[s] << " cache: " << frame_sources[s].size() << " \n" << std::endl;
 
@@ -240,12 +255,11 @@ void cache_manager::retrieve_blocks_in_plane() {
 				std::cout << "cancelled remaining " << frame_sources[s].size() - i << " blocks for: " << sources[s] << std::endl;
 				break;
 			}
-
 			// ==============================
+
 
 			if (s == 0) {
 				cpu_refer(blocks_batch_frame[i], nr_blocks, block_size, df_dim);
-
 			} else {
 				cpu_cache_lock.lock();
 				char* block_ptr = cpu_block_cache_map[cached_batch_frame[i]];
@@ -266,10 +280,28 @@ void cache_manager::retrieve_blocks_in_plane() {
 	if (!cancelled) {
 		std::cout << "finished batch of " << blocks_batch_frame.size() + cached_batch_frame.size() << " blocks. Currently  " << cpu_block_cache_map.size() << " blocks in cpu and " << gpu_block_cache_map.size() << " in gpu " << std::endl;
 		
+		if (test_mode == 1) {
+			time_record_lock.lock();
+			retrieval_ongoing = false;
+			duration = static_cast<double>(std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
+			durations.push_back(duration);
+			time_record_lock.unlock();
+
+			next_test();
+		}
+		
+		std::cout << " duration of refers" << duration << std::endl;
+
 		// update the frame with the new block textures loaded.
 		vs.post_redraw();
+	} else {
+		if (test_mode == 1) {
+			time_record_lock.lock();
+			retrieval_ongoing = false;
+			time_record_lock.unlock();
+		}
 	}
-
+	
 	process_running = false;
 }
 
@@ -453,7 +485,6 @@ void cache_manager::gpu_lru_refer(ivec3& block, char* block_ptr) {
 	gpu_cache_lock.unlock();
 }
 
-
 //! write a block located at \c data_ptr to a tiff file
 bool cache_manager::write_tiff_block(std::string& file_name, char* data_ptr, vec3 df_dim, std::string& options)
 {
@@ -477,4 +508,89 @@ bool cache_manager::write_tiff_block(std::string& file_name, char* data_ptr, vec
 		}
 	}
 	return iw.close();
+}
+
+
+void cache_manager::init_test_array() {
+	
+	tests.push_back(vec3(0, 0, 1)); //default configuration
+	tests.push_back(vec3(0, 1, 0));
+	tests.push_back(vec3(1, 0, 0));
+	
+	// creates rotation on x
+	for (double i = 0; i < 10; i++) {
+		tests.push_back(vec3(0, 1 - (i / 10), i / 10));
+	}
+
+	// creates rotation on y
+	for (double i = 0; i < 10; i++) {
+		tests.push_back(vec3(1 - (i / 10), 0, i / 10));
+	}
+
+	// creates rotation on over z
+	for (double i = 0; i < 10; i++) {
+		tests.push_back(vec3(i / 10, 1 - (i / 10), 0));
+	}
+
+	// creates random positions
+	for (int i = 0; i < 10; i++) {
+		double x = std::rand() % 100;
+		double y = std::rand() % 100;
+		double z = std::rand() % 100;
+		int sum = (x + y + z);
+		x /= sum;
+		y /= sum;
+		z /= sum;
+		tests.push_back(vec3(x, y, z));
+	}
+
+	//block configs (all tests in "tests" are done to each configuration)
+	block_configs.push_back("D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/block_config64.bsdc");
+	block_configs.push_back("D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/block_config32.bsdc");
+	
+}
+
+void cache_manager::next_test() {
+	tests_executed += 1;
+
+	if (tests_executed >= tests.size()) {
+
+		if (block_configs.size() == 0) { //testing is finished
+
+			std::cout << " \n\nTEST results: \n " << std::endl;
+
+			for (int j = 0; j < 3; j++) { //repeats tests for the 3 available block config 
+				double avg_duration = 0;
+				std::cout << " \n\n new block size \n\n" << std::endl;
+
+				for (int i = 0; i < tests.size(); i++) {
+					std::cout << " average duration of tests " << tests[i] << " : " << durations[i + (j*tests.size())] << std::endl;
+					avg_duration += durations[i + (j*tests.size())];
+				}
+
+				avg_duration /= tests.size();
+				std::cout << " average duration of tests " << avg_duration << std::endl;
+			}
+			
+		} else { //move on to next block config
+
+			vs.block_config = block_configs[block_configs.size() - 1];
+			block_configs.pop_back();
+			vs.on_set(&vs.block_config);
+			
+			tests_executed = 0;
+			vs.slice_normal_tex = tests[tests_executed];
+
+			vs.on_set(&vs.slice_normal_tex[0]);
+			vs.on_set(&vs.slice_normal_tex[1]);
+			vs.on_set(&vs.slice_normal_tex[2]);
+		}
+	} else { //change slice_normal values to those of new test
+		std::cout << " next test " << tests[tests_executed] << std::endl;
+		vs.slice_normal_tex = tests[tests_executed];
+
+		vs.on_set(&vs.slice_normal_tex[0]);
+		vs.on_set(&vs.slice_normal_tex[1]);
+		vs.on_set(&vs.slice_normal_tex[2]);
+	}
 }

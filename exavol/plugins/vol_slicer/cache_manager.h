@@ -49,7 +49,7 @@ class cache_manager {
 		std::mutex thread_report;
 
 		// cache policy selection (0 = custom, 1 = lru, 2 = fifo)
-		bool selected_cache_policy = 0;
+		int selected_cache_policy = 0;
 	
 		bool signal_kill = false;
 		bool signal_restart;
@@ -143,6 +143,7 @@ class cache_manager {
 
 /**@lru cache policy related*/
 //@{
+
 	private:
 	
 		//save iterators from list for faster lookup
@@ -155,6 +156,31 @@ class cache_manager {
 
 		// updates the gpu 
 		void cache_manager::gpu_lru_refer(ivec3& block, char* block_ptr);
+
+//@}
+
+
+/**@configuration testing and time recording*/
+//@{
+
+	private:
+		bool retrieval_ongoing = false;
+		int tests_executed = 0;
+		
+		double duration = 0.0;
+
+		std::vector<vec3> tests;
+		std::vector<std::string> block_configs;
+		std::vector<double> durations;
+
+		std::mutex time_record_lock;
+
+	public:
+		// 0 = inactive, 1 = active
+		int test_mode = 1; 
+		// moves the slice and records loading times
+		void cache_manager::next_test();
+		void cache_manager::init_test_array();
 //@}
 
 };
