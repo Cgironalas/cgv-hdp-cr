@@ -177,7 +177,7 @@ class cache_manager {
 
 	public:
 		// 0 = inactive, 1 = active
-		int test_mode = 1; 
+		int test_mode = 0; 
 		// moves the slice and records loading times
 		void cache_manager::next_test();
 		void cache_manager::init_test_array();
