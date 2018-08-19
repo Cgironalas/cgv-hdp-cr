@@ -243,7 +243,7 @@ char* retrieve_block(const block_generation_info& bgi, volume::dimension_type bl
 		size_t block_size = bgi.get_block_size();
 
 		// compute block index and pointer to block data
-		unsigned bi = block(1) * nr_blocks(0) + block(0);
+		unsigned bi = block(0) * nr_blocks(1) + block(1);
 		char* block_ptr = new char[block_size];
 
 		// read only the block
@@ -258,7 +258,8 @@ char* retrieve_block(const block_generation_info& bgi, volume::dimension_type bl
 					fseek(fp, offset, SEEK_SET);
 				}
 				else {
-					std::cout << "failed to locate pointer for block at: " << block(0) << ", " << block(1) << ", " << block(2) << std::endl;
+					std::cout << "failed to locate block at: [" << block(0) << ", " << block(1) << ", " << block(2) << "] from block slice " << std::endl;
+					std::cout << "block size " << block_size << ", block slice size: " << file_length << ", bi: " << bi << ", nr_blocks: [" << nr_blocks(0) << ", " << nr_blocks(1) << ", " << nr_blocks(2) << "]\n" << std::endl;
 					return "";
 				}
 
@@ -417,7 +418,7 @@ bool build_blocks_from_directory(const std::string& input_path, const std::strin
 					written_consecutive += 1;
 
 					//Test tiff writing
-					if (written_consecutive < 15) {
+					if (false /*written_consecutive < 15*/) {
 						std::string name = output_path + "/blocks/tiff_" + std::to_string(i) + "_" + std::to_string(j) + "_" + std::to_string(z);
 						std::cout << name << std::endl;
 						//std::cin.get();
@@ -919,7 +920,8 @@ bool build_oriented_block_slices_from_existing (const std::string& input_path, c
 					int bi = y * nr_blocks(2) + z;
 					char* block_data_ptr = &block_data[bi *  bgi.get_block_size()];
 					char* block_ptr = retrieve_block(bgi, (x, y, z), files);
-					std::copy(block_ptr, block_ptr + bgi.get_block_size(), block_data_ptr);		
+					std::copy(block_ptr, block_ptr + bgi.get_block_size(), block_data_ptr);	
+					delete block_ptr;
 				}
 			}
 
@@ -948,6 +950,7 @@ bool build_oriented_block_slices_from_existing (const std::string& input_path, c
 					char* block_data_ptr = &block_data[bi *  bgi.get_block_size()];
 					char* block_ptr = retrieve_block(bgi, (x, y, z), files);
 					std::copy(block_ptr, block_ptr + bgi.get_block_size(), block_data_ptr);
+					delete block_ptr;
 				}
 			}
 
@@ -976,16 +979,16 @@ bool build_oriented_block_slices_from_existing (const std::string& input_path, c
 //Testing:
 void init_to_visible_human_male_png(block_generation_info& bgi)
 {
-	int width = 512;
-	int height = 304;
-	int amount = 200;
+	int width = 2048; //512
+	int height = 1216; //304
+	int amount = 1878;
 
 	bgi.type_id = cgv::type::info::TI_UINT8;
 	bgi.components = cgv::data::CF_RGB;
 	bgi.dimensions.set(width, height, amount);
 	bgi.extent.set(width * 0.114f, height * 0.114f, amount * 1.0f);
 
-	bgi.block_dimensions.set(64, 64, 64);
+	bgi.block_dimensions.set(15, 15, 15);
 	bgi.overlap.set(1, 1, 1);
 	bgi.subsampling_factor.set(2, 2, 2);
 	bgi.subsampling_offset.set(0, 0, 3);
@@ -1015,22 +1018,25 @@ int main(int argc, char** argv)
 	build_level_infos(visible_human);
 
 	std::string bk = "E:/data/visual_human/male/PNG_format/head";
-	std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/sources/test_sample/";
-	std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/test_sample/";
+	//std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/sources/test_sample/";
+	//std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/test_sample/";
 
-
-	if (build_oriented_block_slices_from_existing(output_path + "_z/", output_path, visible_human)) {
-		std::cout << "success" << std::endl;
-	} else {
-		std::cout << "failed" << std::endl;
-	}
+	std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/sources/png/";
+	std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/multiple/16x16x16/";
 
 	// Generate the blocks in slice
-	/*if (build_blocks_from_directory(input_path, output_path + "_z/", visible_human)) {
-		std::cout << "success" << std::endl; 	
+	if (build_blocks_from_directory(input_path, output_path + "_z/", visible_human)) {
+		std::cout << "success. Building x and y orientations" << std::endl; 	
+		
+		if (build_oriented_block_slices_from_existing(output_path + "_z/", output_path, visible_human)) {
+			std::cout << "success" << std::endl;
+		}
+		else {
+			std::cout << "failed" << std::endl;
+		}
 	} else { 
 		std::cout << "failed" << std::endl; 
-	}*/
+	}
 
 	// Test retrieve block from block slices
     //if (write_block_from_slice(visible_human, output_path, "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices/blocks", cgv::math::fvec<double, 3>(32,0,0.0))) { std::cout << "success" << std::endl; }

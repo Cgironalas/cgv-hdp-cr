@@ -16,13 +16,13 @@
 cache_manager::cache_manager(volume_slicer &f) : vs(f) {
 
 	slices_path = "";
-	cpu_cache_size_blocks = 15000; //could be calculated from the CPU capacity if possible
+	cpu_cache_size_blocks = 1500; //could be calculated from the CPU capacity if possible
 	gpu_cache_size_blocks = 1500; //could be calculated from the GPU capacity if possible
 
 	// extra validation for threaded approaches
 	thread_limit = 8; 
 	
-	selected_cache_policy = 2;
+	selected_cache_policy = 1;
 	std::cout << "selected cache policy " << selected_cache_policy << std::endl;
 
 	process_running = false;
@@ -58,24 +58,9 @@ void cache_manager::set_block_folder(std::string folder_path) {
 
 	close_slices_files();
 	if (slices_path != "") {
-	
-		void* handle = cgv::utils::file::find_first(folder_path + "*.*");
-		while (handle) {
-			if (!cgv::utils::file::find_directory(handle)) {
-				std::string file_name = folder_path + cgv::utils::file::find_name(handle);
-				slices_files_names.push_back(file_name);
-
-				FILE* fp = fopen(file_name.c_str(), "rb");
-				if (fp != NULL) 
-					slices_files.push_back(fp);
-				else {
-					slices_path = folder_path;
-					break;
-				}
-			}
-				
-			handle = cgv::utils::file::find_next(handle);
-		}
+		open_slices_files(folder_path + "_x/");
+		open_slices_files(folder_path + "_y/");
+		open_slices_files(folder_path + "_z/");
 	}
 	
 	manager_cpu_blocks_queue.clear();
@@ -93,6 +78,38 @@ void cache_manager::set_block_folder(std::string folder_path) {
 	cpu_cache_lock.unlock();
 	gpu_cache_lock.unlock();
 	blocks_in_progress_lock.unlock();
+}
+
+void cache_manager::open_slices_files(std::string folder_path) {
+	void* handle = cgv::utils::file::find_first(folder_path + "*.*");
+	std::cout << "\n\n opening slices files at: '" << folder_path << "' \n\n" << std::endl;
+
+	bool success = false;
+	while (handle) {
+
+		if (!cgv::utils::file::find_directory(handle)) {
+			std::string file_name = folder_path + cgv::utils::file::find_name(handle);
+
+			std::cout << file_name << std::endl;
+			slices_files_names.push_back(file_name);
+
+			FILE* fp = fopen(file_name.c_str(), "rb");
+			if (fp != NULL) {
+				slices_files.push_back(fp);
+				success = true;
+			} else {
+				success = false;
+				slices_path = folder_path;
+				break;
+			}
+		}
+		handle = cgv::utils::file::find_next(handle);
+	}
+
+	if (success) 
+		std::cout << "\n\n successfully opened all files at: '" << folder_path << "' \n\n" << std::endl;
+	else 
+		std::cout << "\n\n something went wrong when opening the files at: '" << folder_path <<  "'  please check your configuration file.\n\n" << std::endl;
 }
 
 void cache_manager::close_slices_files() {
@@ -132,6 +149,15 @@ void cache_manager::main_loop() {
 		if (start_retrieval) {
 			process_running = true;
 			retrieve_blocks_in_plane();
+			test_handle();
+		} else {
+			if (test_mode == 1 && automatic_test_ongoing == true) {
+				inactivity_counter++;
+				std::cout << "inactivity..." << inactivity_counter <<" restarting at: " << inactivity_limit << std::endl;
+				if (inactivity_counter == inactivity_limit) {
+					test_handle();
+				}
+			}
 		}
 	}
 }
@@ -189,6 +215,10 @@ void cache_manager::request_blocks(std::vector<ivec3> blocks_batch) {
 int disk_read_count = 0;
 void cache_manager::retrieve_blocks_in_plane() {
 
+	if (test_mode == 1) {
+		automatic_test_ongoing = true;
+	}
+
 	vec3 dimensions = vs.slices_dimensions;
 	vec3 block_dimensions = vs.block_dimensions;
 	std::cout << "\nblock sizes " << block_dimensions(0) << " " << block_dimensions(1) << " " << block_dimensions(1) << std::endl;
@@ -224,14 +254,7 @@ void cache_manager::retrieve_blocks_in_plane() {
 
 	disk_read_count = 0;
 
-	if (test_mode == 1) {
-		time_record_lock.lock();
-		retrieval_ongoing = false;
-		time_record_lock.unlock();
-	}
-
 	std::clock_t start = std::clock();
-
 	for (s; s < end_batch; s++) {
 		std::cout << "\nsize batch for " << sources[s] << " cache: " << frame_sources[s].size() << " \n" << std::endl;
 
@@ -280,30 +303,22 @@ void cache_manager::retrieve_blocks_in_plane() {
 	if (!cancelled) {
 		std::cout << "finished batch of " << blocks_batch_frame.size() + cached_batch_frame.size() << " blocks. Currently  " << cpu_block_cache_map.size() << " blocks in cpu and " << gpu_block_cache_map.size() << " in gpu " << std::endl;
 		
+		// update the frame with the new block textures loaded.
+		vs.post_redraw();
+		
 		if (test_mode == 1) {
 			time_record_lock.lock();
-			retrieval_ongoing = false;
 			duration = static_cast<double>(std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
 			durations.push_back(duration);
 			time_record_lock.unlock();
-
-			next_test();
-		}
-		
-		std::cout << " duration of refers" << duration << std::endl;
-
-		// update the frame with the new block textures loaded.
-		vs.post_redraw();
-	} else {
-		if (test_mode == 1) {
-			time_record_lock.lock();
-			retrieval_ongoing = false;
-			time_record_lock.unlock();
+			std::cout << " duration of refers" << duration << "\n\n" << std::endl;
 		}
 	}
-	
+
 	process_running = false;
 }
+
+static bool abs_compare(float a, float b) { return (std::abs(a) < std::abs(b)); }
 
 //retrieve block from disk using the open files
 char* cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim) {
@@ -311,16 +326,40 @@ char* cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& bloc
 	//std::cout << "retrieving block at: " << block(0) << ", " << block(1) << ", " << block(2) << ", " << std::endl;
 	try {
 
-		std::stringstream ss;
-		ss << slices_path << "level_00_blockslice_" << std::setw(3) << std::setfill('0') << block(2) << ".bvx";
+		vec3 world_slice_normal = vs.world_from_texture_normals(vs.slice_normal_tex);
+		int d = (int) std::distance(std::begin(world_slice_normal), std::max_element(std::begin(world_slice_normal), std::end(world_slice_normal), abs_compare));
 
 		// compute block index and pointer to block data
-		unsigned bi = block(1) * nr_blocks(0) + block(0);
+		std::string path_to_orientation;
+		unsigned bi;
+		unsigned slices_offset;
+
+		if (d == 0) {
+			slices_offset = 0; //x are opened first
+			path_to_orientation = "_x/";
+			bi = block(1) * nr_blocks(2) + block(2);
+		}
+
+		if (d == 1) {
+			slices_offset = nr_blocks(0); //ignore files from _x
+			path_to_orientation = "_y/";
+			bi = block(2) * nr_blocks(1) + block(0);
+		}
+
+		if (d == 2) {
+			slices_offset = nr_blocks(0) + nr_blocks(1); //ignore files from _x and _y
+			path_to_orientation = "_z/";
+			bi = block(0) * nr_blocks(1) + block(1);
+		}
+
+		std::stringstream ss;
+		ss << slices_path << path_to_orientation << "level_00_blockslice_" << std::setw(3) << std::setfill('0') << block(d) << ".bvx";
+
 		char* block_ptr = new char[block_size];
 
 		// throws exception at fread in some points 
-		if (block(2) <= slices_files.size()) {
-			FILE* fp = slices_files.at(block(2));
+		if (block(d) <= slices_files.size()) {
+			FILE* fp = slices_files.at(slices_offset + block(d));
 			if (fp != NULL) {
 				long offset = (long)(bi * block_size);
 
@@ -331,7 +370,8 @@ char* cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& bloc
 				if (file_length >= offset) 
 					fseek(fp, offset, SEEK_SET); 
 				else {
-					std::cout << "failed to locate pointer for block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slice " << ss.str() << std::endl;
+					std::cout << "failed to locate pointer for block at: [" << block(0) << ", " << block(1) << ", " << block(2) << "] from block slice " << ss.str() << std::endl;
+					std::cout << "block size " << block_size << ", block slice size: " << file_length << ", bi: " << bi << ", nr_blocks: [" << nr_blocks(0) << ", " << nr_blocks(1) << ", " << nr_blocks(2) <<"]\n" << std::endl;
 					return "";
 				}
 
@@ -387,6 +427,7 @@ void cache_manager::cpu_fifo_refer(ivec3& block, ivec3& nr_blocks, size_t& block
 
 		ivec3 last = cpu_blocks_queue.back();
 		cpu_blocks_queue.pop_back();
+
 		cpu_block_cache_map.erase(last);
 	}
 
@@ -513,23 +554,30 @@ bool cache_manager::write_tiff_block(std::string& file_name, char* data_ptr, vec
 
 void cache_manager::init_test_array() {
 	
+	double values[3];
 	tests.push_back(vec3(0, 0, 1)); //default configuration
 	tests.push_back(vec3(0, 1, 0));
 	tests.push_back(vec3(1, 0, 0));
 	
-	// creates rotation on x
-	for (double i = 0; i < 10; i++) {
-		tests.push_back(vec3(0, 1 - (i / 10), i / 10));
-	}
+	for (int i = 0; i < 3; i++) {
+		for (double r = 0; r < 30; r++) {
 
-	// creates rotation on y
-	for (double i = 0; i < 10; i++) {
-		tests.push_back(vec3(1 - (i / 10), 0, i / 10));
-	}
+			values[i] = 0;
+			values[(i + 1) % 3] = r / 10;
+			values[(i + 2) % 3] = 1 - (r / 10);
+			
+			tests.push_back(vec3(values[0], values[1], values[2]));
 
-	// creates rotation on over z
-	for (double i = 0; i < 10; i++) {
-		tests.push_back(vec3(i / 10, 1 - (i / 10), 0));
+			values[(i + 1) % 3] += 0.005;
+			values[(i + 2) % 3] -= 0.005;
+
+			tests.push_back(vec3(values[0], values[1], values[2]));
+
+			values[(i + 1) % 3] -= 0.01;
+			values[(i + 2) % 3] += 0.01;
+
+			tests.push_back(vec3(values[0], values[1], values[2]));
+		}
 	}
 
 	// creates random positions
@@ -537,25 +585,54 @@ void cache_manager::init_test_array() {
 		double x = std::rand() % 100;
 		double y = std::rand() % 100;
 		double z = std::rand() % 100;
-		int sum = (x + y + z);
+		double sum = (x + y + z);
 		x /= sum;
 		y /= sum;
 		z /= sum;
 		tests.push_back(vec3(x, y, z));
 	}
 
-	//block configs (all tests in "tests" are done to each configuration)
-	block_configs.push_back("D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/block_config64.bsdc");
-	block_configs.push_back("D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/block_config32.bsdc");
-	
+	for (auto it : tests) {
+		std::cout << "[" << it[0] << "," << it[1] << "," << it[2] << "]" << std::endl;
+	}
+
+	//block configs (all tests in the "tests" are done to each configuration)
+	block_configs.push_back("D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/multiple/block_config64.bsdc");
+	block_configs.push_back("D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/multiple/block_config32.bsdc");
+}
+
+void::cache_manager::test_handle() {
+
+	inactivity_counter = 0;
+	std::cout << "[" << durations.size() << "vs" << tests_executed << "]" << std::endl;
+
+	// empty test detected by inactivity counter
+	if (durations.size() == tests_executed ) {
+		std::cout << "[ === inserting empty test time == ]" << std::endl;
+		time_record_lock.lock();
+		duration = 0;
+		durations.push_back(duration);
+		time_record_lock.unlock();
+	}
+
+
+	if (durations.size() > tests_executed) {
+		next_test();
+	} else {
+		automatic_test_ongoing = false;
+		std::cout << "[ thread desynchronization ... ]" << std::endl;
+	}
+
+	std::cout << " duration of refers" << duration << std::endl;
 }
 
 void cache_manager::next_test() {
+	
 	tests_executed += 1;
-
 	if (tests_executed >= tests.size()) {
 
 		if (block_configs.size() == 0) { //testing is finished
+			automatic_test_ongoing = false; //kill automatic execution
 
 			std::cout << " \n\nTEST results: \n " << std::endl;
 
@@ -586,11 +663,13 @@ void cache_manager::next_test() {
 			vs.on_set(&vs.slice_normal_tex[2]);
 		}
 	} else { //change slice_normal values to those of new test
-		std::cout << " next test " << tests[tests_executed] << std::endl;
+
+		std::cout << "automatically executing next test [" << tests[tests_executed][0] << "," << tests[tests_executed][1] << "," << tests[tests_executed][2] <<"]" << std::endl;
 		vs.slice_normal_tex = tests[tests_executed];
 
 		vs.on_set(&vs.slice_normal_tex[0]);
 		vs.on_set(&vs.slice_normal_tex[1]);
 		vs.on_set(&vs.slice_normal_tex[2]);
+		
 	}
 }

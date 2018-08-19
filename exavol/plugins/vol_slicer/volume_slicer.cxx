@@ -1239,6 +1239,7 @@ void volume_slicer::draw(cgv::render::context& ctx)
 	if (block_config != "") {
 		update_intersected_blocks(ctx);
 		// upload more texture data for block based volumes
+	
 		if (new_batch) {
 			threaded_cache_manager.request_blocks(intersected_blocks);
 			new_batch = false;

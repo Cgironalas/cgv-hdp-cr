@@ -1,6 +1,7 @@
 #pragma once
 #include <queue>
 #include <vector>
+#include <iterator>
 #include <string>
 #include <mutex>
 #include <cgv/render/drawable.h>
@@ -49,7 +50,7 @@ class cache_manager {
 		std::mutex thread_report;
 
 		// cache policy selection (0 = custom, 1 = lru, 2 = fifo)
-		int selected_cache_policy = 0;
+		int selected_cache_policy;
 	
 		bool signal_kill = false;
 		bool signal_restart;
@@ -76,6 +77,9 @@ class cache_manager {
 		// starts infinite loop to receive requests and handle them
 		void cache_manager::set_block_folder(std::string);
 
+		// applies fopen to all files in folder
+		void cache_manager::open_slices_files(std::string folder_path);
+		
 		// applies fclose to all slice files open
 		void cache_manager::close_slices_files();
 
@@ -164,9 +168,7 @@ class cache_manager {
 //@{
 
 	private:
-		bool retrieval_ongoing = false;
 		int tests_executed = 0;
-		
 		double duration = 0.0;
 
 		std::vector<vec3> tests;
@@ -177,8 +179,13 @@ class cache_manager {
 
 	public:
 		// 0 = inactive, 1 = active
-		int test_mode = 0; 
+		int test_mode = 1; 
+		int inactivity_counter = 0;
+		int inactivity_limit = 1000;
+		bool automatic_test_ongoing = false;
+		std::mutex test_lock;
 		// moves the slice and records loading times
+		void cache_manager::test_handle();
 		void cache_manager::next_test();
 		void cache_manager::init_test_array();
 //@}
