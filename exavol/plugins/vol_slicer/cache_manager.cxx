@@ -16,8 +16,8 @@
 cache_manager::cache_manager(volume_slicer &f) : vs(f) {
 
 	slices_path = "";
-	cpu_cache_size_blocks = 1500; //could be calculated from the CPU capacity if possible
-	gpu_cache_size_blocks = 1500; //could be calculated from the GPU capacity if possible
+	cpu_cache_size_blocks = 20000; //could be calculated from the CPU capacity if possible
+	gpu_cache_size_blocks = 5000; //could be calculated from the GPU capacity if possible
 
 	// extra validation for threaded approaches
 	thread_limit = 8; 
@@ -27,7 +27,7 @@ cache_manager::cache_manager(volume_slicer &f) : vs(f) {
 
 	process_running = false;
 	signal_restart = false;
-
+	test_mode = 1;
 	if (test_mode == 1) {
 		init_test_array();
 	}
@@ -285,7 +285,7 @@ void cache_manager::retrieve_blocks_in_plane() {
 				cpu_refer(blocks_batch_frame[i], nr_blocks, block_size, df_dim);
 			} else {
 				cpu_cache_lock.lock();
-				char* block_ptr = cpu_block_cache_map[cached_batch_frame[i]];
+				std::shared_ptr<char> block_ptr = cpu_block_cache_map[cached_batch_frame[i]];
 				cpu_cache_lock.unlock();
 
 				gpu_refer(cached_batch_frame[i], block_ptr);
@@ -321,13 +321,13 @@ void cache_manager::retrieve_blocks_in_plane() {
 static bool abs_compare(float a, float b) { return (std::abs(a) < std::abs(b)); }
 
 //retrieve block from disk using the open files
-char* cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim) {
+std::shared_ptr<char> cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim) {
 	
 	//std::cout << "retrieving block at: " << block(0) << ", " << block(1) << ", " << block(2) << ", " << std::endl;
 	try {
 
 		vec3 world_slice_normal = vs.world_from_texture_normals(vs.slice_normal_tex);
-		int d = (int) std::distance(std::begin(world_slice_normal), std::max_element(std::begin(world_slice_normal), std::end(world_slice_normal), abs_compare));
+		int d = (int)std::distance(std::begin(world_slice_normal), std::max_element(std::begin(world_slice_normal), std::end(world_slice_normal), abs_compare));
 
 		// compute block index and pointer to block data
 		std::string path_to_orientation;
@@ -372,29 +372,29 @@ char* cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& bloc
 				else {
 					std::cout << "failed to locate pointer for block at: [" << block(0) << ", " << block(1) << ", " << block(2) << "] from block slice " << ss.str() << std::endl;
 					std::cout << "block size " << block_size << ", block slice size: " << file_length << ", bi: " << bi << ", nr_blocks: [" << nr_blocks(0) << ", " << nr_blocks(1) << ", " << nr_blocks(2) <<"]\n" << std::endl;
-					return "";
+					return NULL;
 				}
 
 				bool result = fread(block_ptr, block_size, 1, fp) == 1;
 
 				if (result) {
 					disk_read_count++;
-					return block_ptr;
+					return std::shared_ptr<char>(block_ptr);
 				} else {
 					std::cout << "failed to read block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slices" << std::endl;
-					return "";
+					return NULL;
 				}
 			}
 		}
 		std::cout << "slice isn't open: " << ss.str() << " for block :" << block(0) << ", " << block(1) << ", " << block(2) << std::endl;
-		return "";
+		return NULL;
 	
 		/// to ensure correct block being loaded
 		//return write_tiff_block(output_path + "/block_at_" + std::to_string(block(0)) + "_" + std::to_string(block(1)) + "_" + std::to_string(block(2)), block_ptr, df_dim, "");
 
 	} catch (...) {
 		std::cout << "unhandled exception thrown at block retrieval" << std::endl;
-		return "";
+		return NULL;
 	}
 }
 
@@ -408,7 +408,7 @@ void cache_manager::cpu_refer(ivec3& block, ivec3& nr_blocks, size_t& block_size
 	}
 }
 
-void cache_manager::gpu_refer(ivec3& block, char* block_ptr) {
+void cache_manager::gpu_refer(ivec3& block, std::shared_ptr<char> block_ptr) {
 	if (selected_cache_policy == 0 || selected_cache_policy == 2) {
 		gpu_fifo_refer(block, block_ptr);
 	} else {
@@ -435,17 +435,17 @@ void cache_manager::cpu_fifo_refer(ivec3& block, ivec3& nr_blocks, size_t& block
 	bool slices_available = slices_path != "";
 	restart_lock.unlock();
 
-	cpu_block_cache_map[block] = slices_available ? retrieve_block(block, nr_blocks, block_size, df_dim) : "";
+	cpu_block_cache_map[block] = slices_available ? retrieve_block(block, nr_blocks, block_size, df_dim) : NULL;
 	cpu_blocks_queue.push_front(block);
 
-	char* block_ptr = cpu_block_cache_map[block];
+	std::shared_ptr<char> block_ptr = cpu_block_cache_map[block];
 
 	cpu_cache_lock.unlock();
 
 	gpu_refer(block, block_ptr);
 }
 
-void cache_manager::gpu_fifo_refer(ivec3& block, char* block_ptr) {
+void cache_manager::gpu_fifo_refer(ivec3& block, std::shared_ptr<char> block_ptr) {
 
 	gpu_cache_lock.lock();
 
@@ -457,7 +457,7 @@ void cache_manager::gpu_fifo_refer(ivec3& block, char* block_ptr) {
 	}
 
 	// call upload to gpu should go here, using block_ptr
-	gpu_block_cache_map[block] = "";
+	gpu_block_cache_map[block] = NULL;
 	gpu_blocks_queue.push_front(block);
 
 	gpu_cache_lock.unlock();
@@ -489,19 +489,19 @@ void cache_manager::cpu_lru_refer(ivec3& block, ivec3& nr_blocks, size_t& block_
 	restart_lock.unlock();
 
 	if (cpu_block_cache_map.find(block) == cpu_block_cache_map.end()) {
-		cpu_block_cache_map[block] = slices_available ? retrieve_block(block, nr_blocks, block_size, df_dim) : "";
+		cpu_block_cache_map[block] = slices_available ? retrieve_block(block, nr_blocks, block_size, df_dim) : NULL;
 	}
 
 	cpu_blocks_queue.push_front(block);
 	manager_cpu_blocks_queue[block] = cpu_blocks_queue.begin();
-	char* block_ptr = cpu_block_cache_map[block];
+	std::shared_ptr<char> block_ptr = cpu_block_cache_map[block];
 
 	cpu_cache_lock.unlock();
 
 	gpu_refer(block, block_ptr);
 }
 
-void cache_manager::gpu_lru_refer(ivec3& block, char* block_ptr) {
+void cache_manager::gpu_lru_refer(ivec3& block, std::shared_ptr<char> block_ptr) {
 
 	gpu_cache_lock.lock();
 
@@ -519,7 +519,7 @@ void cache_manager::gpu_lru_refer(ivec3& block, char* block_ptr) {
 	}
 	
 	// call upload to gpu should go here, using block_ptr
-	gpu_block_cache_map[block] = "";
+	gpu_block_cache_map[block] = NULL;
 	gpu_blocks_queue.push_front(block);
 	manager_gpu_blocks_queue[block] = gpu_blocks_queue.begin();
 
@@ -558,6 +558,18 @@ void cache_manager::init_test_array() {
 	tests.push_back(vec3(0, 0, 1)); //default configuration
 	tests.push_back(vec3(0, 1, 0));
 	tests.push_back(vec3(1, 0, 0));
+
+	// creates random positions
+	for (int i = 0; i < 30; i++) {
+		double x = std::rand() % 100;
+		double y = std::rand() % 100;
+		double z = std::rand() % 100;
+		double sum = (x + y + z);
+		x /= sum;
+		y /= sum;
+		z /= sum;
+		tests.push_back(vec3(x, y, z));
+	}
 	
 	for (int i = 0; i < 3; i++) {
 		for (double r = 0; r < 30; r++) {
@@ -580,17 +592,6 @@ void cache_manager::init_test_array() {
 		}
 	}
 
-	// creates random positions
-	for (int i = 0; i < 10; i++) {
-		double x = std::rand() % 100;
-		double y = std::rand() % 100;
-		double z = std::rand() % 100;
-		double sum = (x + y + z);
-		x /= sum;
-		y /= sum;
-		z /= sum;
-		tests.push_back(vec3(x, y, z));
-	}
 
 	for (auto it : tests) {
 		std::cout << "[" << it[0] << "," << it[1] << "," << it[2] << "]" << std::endl;
@@ -604,10 +605,11 @@ void cache_manager::init_test_array() {
 void::cache_manager::test_handle() {
 
 	inactivity_counter = 0;
-	std::cout << "[" << durations.size() << "vs" << tests_executed << "]" << std::endl;
+	int currently_executed = tests_executed + (tests.size()*(2 - block_configs.size()));
+	std::cout << "[" << durations.size() << "vs" << currently_executed << "]" << std::endl;
 
 	// empty test detected by inactivity counter
-	if (durations.size() == tests_executed ) {
+	if (durations.size() == currently_executed ) {
 		std::cout << "[ === inserting empty test time == ]" << std::endl;
 		time_record_lock.lock();
 		duration = 0;
@@ -623,7 +625,7 @@ void::cache_manager::test_handle() {
 		std::cout << "[ thread desynchronization ... ]" << std::endl;
 	}
 
-	std::cout << " duration of refers" << duration << std::endl;
+	std::cout << std::fixed << " duration of refers" << duration << std::endl;
 }
 
 void cache_manager::next_test() {
@@ -641,7 +643,7 @@ void cache_manager::next_test() {
 				std::cout << " \n\n new block size \n\n" << std::endl;
 
 				for (int i = 0; i < tests.size(); i++) {
-					std::cout << " average duration of tests " << tests[i] << " : " << durations[i + (j*tests.size())] << std::endl;
+					std::cout << " test: [" << tests[i] << "] duration : " << durations[i + (j*tests.size())] << std::endl;
 					avg_duration += durations[i + (j*tests.size())];
 				}
 
@@ -664,7 +666,7 @@ void cache_manager::next_test() {
 		}
 	} else { //change slice_normal values to those of new test
 
-		std::cout << "automatically executing next test [" << tests[tests_executed][0] << "," << tests[tests_executed][1] << "," << tests[tests_executed][2] <<"]" << std::endl;
+		std::cout << "automatically executing next test [" << tests[tests_executed] <<"]" << std::endl;
 		vs.slice_normal_tex = tests[tests_executed];
 
 		vs.on_set(&vs.slice_normal_tex[0]);

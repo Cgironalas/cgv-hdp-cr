@@ -99,7 +99,7 @@ class cache_manager {
 		void cache_manager::retrieve_blocks_in_plane();
 
 		// loads a block from disk
-		char* cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim);
+		std::shared_ptr<char> cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim);
 
 		// for testing purposes
 		bool cache_manager::write_tiff_block(std::string& file_name, char* data_ptr, vec3 df_dim, std::string& options);
@@ -112,14 +112,14 @@ class cache_manager {
 		// cpu cache queue
 		std::list<ivec3> cpu_blocks_queue;
 		// cpu level cache
-		std::unordered_map < ivec3, char*, container_hash<ivec3 >> cpu_block_cache_map;
+		std::unordered_map < ivec3, std::shared_ptr<char>, container_hash<ivec3 >> cpu_block_cache_map;
 		// cpu mutex
 		std::mutex cpu_cache_lock;
 
 		// cpu cache queue
 		std::list<ivec3> gpu_blocks_queue;
 		// gpu level cache mirror (typically smaller than cpu)
-		std::unordered_map < ivec3, char*, container_hash<ivec3 >> gpu_block_cache_map;
+		std::unordered_map < ivec3, std::shared_ptr<char>, container_hash<ivec3 >> gpu_block_cache_map;
 		// gpu cache mutex
 		std::mutex gpu_cache_lock;
 	public:
@@ -128,7 +128,7 @@ class cache_manager {
 		void cache_manager::cpu_refer(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim);
 
 		// updates the gpu 
-		void cache_manager::gpu_refer(ivec3& block, char* block_ptr);
+		void cache_manager::gpu_refer(ivec3& block, std::shared_ptr<char> block_ptr);
 
 //@}
 
@@ -142,7 +142,7 @@ class cache_manager {
 		void cache_manager::cpu_fifo_refer(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim);
 
 		// updates the gpu 
-		void cache_manager::gpu_fifo_refer(ivec3& block, char* block_ptr);
+		void cache_manager::gpu_fifo_refer(ivec3& block, std::shared_ptr<char> block_ptr);
 //@}
 
 /**@lru cache policy related*/
@@ -159,7 +159,7 @@ class cache_manager {
 		void cache_manager::cpu_lru_refer(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim);
 
 		// updates the gpu 
-		void cache_manager::gpu_lru_refer(ivec3& block, char* block_ptr);
+		void cache_manager::gpu_lru_refer(ivec3& block, std::shared_ptr<char> block_ptr);
 
 //@}
 
@@ -179,9 +179,9 @@ class cache_manager {
 
 	public:
 		// 0 = inactive, 1 = active
-		int test_mode = 1; 
+		int test_mode = 0; 
 		int inactivity_counter = 0;
-		int inactivity_limit = 1000;
+		int inactivity_limit = 10000;
 		bool automatic_test_ongoing = false;
 		std::mutex test_lock;
 		// moves the slice and records loading times
