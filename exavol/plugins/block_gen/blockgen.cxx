@@ -10,6 +10,8 @@
 #include <cgv/media/image/image_proc.h>
 #include <vol_data/volume_io.h>
 #include <fstream>
+#include <chrono>
+#include <thread>
 //#include <opencv2/imgcodecs.hpp>
 //#include <opencv2/imgproc.hpp>
 
@@ -976,6 +978,154 @@ bool build_oriented_block_slices_from_existing (const std::string& input_path, c
 	return true;
 }
 
+// test block retrieval at random
+std::vector<std::string> slices_files_names;
+std::vector<FILE*> slices_files;
+
+void open_slices_files(std::string folder_path) {
+	void* handle = cgv::utils::file::find_first(folder_path + "*.*");
+	std::cout << "\n\n opening slices files at: '" << folder_path << "' \n\n" << std::endl;
+
+	bool success = false;
+	while (handle) {
+
+		if (!cgv::utils::file::find_directory(handle)) {
+			std::string file_name = folder_path + cgv::utils::file::find_name(handle);
+
+			std::cout << file_name << std::endl;
+			slices_files_names.push_back(file_name);
+
+			FILE* fp = fopen(file_name.c_str(), "rb");
+			if (fp != NULL) {
+				slices_files.push_back(fp);
+				success = true;
+			}
+			else {
+				success = false;
+				break;
+			}
+		}
+		handle = cgv::utils::file::find_next(handle);
+	}
+
+	if (success)
+		std::cout << "\n\n successfully opened all files at: '" << folder_path << "' \n\n" << std::endl;
+	else
+		std::cout << "\n\n something went wrong when opening the files at: '" << folder_path << "'  please check your configuration file.\n\n" << std::endl;
+}
+
+int random(int min, int max) {
+	static bool first = true;
+	if (first){
+		srand(time(NULL)); 
+		first = false;
+	}
+	return min + rand() % ((max + 1) - min);
+}
+
+void retrieve_block_multi (const block_generation_info& bgi, volume::dimension_type block, std::string slices_path) {
+
+	//std::cout << "retrieving block at: " << block(0) << ", " << block(1) << ", " << block(2) << ", " << std::endl;
+	try {
+		volume::dimension_type nr_blocks = get_number_of_blocks(bgi);
+		// compute block index and pointer to block data
+		std::string path_to_orientation;
+		unsigned bi;
+		unsigned slices_offset;
+		unsigned d = random(0, 2);
+		int block_size = bgi.get_block_size();
+
+		if (d == 0) {
+			slices_offset = 0; //x are opened first
+			path_to_orientation = "_x/";
+			bi = block(1) * nr_blocks(2) + block(2);
+		}
+
+		if (d == 1) {
+			slices_offset = nr_blocks(0); //ignore files from _x
+			path_to_orientation = "_y/";
+			bi = block(2) * nr_blocks(1) + block(0);
+		}
+
+		if (d == 2) {
+			slices_offset = nr_blocks(0) + nr_blocks(1); //ignore files from _x and _y
+			path_to_orientation = "_z/";
+			bi = block(0) * nr_blocks(1) + block(1);
+		}
+
+		std::stringstream ss;
+		ss << slices_path << path_to_orientation << "level_00_blockslice_" << std::setw(3) << std::setfill('0') << block(d) << ".bvx";
+
+		char* block_ptr = new char[block_size];
+
+		// throws exception at fread in some points 
+		if (block(d) <= slices_files.size()) {
+			FILE* fp = slices_files.at(slices_offset + block(d));
+			if (fp != NULL) {
+				long offset = (long)(bi * block_size);
+
+				// checks size of the block slice
+				fseek(fp, 0, SEEK_END);
+				off_t file_length = ftell(fp);
+
+				if (file_length >= offset)
+					fseek(fp, offset, SEEK_SET);
+				else {
+					std::cout << "failed to locate pointer for block at: [" << block(0) << ", " << block(1) << ", " << block(2) << "] from block slice " << ss.str() << std::endl;
+					std::cout << "block size " << block_size << ", block slice size: " << file_length << ", bi: " << bi << ", nr_blocks: [" << nr_blocks(0) << ", " << nr_blocks(1) << ", " << nr_blocks(2) << "]\n" << std::endl;
+				}
+
+				bool result = fread(block_ptr, block_size, 1, fp) == 1;
+				delete block_ptr;
+
+				if (!result) {
+					std::cout << "failed to read block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slices" << std::endl;
+				}
+			}
+		}
+		else {
+			std::cout << "slice isn't open: " << ss.str() << " for block :" << block(0) << ", " << block(1) << ", " << block(2) << std::endl;
+		}
+		
+		/// to ensure correct block being loaded
+		//return write_tiff_block(output_path + "/block_at_" + std::to_string(block(0)) + "_" + std::to_string(block(1)) + "_" + std::to_string(block(2)), block_ptr, df_dim, "");
+
+	}
+	catch (...) {
+		std::cout << "unhandled exception thrown at block retrieval" << std::endl;
+	}
+}
+
+void close_slices_files() {
+
+	slices_files_names.clear();
+	for (auto it : slices_files)
+		fclose(it);
+	slices_files.clear();
+}
+
+void test_blocks(const block_generation_info& bgi, std::string slices_path) {
+	volume::dimension_type nr_blocks = get_number_of_blocks(bgi);
+
+	open_slices_files(slices_path + "_x/");
+	open_slices_files(slices_path + "_y/");
+	open_slices_files(slices_path + "_z/");
+	for (size_t i = 0; i < 50000; i++){
+		volume::dimension_type block(
+			unsigned(random(0, nr_blocks(0))),
+			unsigned(random(0, nr_blocks(1))),
+			unsigned(random(0, nr_blocks(2)))
+		);
+
+		std::cout << "block [" << block << "]" << std::endl;
+
+		retrieve_block_multi(bgi, block, slices_path);
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+	}
+	close_slices_files();
+}
+
 //Testing:
 void init_to_visible_human_male_png(block_generation_info& bgi)
 {
@@ -1023,6 +1173,12 @@ int main(int argc, char** argv)
 
 	std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/sources/png/";
 	std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/multiple/16x16x16/";
+
+
+
+	test_blocks(visible_human, "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/multiple/16x16x16/" );
+	std::cin.get();
+	return 1;
 
 	// Generate the blocks in slice
 	if (build_blocks_from_directory(input_path, output_path + "_z/", visible_human)) {
