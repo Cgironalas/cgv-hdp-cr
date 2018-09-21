@@ -1104,26 +1104,90 @@ void close_slices_files() {
 	slices_files.clear();
 }
 
-void test_blocks(const block_generation_info& bgi, std::string slices_path) {
-	volume::dimension_type nr_blocks = get_number_of_blocks(bgi);
+void print_avg(std::vector<double> durations) {
+	double avg_duration = 0;
 
-	open_slices_files(slices_path + "_x/");
-	open_slices_files(slices_path + "_y/");
-	open_slices_files(slices_path + "_z/");
-	for (size_t i = 0; i < 50000; i++){
-		volume::dimension_type block(
-			unsigned(random(0, nr_blocks(0))),
-			unsigned(random(0, nr_blocks(1))),
-			unsigned(random(0, nr_blocks(2)))
-		);
-
-		std::cout << "block [" << block << "]" << std::endl;
-
-		retrieve_block_multi(bgi, block, slices_path);
-
-		std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+	for (int i = 0; i < durations.size(); i++) {
+		avg_duration += durations[i];
 	}
-	close_slices_files();
+
+	avg_duration /= durations.size();
+	std::cout << " average duration of tests " << avg_duration;
+}
+
+
+int test_blocks1(const block_generation_info& bgi, std::string slices_path) {
+	volume::dimension_type nr_blocks = get_number_of_blocks(bgi);
+	std::vector<double> durations;
+
+	int z = unsigned(random(0, nr_blocks(2) - 1));
+	int count = 0;
+
+	for (size_t x = 0; x < nr_blocks(0); x++){
+		for (size_t y = 0; y < nr_blocks(1); y++) {
+			volume::dimension_type block(x,y,z);
+
+			count += 1;
+			std::clock_t start = std::clock();
+			retrieve_block_multi(bgi, block, slices_path);
+			double duration = static_cast<double>(std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
+			durations.push_back(duration);
+			//std::cout << "block [" << block << "] duration [" << duration << "]" << std::endl;
+		}
+	}
+
+	std::cout << " blocks [" << count << "]";
+
+	print_avg(durations);
+	return count;
+}
+
+int test_blocks2(const block_generation_info& bgi, std::string slices_path, int limit) {
+	volume::dimension_type nr_blocks = get_number_of_blocks(bgi);
+	std::vector<double> durations;
+	int z = unsigned(random(0, nr_blocks(2) - 1));
+	int count = 0;
+	for (size_t i = 0; i < limit; i++) {
+		volume::dimension_type block(
+			unsigned(random(0, nr_blocks(0) - 1)),
+			unsigned(random(0, nr_blocks(1) - 1)),
+			z
+		);
+		count += 1;
+		std::clock_t start = std::clock();
+		retrieve_block_multi(bgi, block, slices_path);
+		double duration = static_cast<double>(std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
+		durations.push_back(duration);
+		//std::cout << "block [" << block << "] duration [" << duration << "]" << std::endl;
+	}
+	std::cout << " blocks [" << count << "]";
+
+	print_avg(durations);
+	return count;
+}
+
+int test_blocks3(const block_generation_info& bgi, std::string slices_path, int limit) {
+	volume::dimension_type nr_blocks = get_number_of_blocks(bgi);
+	std::vector<double> durations;
+	int count = 0;
+
+	for (size_t i = 0; i < limit; i++) {
+		volume::dimension_type block(
+			unsigned(random(0, nr_blocks(0) - 1)),
+			unsigned(random(0, nr_blocks(1) - 1)),
+			unsigned(random(0, nr_blocks(2) - 1))
+		);
+		count += 1;
+		std::clock_t start = std::clock();
+		retrieve_block_multi(bgi, block, slices_path);
+		double duration = static_cast<double>(std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
+		durations.push_back(duration);
+		//std::cout << "block [" << block << "] duration [" << duration << "]" << std::endl;
+	}
+	std::cout << " blocks [" << count << "]";
+
+	print_avg(durations);
+	return count;
 }
 
 //Testing:
@@ -1138,7 +1202,7 @@ void init_to_visible_human_male_png(block_generation_info& bgi)
 	bgi.dimensions.set(width, height, amount);
 	bgi.extent.set(width * 0.114f, height * 0.114f, amount * 1.0f);
 
-	bgi.block_dimensions.set(15, 15, 15);
+	bgi.block_dimensions.set(63, 63, 63);
 	bgi.overlap.set(1, 1, 1);
 	bgi.subsampling_factor.set(2, 2, 2);
 	bgi.subsampling_offset.set(0, 0, 3);
@@ -1172,11 +1236,43 @@ int main(int argc, char** argv)
 	//std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/test_sample/";
 
 	std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/sources/png/";
-	std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/multiple/16x16x16/";
+	std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/multiple/64x64x64/";
 
+	open_slices_files(output_path + "_x/");
+	open_slices_files(output_path + "_y/");
+	open_slices_files(output_path + "_z/");
 
+	std::clock_t start;
+	int limit;
+	
+	freopen("D:/Users/JMendez/Desktop/output.txt","w", stdout);
+	std::cout << "\n\ntest [1]\n\n" << std::endl;
+	for (int i = 0; i < 50; i++) {
+		start = std::clock();
+		limit = test_blocks1(visible_human, output_path);
+		double duration = static_cast<double>(std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
+		std::cout << " duration [" << duration << "]" << std::endl;
+	}
+	
+	std::cout << "\n\ntest [2]\n\n" << std::endl;
+	for (int i = 0; i < 50; i++) {
+		start = std::clock();
+		limit = test_blocks2(visible_human, output_path, limit);
+		double duration = static_cast<double>(std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
+		std::cout << " duration [" << duration << "]" << std::endl;
+	}
 
-	test_blocks(visible_human, "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/multiple/16x16x16/" );
+	std::cout << "\n\ntest [3]\n\n" << std::endl;
+	for (int i = 0; i < 50; i++) {
+		start = std::clock();
+		limit = test_blocks3(visible_human, output_path, limit);
+		double duration = static_cast<double>(std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
+		std::cout << " duration [" << duration << "]" << std::endl;
+	}
+
+	std::cout << " finished! " << std::endl;
+	close_slices_files();
+
 	std::cin.get();
 	return 1;
 
