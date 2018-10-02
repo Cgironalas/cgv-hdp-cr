@@ -3,23 +3,18 @@
 #include <string>
 #include <vector>
 #include <cgv/reflect/reflect_enum.h>
-
 #include <cgv/base/node.h>
 #include <cgv/render/drawable.h>
 #include <cgv/gui/provider.h>
 #include <cgv/gui/event_handler.h>
-
 #include <cgv/render/texture.h>
 #include <cgv/render/shader_program.h>
 #include <cgv_gl/gl/gl_view.h>
 #include <cgv/math/mfunc.h>
 #include <cgv/media/mesh/streaming_mesh.h>
-
 #include <vol_data/volume.h>
 #include "cache_manager.h"
-
 #include "lib_begin.h"
-
 
 enum DiffuseColorMapping
 {
@@ -99,8 +94,6 @@ public:
 	/// whether to use tri-linear texture interpolation
 	bool interpolate;
 public:
-	// read volume from sliced or single file representations
-	bool open_block_volume(const std::string& directory_name);
 	/// read regular volume file
 	bool open_volume(const std::string& file_name, bool is_iso);
 	/// convert world to texture coordinates
@@ -318,9 +311,6 @@ public:
 	volume::point_type get_selected_point_normal(volume::point_type point);
 	double get_points_distance(volume::point_type pointA, volume::point_type pointB);
 	void animate_view_to_selection(volume::point_type pointA, volume::point_type pointB, vec3 normal);
-
 };
-
-
 
 #include <cgv/config/lib_end.h>

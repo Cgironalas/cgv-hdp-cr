@@ -16,6 +16,7 @@
 #include <fstream>
 
 /// set default values (no wireframe, no culling, no face normals, no negation, no two sided)
+///
 surface_render_style::surface_render_style()
 {
 	diffuse_mapping = DCM_MATERIAL;
@@ -34,6 +35,7 @@ surface_render_style::surface_render_style()
 }
 
 /// standard constructor
+///
 volume_slicer::volume_slicer() : cgv::base::node("volume_slicer"), threaded_cache_manager(*this)
 {
 	extrusionLevel = 0.1f;
@@ -105,6 +107,7 @@ bool volume_slicer::ensure_view_ptr()
 }
 
 /// adjusts view to bounding box of all instances
+///
 void volume_slicer::auto_adjust_view()
 {
 	if (ensure_view_ptr()) {
@@ -117,6 +120,7 @@ void volume_slicer::auto_adjust_view()
 }
 
 /// self reflection is used to publish standard member variables to the set and get mechanism
+///
 bool volume_slicer::self_reflect(cgv::reflect::reflection_handler& rh)
 {
 	return 
@@ -159,9 +163,8 @@ bool volume_slicer::read_value_name_map(const std::string& file_name)
 	return true;
 }
 
-
-
 /// return the point under the mouse pointer in world coordinates
+///
 bool volume_slicer::get_picked_point(int x, int y, vec3& p_pick_world)
 {
 	// analyze the mouse location
@@ -188,8 +191,9 @@ bool volume_slicer::get_picked_point(int x, int y, vec3& p_pick_world)
 	return true;
 }
 
-
-
+/* ================================== */
+// surface interaction methods
+/* ================================== */
 
 double volume_slicer::get_points_distance(vec3 pointA, vec3 pointB) {
 	return sqrt(pow((pointA[0] - pointB[0]), 2) + pow((pointA[1] - pointB[1]), 2) + pow((pointA[2] - pointB[2]), 2));
@@ -419,9 +423,12 @@ void volume_slicer::animate_view_to_selection(volume::point_type pointA, volume:
 	cgv::gui::animate_with_linear_blend(view_ptr->ref_focus(), cgv::render::view::pnt_type(0.5f*(pointA + pointB)), 1)->set_base_ptr(this);*/
 }
  
+/* ================================== */
+// Screen debugging methods and stream utils
+/* ================================== */
 
-
-///
+/// displays the voxel values on screen where the mouse is located.
+/// used for debugging mainly
 void volume_slicer::peek_voxel_values(int x, int y)
 {
 	//  unproject pixel position of mouse
@@ -454,8 +461,8 @@ void volume_slicer::peek_voxel_values(int x, int y)
 	post_redraw();
 }
 
-
 /// overload and implement this method to handle events
+///
 bool volume_slicer::handle(cgv::gui::event& e)
 {
 	// check for key events
@@ -606,22 +613,21 @@ bool volume_slicer::handle(cgv::gui::event& e)
 }
 
 /// overload to stream help information to the given output stream
+///
 void volume_slicer::stream_help(std::ostream& os)
 {
 	os << "volume_slicer:\a\nSpace ... auto adjust view; Ctrl-Shift-X/Y/Z ... set slice normal\nCtrl-Left/Right Button ... rotate/move slice\b\n";
 }
+
 /// stream statistical information about volume
+///
 void volume_slicer::stream_stats(std::ostream& os)
 {
 	os << "volume_slicer: slice_normal=[" << slice_normal_tex << "], distance=" << slice_center_distance_tex << std::endl;
 }
-// read volume from sliced or single file representations
-bool volume_slicer::open_block_volume(const std::string& directory_name)
-{
-	return false;
-}
 
 /// read regular volume file
+///
 bool volume_slicer::open_volume(const std::string& _file_name, bool is_iso)
 {
 	volume V_local;
@@ -675,22 +681,32 @@ bool volume_slicer::open_volume(const std::string& _file_name, bool is_iso)
 	return success;
 }
 
-
-/// Coordinates conversion
+/* ================================== */
+// Coordinates conversion - 4 spaces are used: 
+// - texture space (for the loaded vox file's texture info)
+// - block space (for the block grid structure) 
+// - voxel space (the voxel grid structure)
+// - world coordinates (retrieved from mouse location in the screen)
+/* ================================== */
 
 /// convert world to texture coordinates
+///
 volume_slicer::vec3 volume_slicer::texture_from_world_coordinates(const vec3& p_world) const
 {
 	vec3 p_texture = (p_world + 0.5f*extent)/extent;
 	return p_texture;
 }
+
 /// convert texture to voxel coordinates
+///
 volume_slicer::vec3 volume_slicer::voxel_from_texture_coordinates(const vec3& p_texture) const
 {
 	vec3 p_voxel = p_texture * dimensions;
 	return p_voxel;
 }
 
+/// convert texture to voxel coordinates
+///
 volume_slicer::vec3 volume_slicer::voxel_from_texture_coordinates_blocks(const vec3& p_texture) const
 {
 	vec3 p_voxel = p_texture * slices_dimensions;
@@ -698,6 +714,7 @@ volume_slicer::vec3 volume_slicer::voxel_from_texture_coordinates_blocks(const v
 }
 
 /// convert texture to world coordinates
+///
 volume_slicer::vec3 volume_slicer::world_from_texture_coordinates(const vec3& p_texture) const
 {
 	vec3 p_world = p_texture * extent - 0.5f*extent;
@@ -705,6 +722,7 @@ volume_slicer::vec3 volume_slicer::world_from_texture_coordinates(const vec3& p_
 }
 
 /// convert texture to world coordinates
+///
 volume_slicer::vec3 volume_slicer::world_from_texture_normals(const vec3& n_texture) const
 {
 	vec3 n_world = n_texture / extent;
@@ -713,12 +731,15 @@ volume_slicer::vec3 volume_slicer::world_from_texture_normals(const vec3& n_text
 }
 
 /// convert voxel to texture coordinates
+///
 volume_slicer::vec3 volume_slicer::texture_from_voxel_coordinates(const vec3& p_voxel) const
 {
 	vec3 p_texture = p_voxel / dimensions;
 	return p_texture;
 }
 
+/// convert voxel to texture coordinates
+///
 volume_slicer::vec3 volume_slicer::texture_from_voxel_coordinates_blocks(const vec3& p_voxel) const
 {
 	vec3 p_texture = p_voxel / slices_dimensions;
@@ -726,6 +747,7 @@ volume_slicer::vec3 volume_slicer::texture_from_voxel_coordinates_blocks(const v
 }
 
 /// convert voxel to block coordinates
+///
 volume_slicer::vec3 volume_slicer::block_from_voxel_coordinates(const vec3& p_voxel) const
 {
 	vec3 offset = overlap;
@@ -733,7 +755,9 @@ volume_slicer::vec3 volume_slicer::block_from_voxel_coordinates(const vec3& p_vo
 	vec3 p_block = (p_voxel-offset) / block_dimensions;
 	return p_block;
 }
+
 /// convert voxel to block coordinates
+///
 volume_slicer::vec3 volume_slicer::voxel_from_block_coordinates(const vec3& p_block) const
 {
 	vec3 offset = overlap;
@@ -747,6 +771,7 @@ std::string volume_slicer::get_type_name() const
 { 
 	return "volume_slicer"; 
 }
+
 // extend method of volume_drawable to find and set view
 bool volume_slicer::init(cgv::render::context& ctx)
 {
@@ -788,6 +813,11 @@ struct is_element
 	}
 };
 
+/* ================================== */
+// iso surface extraction methods
+/* ================================== */
+
+///
 void volume_slicer::extract_surface(int algorithm)
 {
 	clear_surface();
@@ -892,6 +922,7 @@ void volume_slicer::extract_surface(int algorithm)
 }
 
 /// remove all elements from surface
+///
 void volume_slicer::clear_surface()
 {
 	positions.clear();
@@ -901,247 +932,9 @@ void volume_slicer::clear_surface()
 	post_redraw();
 }
 
-/// return the value of a given voxel scaled to [0,1]
-float volume_slicer::get_voxel_value(const ivec3& voxel) const
-{
-	switch (V.get_component_type()) {
-	case cgv::type::info::TI_UINT8:
-		return float(*V.get_voxel_ptr<cgv::type::uint8_type>(voxel(0), voxel(1), voxel(2)));
-	case cgv::type::info::TI_UINT16:
-		return float(*V.get_voxel_ptr<cgv::type::uint16_type>(voxel(0), voxel(1), voxel(2)));
-	}
-	return 0;
-}
-
-/// interface for evaluation of the multivariate function
-float volume_slicer::evaluate(const pnt_type& p) const
-{
-	// convert to voxel coordinates
-	vec3 p_voxel = voxel_from_texture_coordinates(texture_from_world_coordinates(&p(0))) - vec3(0.5f, 0.5f, 0.5f);
-	// quantize
-	ivec3 voxel = p_voxel;
-	// check if voxel is valid
-	if (voxel(0) < 0 || voxel(1) < 0 || voxel(2) < 0)
-		return 0.0f;
-	if (interpolated_evaluation) {
-		if (voxel(0) >= dimensions(0)-1 || voxel(1) >= dimensions(1)-1 || voxel(2) >= dimensions(2)-1)
-			return 0.0f;
-	}
-	else {
-		if (voxel(0) >= dimensions(0) || voxel(1) >= dimensions(1) || voxel(2) >= dimensions(2))
-			return 0.0f;
-		return get_voxel_value(voxel);
-	}
-	// compute fractional part of voxel location needed for trilinear interpolation
-	vec3 frac = voxel;
-	frac = p_voxel - frac;
-	// collect eight nearest voxels
-	float v000 = get_voxel_value(voxel);
-	float v100 = get_voxel_value(voxel + ivec3(1, 0, 0));
-	float v010 = get_voxel_value(voxel + ivec3(0, 1, 0));
-	float v110 = get_voxel_value(voxel + ivec3(1, 1, 0));
-	float v001 = get_voxel_value(voxel + ivec3(0, 0, 1));
-	float v101 = get_voxel_value(voxel + ivec3(1, 0, 1));
-	float v011 = get_voxel_value(voxel + ivec3(0, 1, 1));
-	float v111 = get_voxel_value(voxel + ivec3(1, 1, 1));
-
-	// trilinear interpolation
-	float v00 = (1-frac(2))*v000 + frac(2)*v001;
-	float v10 =	(1-frac(2))*v100 + frac(2)*v101;
-	float v01 =	(1-frac(2))*v010 + frac(2)*v011;
-	float v11 =	(1-frac(2))*v110 + frac(2)*v111;
-	float v0 = (1 - frac(1))*v00 + frac(1)*v01;
-	float v1 = (1 - frac(1))*v10 + frac(1)*v11;
-	return (1 - frac(0))*v0 + frac(0)*v1;
-}
-
-/// called when a new vertex is generated
-void volume_slicer::new_vertex(unsigned int vertex_index)
-{
-	positions.push_back(sm_ptr->vertex_location(vertex_index));
-	normals.push_back(sm_ptr->vertex_normal(vertex_index));
-	texture_coords.push_back(texture_from_world_coordinates(sm_ptr->vertex_location(vertex_index)));
-}
-/// announces a new polygon defines by the vertex indices stored in the given vector
-void volume_slicer::new_polygon(const std::vector<unsigned int>& vertex_indices)
-{
-	// add corner indices and compute face normal
-	vec3 face_nml(0, 0, 0);
-	unsigned i;
-	for (i = 0; i < vertex_indices.size(); ++i) {
-		corner_indices.push_back(vertex_indices[i]);
-		face_nml += cross(positions[vertex_indices[i]], positions[vertex_indices[(i + 1) % vertex_indices.size()]]);
-	}
-	if (face_nml.length() > 1.0e-6f*extent.length()) {
-		face_nml.normalize();
-		// distribute face normal to vertex normals
-		for (i = 0; i < vertex_indices.size(); ++i)
-			normals[vertex_indices[i]] += face_nml;
-	}
-}
-
-/// drop the currently first vertex that has the given global vertex index
-void volume_slicer::before_drop_vertex(unsigned int vertex_index)
-{
-
-	if (normals[vertex_index].length() >= 1.0e-6f*extent.length()) {
-		normals[vertex_index].normalize();
-	}
-}
-
+/// sets and loads gl parameters for surface rendering
 ///
-void volume_slicer::draw_box(cgv::render::context& ctx, const box3& B, const cgv::media::illum::phong_material& material)
-{
-	// draw backfaces next
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
-	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, 1);
-	ctx.enable_material(material);
-	ctx.tesselate_box(B, true);
-	ctx.disable_material(material);
-	glCullFace(GL_BACK);
-	glDisable(GL_CULL_FACE);
-}
-
-///
-void volume_slicer::draw_wire_box(cgv::render::context& ctx, const box3& B, const vec3& color)
-{
-	glColor3fv(color);
-	glDisable(GL_CULL_FACE);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	ctx.tesselate_box(B, false);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-}
-
-/// draw a voxel with a wire frame box
-void volume_slicer::draw_voxel(cgv::render::context& ctx, const ivec3& voxel, const vec3& color)
-{
-	box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates(voxel)),
-		world_from_texture_coordinates(texture_from_voxel_coordinates(voxel + ivec3(1, 1, 1))));
-	draw_wire_box(ctx, B, color);
-}
-
-static bool abs_compare(float a, float b){ return (std::abs(a) < std::abs(b)); }
-
-void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
-
-	ivec3 nr_blocks(unsigned(ceil(float(slices_dimensions(0)) / block_dimensions(0))), 
-		unsigned(ceil(float(slices_dimensions(1)) / block_dimensions(1))),
-		unsigned(ceil(float(slices_dimensions(2)) / block_dimensions(2))));
-
-	vec3 world_slice_normal = world_from_texture_normals(slice_normal_tex);
-	int d_max = (int) std::distance(std::begin(world_slice_normal), std::max_element(std::begin(world_slice_normal), std::end(world_slice_normal), abs_compare));
-	
-	// set i0 to first other index than d_max and i1 to second other index
-	int d0 = (d_max + 1) % 3;
-	int d1 = (d_max + 2) % 3;
-
-	previous_intersected_blocks.clear();
-	previous_intersected_blocks.insert(intersected_blocks.begin(), intersected_blocks.end());
-	intersected_blocks.clear();
-
-	for (float i0 = 0; i0 < nr_blocks(d0); i0++) {
-		for (float i1 = 0; i1 < nr_blocks(d1); i1++) {
-			
-			vec3 pi_tex[4]{
-				texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0, i1))),
-				texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0 + 1, i1))),
-				texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0, i1 + 1))),
-				texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0 + 1, i1 + 1)))
-			};
-
-			vec3 pi_block[4];
-			
-			float block_coord_min, block_coord_max;
-			
-			int k;
-
-			for (k = 0; k < 4; k++) {
-
-				pi_tex[k](d_max) = 
-					1.0f / slice_normal_tex(d_max) * 
-					(slice_center_distance_tex - 
-					(pi_tex[k](d0) - 0.5f) * slice_normal_tex(d0) - 
-					(pi_tex[k](d1) - 0.5f) * slice_normal_tex(d1)) + 0.5f;
-				
-				pi_block[k] = block_from_voxel_coordinates(voxel_from_texture_coordinates_blocks(pi_tex[k]));
-				
-				block_coord_max = (k == 0 ? pi_block[k][d_max] : std::max(block_coord_max, pi_block[k][d_max]));
-				block_coord_min = (k == 0 ? pi_block[k][d_max] : std::min(block_coord_min, pi_block[k][d_max]));
-			}
-
-			int i_min = std::max(0,int(floor(block_coord_min)));
-			int i_max = std::max(0,int(ceil(block_coord_max)));
-
-			if (i_min > i_max) {
-				std::cout << "this shouldn't happen"  << std::endl;
-				int temp = i_min;
-				i_min = i_max;
-				i_max = i_min;
-			}
-
-			for (k = i_min; k < i_max; k++) {
-				if (nr_blocks(d_max) > k && k >= 0) {
-					ivec3 block = (ivec3) make_vec_d_max(d_max, (float) k, i0, i1);
-
-					if (previous_intersected_blocks.find(block) == previous_intersected_blocks.end()) 
-						new_batch = true;
-
-					intersected_blocks.push_back(block);
-				}
-			}
-		}
-	}
-}
-
-
-volume_slicer::vec3 volume_slicer::make_vec_d_max(int d_max, float var_dim, float dim0, float dim1) {
-	float x, y, z;
-	switch (d_max) {
-		case 0: {
-			x = var_dim;
-			y = dim0;
-			z = dim1;
-			break;
-		}
-		case 1: {
-			x = dim1;
-			y = var_dim;
-			z = dim0;
-			break;
-		}
-		case 2: {
-			x = dim0;
-			y = dim1;
-			z = var_dim;
-			break;
-		}
-	}
-	return vec3(x,y,z);
-}
-
-/// draw a block with a wire frame box
-void volume_slicer::draw_block(cgv::render::context& ctx, const ivec3& block, const vec3& color, const vec3& overlap_color)
-{
-	box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(block))),
-		world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(block + ivec3(1, 1, 1)))));
-	draw_wire_box(ctx, B, color);
-	vec3 offset = overlap;
-	offset *= 0.5f;
-	box3 B_overlap(
-		world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(block)-offset)),
-		world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(block + ivec3(1, 1, 1)) + offset)));
-	draw_wire_box(ctx, B_overlap, overlap_color);
-}
-
-void volume_slicer::draw_blocks_in_plane(cgv::render::context& ctx, const vec3& color, const vec3& overlap_color) {
-	
-	for (auto it : intersected_blocks) {
-		draw_block(ctx, it, color, overlap_color);
-	}
-}
-
-void volume_slicer::enable_surface_rendering(cgv::render::context& ctx, const surface_render_style& style) 
+void volume_slicer::enable_surface_rendering(cgv::render::context& ctx, const surface_render_style& style)
 {
 	if (style.show_wireframe) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -1189,7 +982,8 @@ void volume_slicer::enable_surface_rendering(cgv::render::context& ctx, const su
 }
 
 /// disables surface rendering with the given rendering style
-void volume_slicer::disable_surface_rendering(cgv::render::context& ctx, const surface_render_style& style) 
+///
+void volume_slicer::disable_surface_rendering(cgv::render::context& ctx, const surface_render_style& style)
 {
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_COLOR_MATERIAL);
@@ -1205,26 +999,298 @@ void volume_slicer::disable_surface_rendering(cgv::render::context& ctx, const s
 }
 
 /// draw a block with a wire frame box
+///
 void volume_slicer::draw_surface(cgv::render::context& ctx)
 {
 	if (corner_indices.empty())
 		return;
 	enable_surface_rendering(ctx, iso_surface_style);
-		glVertexPointer(3, GL_FLOAT, 0, &positions[0]);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glNormalPointer(GL_FLOAT, 0, &normals[0]);
-		glEnableClientState(GL_NORMAL_ARRAY);
-			switch (face_vertex_count) {
-			case 3: glDrawElements(GL_TRIANGLES, (GLsizei)corner_indices.size(), GL_UNSIGNED_INT, &corner_indices[0]); break;
-			case 4: glDrawElements(GL_QUADS, (GLsizei) corner_indices.size(), GL_UNSIGNED_INT, &corner_indices[0]); break;
-			default: std::cerr << "face vertex count " << face_vertex_count << "not supported!" << std::endl;
-			}
-		glDisableClientState(GL_NORMAL_ARRAY);
-		glDisableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, &positions[0]);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glNormalPointer(GL_FLOAT, 0, &normals[0]);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	switch (face_vertex_count) {
+	case 3: glDrawElements(GL_TRIANGLES, (GLsizei)corner_indices.size(), GL_UNSIGNED_INT, &corner_indices[0]); break;
+	case 4: glDrawElements(GL_QUADS, (GLsizei)corner_indices.size(), GL_UNSIGNED_INT, &corner_indices[0]); break;
+	default: std::cerr << "face vertex count " << face_vertex_count << "not supported!" << std::endl;
+	}
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
 	disable_surface_rendering(ctx, iso_surface_style);
 }
 
+/* ================================== */
+// draw methods
+/* ================================== */
+
+/// return the value of a given voxel scaled to [0,1]
 ///
+float volume_slicer::get_voxel_value(const ivec3& voxel) const
+{
+	switch (V.get_component_type()) {
+	case cgv::type::info::TI_UINT8:
+		return float(*V.get_voxel_ptr<cgv::type::uint8_type>(voxel(0), voxel(1), voxel(2)));
+	case cgv::type::info::TI_UINT16:
+		return float(*V.get_voxel_ptr<cgv::type::uint16_type>(voxel(0), voxel(1), voxel(2)));
+	}
+	return 0;
+}
+
+/// interface for evaluation of the multivariate function
+///
+float volume_slicer::evaluate(const pnt_type& p) const
+{
+	// convert to voxel coordinates
+	vec3 p_voxel = voxel_from_texture_coordinates(texture_from_world_coordinates(&p(0))) - vec3(0.5f, 0.5f, 0.5f);
+	// quantize
+	ivec3 voxel = p_voxel;
+	// check if voxel is valid
+	if (voxel(0) < 0 || voxel(1) < 0 || voxel(2) < 0)
+		return 0.0f;
+	if (interpolated_evaluation) {
+		if (voxel(0) >= dimensions(0)-1 || voxel(1) >= dimensions(1)-1 || voxel(2) >= dimensions(2)-1)
+			return 0.0f;
+	}
+	else {
+		if (voxel(0) >= dimensions(0) || voxel(1) >= dimensions(1) || voxel(2) >= dimensions(2))
+			return 0.0f;
+		return get_voxel_value(voxel);
+	}
+	// compute fractional part of voxel location needed for trilinear interpolation
+	vec3 frac = voxel;
+	frac = p_voxel - frac;
+	// collect eight nearest voxels
+	float v000 = get_voxel_value(voxel);
+	float v100 = get_voxel_value(voxel + ivec3(1, 0, 0));
+	float v010 = get_voxel_value(voxel + ivec3(0, 1, 0));
+	float v110 = get_voxel_value(voxel + ivec3(1, 1, 0));
+	float v001 = get_voxel_value(voxel + ivec3(0, 0, 1));
+	float v101 = get_voxel_value(voxel + ivec3(1, 0, 1));
+	float v011 = get_voxel_value(voxel + ivec3(0, 1, 1));
+	float v111 = get_voxel_value(voxel + ivec3(1, 1, 1));
+
+	// trilinear interpolation
+	float v00 = (1-frac(2))*v000 + frac(2)*v001;
+	float v10 =	(1-frac(2))*v100 + frac(2)*v101;
+	float v01 =	(1-frac(2))*v010 + frac(2)*v011;
+	float v11 =	(1-frac(2))*v110 + frac(2)*v111;
+	float v0 = (1 - frac(1))*v00 + frac(1)*v01;
+	float v1 = (1 - frac(1))*v10 + frac(1)*v11;
+	return (1 - frac(0))*v0 + frac(0)*v1;
+}
+
+/// called when a new vertex is generated
+///
+void volume_slicer::new_vertex(unsigned int vertex_index)
+{
+	positions.push_back(sm_ptr->vertex_location(vertex_index));
+	normals.push_back(sm_ptr->vertex_normal(vertex_index));
+	texture_coords.push_back(texture_from_world_coordinates(sm_ptr->vertex_location(vertex_index)));
+}
+
+/// announces a new polygon defines by the vertex indices stored in the given vector
+///
+void volume_slicer::new_polygon(const std::vector<unsigned int>& vertex_indices)
+{
+	// add corner indices and compute face normal
+	vec3 face_nml(0, 0, 0);
+	unsigned i;
+	for (i = 0; i < vertex_indices.size(); ++i) {
+		corner_indices.push_back(vertex_indices[i]);
+		face_nml += cross(positions[vertex_indices[i]], positions[vertex_indices[(i + 1) % vertex_indices.size()]]);
+	}
+	if (face_nml.length() > 1.0e-6f*extent.length()) {
+		face_nml.normalize();
+		// distribute face normal to vertex normals
+		for (i = 0; i < vertex_indices.size(); ++i)
+			normals[vertex_indices[i]] += face_nml;
+	}
+}
+
+/// drop the currently first vertex that has the given global vertex index
+///
+void volume_slicer::before_drop_vertex(unsigned int vertex_index)
+{
+	if (normals[vertex_index].length() >= 1.0e-6f*extent.length()) {
+		normals[vertex_index].normalize();
+	}
+}
+
+/// draws the outer bounding box of the vol slicer
+///
+void volume_slicer::draw_box(cgv::render::context& ctx, const box3& B, const cgv::media::illum::phong_material& material)
+{
+	// draw backfaces next
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, 1);
+	ctx.enable_material(material);
+	ctx.tesselate_box(B, true);
+	ctx.disable_material(material);
+	glCullFace(GL_BACK);
+	glDisable(GL_CULL_FACE);
+}
+
+/// draws lines connecting the vertexes of a box3
+///
+void volume_slicer::draw_wire_box(cgv::render::context& ctx, const box3& B, const vec3& color)
+{
+	glColor3fv(color);
+	glDisable(GL_CULL_FACE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	ctx.tesselate_box(B, false);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+/// draw a voxel with a wire frame box
+///
+void volume_slicer::draw_voxel(cgv::render::context& ctx, const ivec3& voxel, const vec3& color)
+{
+	box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates(voxel)),
+		world_from_texture_coordinates(texture_from_voxel_coordinates(voxel + ivec3(1, 1, 1))));
+	draw_wire_box(ctx, B, color);
+}
+
+/* ================================== */
+// block structures management
+/* ================================== */
+
+// util method for list sorting
+//
+static bool abs_compare(float a, float b){ return (std::abs(a) < std::abs(b)); }
+
+/// traverses the block structure and computes existing intersections with the slice 
+/// the computation reduces the 3d structure to 2d computing by removing the biggest factor in the slice normal
+/// and then computes all intersected blocks (if all block dimensions are the same, at most 3 blocks 
+/// are intersected but variable block dimensions can intersected more or less)
+void volume_slicer::update_intersected_blocks(cgv::render::context& ctx) {
+
+	ivec3 nr_blocks(unsigned(ceil(float(slices_dimensions(0)) / block_dimensions(0))), 
+		unsigned(ceil(float(slices_dimensions(1)) / block_dimensions(1))),
+		unsigned(ceil(float(slices_dimensions(2)) / block_dimensions(2))));
+
+	// compute the highest factor from the slice normal
+	vec3 world_slice_normal = world_from_texture_normals(slice_normal_tex);
+	int d_max = (int) std::distance(std::begin(world_slice_normal), std::max_element(std::begin(world_slice_normal), std::end(world_slice_normal), abs_compare));
+	
+	// set i0 to first other index than d_max and i1 to second other index
+	int d0 = (d_max + 1) % 3;
+	int d1 = (d_max + 2) % 3;
+
+	previous_intersected_blocks.clear();
+	previous_intersected_blocks.insert(intersected_blocks.begin(), intersected_blocks.end());
+	intersected_blocks.clear();
+
+	// traverse the projection
+	for (float i0 = 0; i0 < nr_blocks(d0); i0++) {
+		for (float i1 = 0; i1 < nr_blocks(d1); i1++) {
+			
+			vec3 pi_tex[4]{
+				texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0, i1))),
+				texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0 + 1, i1))),
+				texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0, i1 + 1))),
+				texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(make_vec_d_max(d_max, 0, i0 + 1, i1 + 1)))
+			};
+
+			vec3 pi_block[4];
+			
+			float block_coord_min, block_coord_max;
+			
+			int k;
+
+			// compute the intersected blocks at each 2d grid location 
+			for (k = 0; k < 4; k++) {
+
+				pi_tex[k](d_max) = 
+					1.0f / slice_normal_tex(d_max) * 
+					(slice_center_distance_tex - 
+					(pi_tex[k](d0) - 0.5f) * slice_normal_tex(d0) - 
+					(pi_tex[k](d1) - 0.5f) * slice_normal_tex(d1)) + 0.5f;
+				
+				pi_block[k] = block_from_voxel_coordinates(voxel_from_texture_coordinates_blocks(pi_tex[k]));
+				
+				block_coord_max = (k == 0 ? pi_block[k][d_max] : std::max(block_coord_max, pi_block[k][d_max]));
+				block_coord_min = (k == 0 ? pi_block[k][d_max] : std::min(block_coord_min, pi_block[k][d_max]));
+			}
+
+			int i_min = std::max(0,int(floor(block_coord_min)));
+			int i_max = std::max(0,int(ceil(block_coord_max)));
+
+			if (i_min > i_max) {
+				std::cout << "this shouldn't happen"  << std::endl;
+				int temp = i_min;
+				i_min = i_max;
+				i_max = i_min;
+			}
+
+			// these blocks are intersected by the slice
+			for (k = i_min; k < i_max; k++) {
+				if (nr_blocks(d_max) > k && k >= 0) {
+					ivec3 block = (ivec3) make_vec_d_max(d_max, (float) k, i0, i1);
+
+					if (previous_intersected_blocks.find(block) == previous_intersected_blocks.end()) 
+						new_batch = true;
+
+					intersected_blocks.push_back(block);
+				}
+			}
+		}
+	}
+}
+
+/// creates an array with a variable value in a selected index (d_max). 
+/// used for 3d to 2d projections and slice-block intersection computations
+volume_slicer::vec3 volume_slicer::make_vec_d_max(int d_max, float var_dim, float dim0, float dim1) {
+	float x, y, z;
+	switch (d_max) {
+		case 0: {
+			x = var_dim;
+			y = dim0;
+			z = dim1;
+			break;
+		}
+		case 1: {
+			x = dim1;
+			y = var_dim;
+			z = dim0;
+			break;
+		}
+		case 2: {
+			x = dim0;
+			y = dim1;
+			z = var_dim;
+			break;
+		}
+	}
+	return vec3(x,y,z);
+}
+
+/// draw a block with a wire frame box
+///
+void volume_slicer::draw_block(cgv::render::context& ctx, const ivec3& block, const vec3& color, const vec3& overlap_color)
+{
+	box3 B(world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(block))),
+		world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(block + ivec3(1, 1, 1)))));
+	draw_wire_box(ctx, B, color);
+	vec3 offset = overlap;
+	offset *= 0.5f;
+	box3 B_overlap(
+		world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(block)-offset)),
+		world_from_texture_coordinates(texture_from_voxel_coordinates_blocks(voxel_from_block_coordinates(block + ivec3(1, 1, 1)) + offset)));
+	draw_wire_box(ctx, B_overlap, overlap_color);
+}
+
+/// traverses the "intersected blocks array and calls draw_block for each of them
+///
+void volume_slicer::draw_blocks_in_plane(cgv::render::context& ctx, const vec3& color, const vec3& overlap_color) 
+{	
+	for (auto it : intersected_blocks) {
+		draw_block(ctx, it, color, overlap_color);
+	}
+}
+
+/// This method also manages the collected blocks after every change in the slice position 
+/// and requests them to the cache manager. 
 void volume_slicer::draw(cgv::render::context& ctx)
 {
 	// compute axis aligned 3d box of volume
@@ -1332,6 +1398,7 @@ void volume_slicer::draw(cgv::render::context& ctx)
 }
 
 /// draw textual information here
+///
 void volume_slicer::after_finish(cgv::render::context& ctx)
 {
 	if (!voxel_value_info.empty()) {
@@ -1356,6 +1423,7 @@ void volume_slicer::after_finish(cgv::render::context& ctx)
 }
 
 /// called to destruct the rendering objects
+///
 void volume_slicer::clear(cgv::render::context& ctx)
 {
 	tex_slice_prog.destruct(ctx);
@@ -1365,6 +1433,11 @@ void volume_slicer::clear(cgv::render::context& ctx)
 	threaded_cache_manager.kill_listener();
 }
 
+/* ================================== */
+// user interface creation and input management
+/* ================================== */
+
+/// creates the user interaction visuals for isosurface options and binds them to the variables that process the user input
 ///
 void volume_slicer::create_surface_gui(surface_render_style& style)
 {
@@ -1379,13 +1452,13 @@ void volume_slicer::create_surface_gui(surface_render_style& style)
 	add_gui("material", style.material);
 }
 
+/// creates the general user interaction visuals and binds them to the variables that process the user input
 ///
 void volume_slicer::create_gui()
 {
 	// all add_member_control and add_gui functions will add a callback to the gui elements
 	// that calls for every value change the on_set(member_ptr) method of the volume_slicer 
 	// with member_ptr pointing to the member variable whose value changed
-
 
 	// add a heading at the top of the volume slicer gui, increasing level decreases the font size, 
 	// font size of level=2 is larger than other gui fonts
@@ -1493,7 +1566,8 @@ void volume_slicer::create_gui()
 	}
 }
 
-// 
+/// this function is called after the draw method and allows for post processing
+///
 void volume_slicer::on_set(void* member_ptr)
 {
 	if (member_ptr == &value_name_map_file_name) {
@@ -1527,6 +1601,9 @@ void volume_slicer::on_set(void* member_ptr)
 	post_redraw();
 }
 
+/// sets up the block configuration from the config file for block structure
+/// expects: block_structure_dimensions, block_dimensions, overlap and slices_folder
+/// if there's an error, an empty sting is sent to the cache manager, indicating no change in the structure. 
 void volume_slicer::set_block_structure(std::string) {
 	threaded_cache_manager.set_block_folder("");
 	std::cout << "\nsetting block dimensions..." << std::endl;

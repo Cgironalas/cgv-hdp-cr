@@ -237,6 +237,7 @@ bool write_tiff_block(const std::string& file_name, const block_generation_info&
 	return iw.close();
 }
 
+/// retrieves a block from a single possible slice
 char* retrieve_block(const block_generation_info& bgi, volume::dimension_type block, std::vector<FILE*> slices) {
 
 	try {
@@ -286,6 +287,7 @@ char* retrieve_block(const block_generation_info& bgi, volume::dimension_type bl
 	}
 }
 
+/// writes a tiff block to the selected output path. used for debugging 
 bool write_block_from_slice(const block_generation_info& bgi, const std::string& input_path, const std::string& output_path, cgv::math::fvec<double, 3>& voxel_at)
 {
 	// ensure that output directory exists
@@ -306,7 +308,6 @@ bool write_block_from_slice(const block_generation_info& bgi, const std::string&
 
 	return write_tiff_block(output_path + "/slice_block_" + std::to_string(block(0)) + "_" + std::to_string(block(1)) + "_" + std::to_string(block(2)), bgi, block_ptr, "");
 }
-
 
 /// write a single image of given component format and dimensions, detect file format from extension (bmp,png,tiff are supported)
 bool write_image(const std::string& file_name, const cgv::data::component_format& cf, int w, int h, const char* data_ptr, const std::string& options = "")
@@ -442,6 +443,7 @@ bool build_blocks_from_directory(const std::string& input_path, const std::strin
 	return true;
 }
 
+/// writes a vox file from the input dataset files. commented because it requires opencv to run
 /*bool write_vox(const std::string& input_path, const std::string& output_path) {
 	static unsigned char *pixel;
 	
@@ -476,6 +478,7 @@ bool build_blocks_from_directory(const std::string& input_path, const std::strin
 	return true;
 }*/
 
+/// untested and not sure if it works, it creates the levels for the multi-resolution approach
 /*
 bool create_levels(const std::string& path, unsigned nr_levels, const block_generation_info& bgi)
 {
@@ -895,6 +898,7 @@ bool subsample_directory(const std::string& input_path, const std::string& outpu
 	return true;
 }
 
+/// once one orientation of slice files is open (z orientation), the created files are used to produce x and y orientations
 bool build_oriented_block_slices_from_existing (const std::string& input_path, const std::string& output_path, const block_generation_info& bgi)
 {
 	// ensure that output directory exists
@@ -910,9 +914,8 @@ bool build_oriented_block_slices_from_existing (const std::string& input_path, c
 	// compute number of blocks 
 	volume::dimension_type nr_blocks = get_number_of_blocks(bgi);
 
-	// allocate data for one slice of blocks and initialize all values to 0	
-
 	{
+		// allocate data for one slice of blocks and initialize all values to 0	
 		std::vector<char> block_data(nr_blocks(1)*nr_blocks(2)*bgi.get_block_size(), 0); 
 
 		// iterate over the block_slices 
@@ -942,6 +945,7 @@ bool build_oriented_block_slices_from_existing (const std::string& input_path, c
 	std::cout << "successfully wrote x oriented slices!" << std::endl;
 
 	{
+		// allocate data for one slice of blocks and initialize all values to 0	
 		std::vector<char> block_data(nr_blocks(0)*nr_blocks(2)*bgi.get_block_size(), 0);
 
 		// iterate over the block_slices 
@@ -982,6 +986,7 @@ bool build_oriented_block_slices_from_existing (const std::string& input_path, c
 std::vector<std::string> slices_files_names;
 std::vector<FILE*> slices_files;
 
+/// opens all files created from a folder into the slices_files array
 void open_slices_files(std::string folder_path) {
 	void* handle = cgv::utils::file::find_first(folder_path + "*.*");
 	std::cout << "\n\n opening slices files at: '" << folder_path << "' \n\n" << std::endl;
@@ -999,8 +1004,7 @@ void open_slices_files(std::string folder_path) {
 			if (fp != NULL) {
 				slices_files.push_back(fp);
 				success = true;
-			}
-			else {
+			} else {
 				success = false;
 				break;
 			}
@@ -1014,6 +1018,7 @@ void open_slices_files(std::string folder_path) {
 		std::cout << "\n\n something went wrong when opening the files at: '" << folder_path << "'  please check your configuration file.\n\n" << std::endl;
 }
 
+/// util generates a random int 
 int random(int min, int max) {
 	static bool first = true;
 	if (first){
@@ -1023,6 +1028,7 @@ int random(int min, int max) {
 	return min + rand() % ((max + 1) - min);
 }
 
+/// retrieves a block from a random orientation of slices files
 void retrieve_block_multi (const block_generation_info& bgi, volume::dimension_type block, std::string slices_path) {
 
 	//std::cout << "retrieving block at: " << block(0) << ", " << block(1) << ", " << block(2) << ", " << std::endl;
@@ -1082,16 +1088,14 @@ void retrieve_block_multi (const block_generation_info& bgi, volume::dimension_t
 					std::cout << "failed to read block at: " << block(0) << ", " << block(1) << ", " << block(2) << " from block slices" << std::endl;
 				}
 			}
-		}
-		else {
+		} else {
 			std::cout << "slice isn't open: " << ss.str() << " for block :" << block(0) << ", " << block(1) << ", " << block(2) << std::endl;
 		}
 		
 		/// to ensure correct block being loaded
 		//return write_tiff_block(output_path + "/block_at_" + std::to_string(block(0)) + "_" + std::to_string(block(1)) + "_" + std::to_string(block(2)), block_ptr, df_dim, "");
 
-	}
-	catch (...) {
+	} catch (...) {
 		std::cout << "unhandled exception thrown at block retrieval" << std::endl;
 	}
 }
@@ -1104,6 +1108,7 @@ void close_slices_files() {
 	slices_files.clear();
 }
 
+/// pretty print stat from the retrieved durations 
 void print_avg(std::vector<double> durations) {
 	double avg_duration = 0;
 
@@ -1115,7 +1120,7 @@ void print_avg(std::vector<double> durations) {
 	std::cout << " average duration of tests " << avg_duration;
 }
 
-
+/// reads blocks in order from one block slice. 
 int test_blocks1(const block_generation_info& bgi, std::string slices_path) {
 	volume::dimension_type nr_blocks = get_number_of_blocks(bgi);
 	std::vector<double> durations;
@@ -1142,6 +1147,7 @@ int test_blocks1(const block_generation_info& bgi, std::string slices_path) {
 	return count;
 }
 
+/// reads blocks in random order from one block slice
 int test_blocks2(const block_generation_info& bgi, std::string slices_path, int limit) {
 	volume::dimension_type nr_blocks = get_number_of_blocks(bgi);
 	std::vector<double> durations;
@@ -1166,6 +1172,7 @@ int test_blocks2(const block_generation_info& bgi, std::string slices_path, int 
 	return count;
 }
 
+/// reads blocks in random order from random block slices
 int test_blocks3(const block_generation_info& bgi, std::string slices_path, int limit) {
 	volume::dimension_type nr_blocks = get_number_of_blocks(bgi);
 	std::vector<double> durations;
@@ -1190,7 +1197,116 @@ int test_blocks3(const block_generation_info& bgi, std::string slices_path, int 
 	return count;
 }
 
-//Testing:
+/// opens all slice files, calls the three test_block[] functions and records times
+int perfomance_tests(std::string input_path, std::string output_path, block_generation_info visible_human) {
+
+	open_slices_files(output_path + "_x/");
+	open_slices_files(output_path + "_y/");
+	open_slices_files(output_path + "_z/");
+
+	std::clock_t start;
+	int limit;
+
+	// the process is lengthy so the output is saved to a file.
+	char* outputfile = "D:/Users/JMendez/Desktop/output.txt";
+	std::cout << " output will be written in " << outputfile << std::endl;
+	freopen(outputfile, "w", stdout);
+	std::cout << "\n\ntest [1]\n\n" << std::endl;
+	for (int i = 0; i < 50; i++) {
+		start = std::clock();
+		limit = test_blocks1(visible_human, output_path);
+		double duration = static_cast<double>(std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
+		std::cout << " duration [" << duration << "]" << std::endl;
+	}
+
+	std::cout << "\n\ntest [2]\n\n" << std::endl;
+	for (int i = 0; i < 50; i++) {
+		start = std::clock();
+		limit = test_blocks2(visible_human, output_path, limit);
+		double duration = static_cast<double>(std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
+		std::cout << " duration [" << duration << "]" << std::endl;
+	}
+
+	std::cout << "\n\ntest [3]\n\n" << std::endl;
+	for (int i = 0; i < 50; i++) {
+		start = std::clock();
+		limit = test_blocks3(visible_human, output_path, limit);
+		double duration = static_cast<double>(std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
+		std::cout << " duration [" << duration << "]" << std::endl;
+	}
+
+	std::cout << " finished! " << std::endl;
+	close_slices_files();
+
+	std::cin.get();
+	return 1;
+}
+
+/// creates blocks in all 3 orientations from the input files
+int generate_blocks_all_orientations(std::string input_path, std::string output_path, block_generation_info visible_human) {
+	// Generate the blocks in slice
+	if (build_blocks_from_directory(input_path, output_path + "_z/", visible_human)) {
+		std::cout << "success. Building x and y orientations" << std::endl;
+
+		if (build_oriented_block_slices_from_existing(output_path + "_z/", output_path, visible_human)) {
+			std::cout << "success" << std::endl;
+		}
+		else {
+			std::cout << "failed" << std::endl;
+		}
+	}
+	else {
+		std::cout << "failed" << std::endl;
+	}
+
+	std::cin.get();
+	return 1;
+}
+
+/// writes blocks to validate the information retrieval
+int test_block_creation(std::string input_path, std::string output_path, block_generation_info visible_human) {
+	// Test retrieve block from block slices
+	if (write_block_from_slice(
+		visible_human,
+		output_path,
+		"D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices/blocks",
+		cgv::math::fvec<double, 3>(32, 0, 0.0))) {
+		std::cout << "success" << std::endl;
+	}
+	else {
+		std::cout << "failed" << std::endl;
+	}
+
+	std::cin.get();
+	return 1;
+}
+
+/// creates a vox file. at the time of writing this comment it can't be used because of the dependency with opencv
+int create_vox(std::string input_path, std::string output_path, block_generation_info visible_human) {
+	// Generate vox
+	// if (write_vox(input_path, output_path)) { std::cout << "success" << std::endl; }
+	// else { std::cout << "failed" << std::endl; }
+
+	std::cin.get();
+	return 1;
+}
+
+// this method is not test nor completed. the idea is that it initiates a multi level resolution scheme for the blocks
+int advanced_multi_res(block_generation_info visible_human) {
+	// advanced multi resolution approach not validated tested!!!
+	slice_processor_ptr sp_ptr = build_processor_tree(visible_human, "E:/visible human/male/block16", "E:/visible human/male/mipmap");
+	process_directory("E:/visible human/male/70mm/fullbody", visible_human.type_id, visible_human.components, visible_human.dimensions(0), visible_human.dimensions(1), sp_ptr);
+
+	if (subsample_directory("E:/visible human/male/70mm/fullbody", "E:/visible human/male/transformed", visible_human, true))
+		std::cout << "success" << std::endl;
+	else
+		std::cout << "failed" << std::endl;
+
+	std::cin.get();
+	return 1;
+}
+
+// replace these values with the ones from the used dataset and the desired block size configurations
 void init_to_visible_human_male_png(block_generation_info& bgi)
 {
 	int width = 2048; //512
@@ -1232,81 +1348,16 @@ int main(int argc, char** argv)
 	build_level_infos(visible_human);
 
 	std::string bk = "E:/data/visual_human/male/PNG_format/head";
-	//std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/sources/test_sample/";
-	//std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/test_sample/";
+	// std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/sources/test_sample/";
+	// std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/test_sample/";
 
 	std::string input_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/sources/png/";
 	std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/multiple/64x64x64/";
 
-	open_slices_files(output_path + "_x/");
-	open_slices_files(output_path + "_y/");
-	open_slices_files(output_path + "_z/");
-
-	std::clock_t start;
-	int limit;
-	
-	freopen("D:/Users/JMendez/Desktop/output.txt","w", stdout);
-	std::cout << "\n\ntest [1]\n\n" << std::endl;
-	for (int i = 0; i < 50; i++) {
-		start = std::clock();
-		limit = test_blocks1(visible_human, output_path);
-		double duration = static_cast<double>(std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
-		std::cout << " duration [" << duration << "]" << std::endl;
-	}
-	
-	std::cout << "\n\ntest [2]\n\n" << std::endl;
-	for (int i = 0; i < 50; i++) {
-		start = std::clock();
-		limit = test_blocks2(visible_human, output_path, limit);
-		double duration = static_cast<double>(std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
-		std::cout << " duration [" << duration << "]" << std::endl;
-	}
-
-	std::cout << "\n\ntest [3]\n\n" << std::endl;
-	for (int i = 0; i < 50; i++) {
-		start = std::clock();
-		limit = test_blocks3(visible_human, output_path, limit);
-		double duration = static_cast<double>(std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
-		std::cout << " duration [" << duration << "]" << std::endl;
-	}
-
-	std::cout << " finished! " << std::endl;
-	close_slices_files();
-
-	std::cin.get();
-	return 1;
-
-	// Generate the blocks in slice
-	if (build_blocks_from_directory(input_path, output_path + "_z/", visible_human)) {
-		std::cout << "success. Building x and y orientations" << std::endl; 	
-		
-		if (build_oriented_block_slices_from_existing(output_path + "_z/", output_path, visible_human)) {
-			std::cout << "success" << std::endl;
-		}
-		else {
-			std::cout << "failed" << std::endl;
-		}
-	} else { 
-		std::cout << "failed" << std::endl; 
-	}
-
-	// Test retrieve block from block slices
-    //if (write_block_from_slice(visible_human, output_path, "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices/blocks", cgv::math::fvec<double, 3>(32,0,0.0))) { std::cout << "success" << std::endl; }
-	//else { std::cout << "failed" << std::endl; }
-
-	// Generate vox
-	//if (write_vox(input_path, output_path)) { std::cout << "success" << std::endl; }
-	//else { std::cout << "failed" << std::endl; }
-
-	std::cin.get();
-	return 1;
-
-	// advanced multi resolution approach not validated tested!!!
-	slice_processor_ptr sp_ptr = build_processor_tree(visible_human, "E:/visible human/male/block16", "E:/visible human/male/mipmap");
-	process_directory("E:/visible human/male/70mm/fullbody", visible_human.type_id, visible_human.components, visible_human.dimensions(0), visible_human.dimensions(1), sp_ptr);
-
-	if (subsample_directory("E:/visible human/male/70mm/fullbody", "E:/visible human/male/transformed", visible_human, true))
-		std::cout << "success" << std::endl;
-	else
-		std::cout << "failed" << std::endl;
+	// each of the following lines is a different main
+	return perfomance_tests(input_path, output_path, visible_human);
+	return generate_blocks_all_orientations(input_path, output_path, visible_human);
+	return test_block_creation(input_path, output_path, visible_human);
+	return create_vox(input_path, output_path, visible_human);
+	return advanced_multi_res(visible_human);
 }

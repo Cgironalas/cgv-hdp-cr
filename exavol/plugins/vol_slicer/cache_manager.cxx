@@ -9,10 +9,8 @@
 #include <string>
 #include "volume_slicer.h"
 
-
-// output to generate .tiff blocks for validation if the write_tiff function is called
-//std::string output_path = "D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/labeled/innerorgans/rgb_enlarged_slices/blocks";
-
+// Constructor
+//
 cache_manager::cache_manager(volume_slicer &f) : vs(f) {
 
 	slices_path = "";
@@ -33,6 +31,8 @@ cache_manager::cache_manager(volume_slicer &f) : vs(f) {
 	}
 }
 
+// Sets up a thread with the main loop, separates cache manager execution from vol slicer. 
+//
 void cache_manager::init_listener() {
 
 	thread_report.lock();
@@ -42,12 +42,20 @@ void cache_manager::init_listener() {
 	thread_report.unlock();
 }
 
+// Closes the listener when program execution is finished
+//
 void cache_manager::kill_listener() {
 	kill_lock.lock();
 	signal_kill = true;
 	kill_lock.unlock();
 }
 
+/* ================================== */
+// global structures (files array and path from configuration files) : 
+/* ================================== */
+
+// Sets the required variables and mutex locks, unloads and closes active files and replaces them with the new files. 
+//
 void cache_manager::set_block_folder(std::string folder_path) {
 	restart_lock.lock();
 	gpu_cache_lock.lock();
@@ -80,6 +88,8 @@ void cache_manager::set_block_folder(std::string folder_path) {
 	blocks_in_progress_lock.unlock();
 }
 
+// Opens all files from the respective block folder path and keeps them in the "slices_files" array to avoid overhead of 
+// opening and closing the files everytime a block must be retrieved. 
 void cache_manager::open_slices_files(std::string folder_path) {
 	void* handle = cgv::utils::file::find_first(folder_path + "*.*");
 	std::cout << "\n\n opening slices files at: '" << folder_path << "' \n\n" << std::endl;
@@ -112,6 +122,8 @@ void cache_manager::open_slices_files(std::string folder_path) {
 		std::cout << "\n\n something went wrong when opening the files at: '" << folder_path <<  "'  please check your configuration file.\n\n" << std::endl;
 }
 
+// Prevents unclosed files after the program's execution. 
+//
 void cache_manager::close_slices_files() {
 
 	slices_files_names.clear();
@@ -120,6 +132,12 @@ void cache_manager::close_slices_files() {
 	slices_files.clear();
 }
 
+/* ================================== */
+// main program methods : 
+/* ================================== */
+
+// The main loop of the cache manager listens to requests from the vol slicer, and reports successfully loaded block batches when they are finished. 
+// If the test mode is activated, the loop also calls the test utils to force the vol slicer into processing different slice configurations
 void cache_manager::main_loop() {
 	
 	while (true) {
@@ -162,7 +180,8 @@ void cache_manager::main_loop() {
 	}
 }
 
-// process request of blocks
+// This method processes the batch of blocks depending of their status: loaded in cache (cpu or gpu) or unloaded. 
+// It has mutex locks on some structures for thread implementations. 
 void cache_manager::request_blocks(std::vector<ivec3> blocks_batch) {
 	if (selected_cache_policy == 0) {
 		blocks_in_progress_lock.lock();
@@ -211,7 +230,12 @@ void cache_manager::request_blocks(std::vector<ivec3> blocks_batch) {
 	}
 }
 
-// main queue processing
+/* ================================== */
+// block management and processing : 
+/* ================================== */
+
+// This method handles the requested batch of blocks in a queue and checks for interruptions caused by user interaction and subsquent change in the required blocks. 
+//
 int disk_read_count = 0;
 void cache_manager::retrieve_blocks_in_plane() {
 
@@ -318,9 +342,12 @@ void cache_manager::retrieve_blocks_in_plane() {
 	process_running = false;
 }
 
+// util method for list sorting
+//
 static bool abs_compare(float a, float b) { return (std::abs(a) < std::abs(b)); }
 
-//retrieve block from disk using the open files
+// This method computes the location of the block in the open files array, then retrieves it as a shared_ptr<char>
+//
 std::shared_ptr<char> cache_manager::retrieve_block(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim) {
 	
 	//std::cout << "retrieving block at: " << block(0) << ", " << block(1) << ", " << block(2) << ", " << std::endl;
@@ -398,7 +425,8 @@ std::shared_ptr<char> cache_manager::retrieve_block(ivec3& block, ivec3& nr_bloc
 	}
 }
 
-// interface selector
+//Calls the respective method depending on the selected cache policy selected, for CPU
+//
 void cache_manager::cpu_refer(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim) {
 	
 	if (selected_cache_policy == 0 || selected_cache_policy == 2) {
@@ -408,6 +436,8 @@ void cache_manager::cpu_refer(ivec3& block, ivec3& nr_blocks, size_t& block_size
 	}
 }
 
+// Calls the respective method depending on the selected cache policy selected, for GPU
+//
 void cache_manager::gpu_refer(ivec3& block, std::shared_ptr<char> block_ptr) {
 	if (selected_cache_policy == 0 || selected_cache_policy == 2) {
 		gpu_fifo_refer(block, block_ptr);
@@ -416,7 +446,12 @@ void cache_manager::gpu_refer(ivec3& block, std::shared_ptr<char> block_ptr) {
 	}
 }
 
-// fifo methods
+/* ================================== */
+// fifo methods :
+/* ================================== */
+
+// Manages the data structures for an FIFO queue refer in the structure that handles CPU storage of the blocks
+//
 void cache_manager::cpu_fifo_refer(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim) {
 
 	// note: because of the request_blocks filtering of blocks not in cache, we can assume this function will never be called with a block already present in cpu cache
@@ -445,6 +480,8 @@ void cache_manager::cpu_fifo_refer(ivec3& block, ivec3& nr_blocks, size_t& block
 	gpu_refer(block, block_ptr);
 }
 
+// Manages the data structures for an FIFO queue refer in the structure that mirrors storage in the GPU
+//
 void cache_manager::gpu_fifo_refer(ivec3& block, std::shared_ptr<char> block_ptr) {
 
 	gpu_cache_lock.lock();
@@ -463,7 +500,12 @@ void cache_manager::gpu_fifo_refer(ivec3& block, std::shared_ptr<char> block_ptr
 	gpu_cache_lock.unlock();
 }
 
-// lru methods
+/* ================================== */
+// lru methods :
+/* ================================== */
+
+// Manages the data structures for an LRU queue refer in the structure that handles CPU storage of the blocks
+//
 void cache_manager::cpu_lru_refer(ivec3& block, ivec3& nr_blocks, size_t& block_size, vec3& df_dim) {
 
 	// note: because of the request_blocks filtering of blocks not in cache, we can assume this function will never be called with a block already present in cpu cache
@@ -501,6 +543,8 @@ void cache_manager::cpu_lru_refer(ivec3& block, ivec3& nr_blocks, size_t& block_
 	gpu_refer(block, block_ptr);
 }
 
+// Manages the data structures for an LRU queue refer in the structure that mirrors storage in the GPU
+// 
 void cache_manager::gpu_lru_refer(ivec3& block, std::shared_ptr<char> block_ptr) {
 
 	gpu_cache_lock.lock();
@@ -526,7 +570,12 @@ void cache_manager::gpu_lru_refer(ivec3& block, std::shared_ptr<char> block_ptr)
 	gpu_cache_lock.unlock();
 }
 
-//! write a block located at \c data_ptr to a tiff file
+/* ================================== */
+// testing utils :
+/* ================================== */
+
+// Writes a block located at \c data_ptr to a tiff file
+// Requires an output path. This is not used currently but it's useful for debugging. 
 bool cache_manager::write_tiff_block(std::string& file_name, char* data_ptr, vec3 df_dim, std::string& options)
 {
 	// setup output format 
@@ -551,7 +600,8 @@ bool cache_manager::write_tiff_block(std::string& file_name, char* data_ptr, vec
 	return iw.close();
 }
 
-
+// Fills "tests" with different slice normal values. Each one of these is then fed to the vol slicer for block retrieval
+// The tests are both random and deliberate, trying to emulate some possible user behaviors
 void cache_manager::init_test_array() {
 	
 	double values[3];
@@ -571,6 +621,7 @@ void cache_manager::init_test_array() {
 		tests.push_back(vec3(x, y, z));
 	}
 	
+	// creates rotations in all axis
 	for (int i = 0; i < 3; i++) {
 		for (double r = 0; r < 30; r++) {
 
@@ -602,6 +653,8 @@ void cache_manager::init_test_array() {
 	block_configs.push_back("D:/Users/JMendez/Documents/cgv-hdp-cr-local/data/visual_human/male/fullbody/slices/multiple/block_config32.bsdc");
 }
 
+// Records the test duration in the position x of "durations" array, where x can be mapped to 
+// the position of the respective test in the "tests" array. 
 void::cache_manager::test_handle() {
 
 	inactivity_counter = 0;
@@ -628,6 +681,8 @@ void::cache_manager::test_handle() {
 	std::cout << std::fixed << " duration of refers" << duration << std::endl;
 }
 
+// Consumes the current position in the "tests" array and moves into the next configuration. 
+// If the tests are over, it moves on to the next block configuration and resets the array. 
 void cache_manager::next_test() {
 	
 	tests_executed += 1;
